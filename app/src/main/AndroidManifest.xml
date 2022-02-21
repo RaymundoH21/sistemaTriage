@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SistemaTriage">
         <activity
+            android:name=".RegistrarPaciente"
+            android:exported="true" >
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
