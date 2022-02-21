@@ -32,9 +32,10 @@ public class RegistrarPaciente extends AppCompatActivity {
     EditText nom, apPat, apMat, edad, grav, les, sangre, aler, enfer, medi, dir, tel, nomFam, parFam, telFam;
     Button btnGuardar;
 
-    RequestQueue request;
-    StringRequest stringRequest;
+    //RequestQueue request;
+    //StringRequest stringRequest;
     ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
