@@ -1,12 +1,8 @@
 package com.example.sistematriage;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -14,22 +10,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.toolbox.Volley;
 
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
-
-    EditText nom, apPat, apMat, edad, grav, les, sangre, aler, enfer, medi, dir, tel, nomFam, parFam, telFam;
+    /*EditText nom, apPat, apMat, edad, grav, les, sangre, aler, enfer, medi, dir, tel, nomFam, parFam, telFam;
     Button btnGuardar;
 
     //RequestQueue request;
@@ -40,10 +30,10 @@ public class RegistrarPaciente extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registrar_paciente);
+        progress.setContentView(R.layout.activity_registrar_paciente);
 
         request = Volley.newRequestQueue(this);
-        nom = ((EditText)findViewById(R.id.etNombre));
+        nom = ((EditText) findViewById(R.id.etNombre));
         apPat = ((EditText)findViewById(R.id.etAPaterno));
         apMat = ((EditText)findViewById(R.id.etAMaterno));
         edad = ((EditText)findViewById(R.id.etEdad));
@@ -108,6 +98,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                     Log.i("RESPUESTA: ",""+response);
                 }*/
             }
+            /*
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -186,3 +177,6 @@ public class RegistrarPaciente extends AppCompatActivity {
     }
 
 }
+*/
+
+

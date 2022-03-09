@@ -1,18 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_account_circle_24"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="600dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/NumEmpleado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#B47BA2A8"
+            android:hint="Numero de Empleado"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/Contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#B47BA2A8"
+            android:hint="Contraseña"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/Inicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login Now"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="151dp"
+            tools:layout_editor_absoluteY="208dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"/>
+        <Button
+            android:id="@+id/Registro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registro"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="151dp"
+            tools:layout_editor_absoluteY="208dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
