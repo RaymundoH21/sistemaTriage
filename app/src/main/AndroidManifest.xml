@@ -41,6 +41,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Principal"
+            android:exported="false" />
+        <activity
+            android:name=".registroparamedico"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
