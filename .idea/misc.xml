@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_lista_heridos.xml" value="0.16802536231884058" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_perfil_herido.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registrar_paciente.xml" value="0.2" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/herido_card.xml" value="0.25416666666666665" />
       </map>

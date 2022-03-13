@@ -49,7 +49,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         else{
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
         }
-        //holder.txtNoPaciente.setText(listaHeridos.get(position).getNoPaciente().toString());
+        holder.txtNoPaciente.setText(listaHeridos.get(position).getNoPaciente().toString());
         holder.txtNombre.setText(String.valueOf(listaHeridos.get(position).getNombre().toString()) + " " + String.valueOf(listaHeridos.get(position).getApPaterno().toString()) + " " + String.valueOf(listaHeridos.get(position).getApMaterno().toString()));
         //holder.txtApPaterno.setText("Apellido Paterno: " + String.valueOf(listaPersonas.get(position).getApPaterno().toString()));
         //holder.txtApMaterno.setText("Apellido Materno: " + String.valueOf(listaPersonas.get(position).getApMaterno().toString()));

@@ -16,11 +16,14 @@
         android:theme="@style/Theme.SistemaTriage"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PerfilHerido"
+            android:exported="false" />
+        <activity
             android:name=".ListaHeridos"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

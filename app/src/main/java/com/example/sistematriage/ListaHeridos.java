@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -125,7 +126,7 @@ public class ListaHeridos extends AppCompatActivity {
                             NoPaciente = view.findViewById(R.id.txtNoPaciente);
                             stringNoPaciente = NoPaciente.getText().toString();
 
-                            //APacienteSeleccionado(recyclerPersonas);
+                            APacienteSeleccionado(recyclerHeridos);
                         }
                     });
 
@@ -150,6 +151,13 @@ public class ListaHeridos extends AppCompatActivity {
 
         //request.add(stringRequest);
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void APacienteSeleccionado(View view){
+        Intent Paciente = new Intent(this,PerfilHerido.class);
+        Paciente.putExtra("NoPaciente",stringNoPaciente);
+        startActivity(Paciente);
+        finish();
     }
 
     public static Bitmap loadBitmapFrmView(View v, int width, int height) {

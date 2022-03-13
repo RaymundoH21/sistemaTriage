@@ -56,7 +56,7 @@ public class herido {
     public Integer getNoPaciente() {
         return noPaciente;
     }
-    public void setNoPaciente(Integer organo) {
+    public void setNoPaciente(Integer noPaciente) {
         this.noPaciente = noPaciente;
     }
 
