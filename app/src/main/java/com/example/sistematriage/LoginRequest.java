@@ -11,7 +11,7 @@ public class LoginRequest extends StringRequest {
     private static final String LOGIN_REQUEST_URL="http://192.168.0.12/bd/Login.php";
 
     private Map<String,String> params;
-    public  LoginRequest(int numero, String contra, Response.Listener<String> listener ){
+    public  LoginRequest(String numero, String contra, Response.Listener<String> listener ){
         super(Request.Method.POST, LOGIN_REQUEST_URL,listener,null);
         params= new HashMap<>();
         params.put("numero",numero+"");
