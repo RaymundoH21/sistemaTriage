@@ -146,7 +146,6 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
                 picture.setImageBitmap(bitmap);
                 Log.i("TAG","Result =>" + bitmap);
             }
-            bitmap = redimensionarImagen(bitmap, 600, 800);
         }
         else if(resultCode == RESULT_OK){
             Uri path = data.getData();
@@ -158,7 +157,6 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bitmap = redimensionarImagen(bitmap, 600, 800);
         }
 
     }
@@ -253,23 +251,4 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
         dialog.show();
     }
 
-    private Bitmap redimensionarImagen(Bitmap bitmap, float anchoNuevo, float altoNuevo) {
-
-        int ancho = bitmap.getWidth();
-        int alto = bitmap.getHeight();
-
-        if (ancho > anchoNuevo || alto > altoNuevo) {
-            float escalaAncho = anchoNuevo / ancho;
-            float escalaAlto = altoNuevo / alto;
-
-            Matrix matrix = new Matrix();
-            matrix.postScale(escalaAncho, escalaAlto);
-
-            return Bitmap.createBitmap(bitmap, 0, 0, ancho, alto, matrix, false);
-
-        } else {
-            return bitmap;
-        }
-
-    }
 }
