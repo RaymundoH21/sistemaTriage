@@ -50,12 +50,9 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
         }
         holder.txtNoPaciente.setText(listaHeridos.get(position).getNoPaciente().toString());
-        holder.txtNombre.setText(String.valueOf(listaHeridos.get(position).getNombre().toString()) + " " + String.valueOf(listaHeridos.get(position).getApPaterno().toString()) + " " + String.valueOf(listaHeridos.get(position).getApMaterno().toString()));
-        //holder.txtApPaterno.setText("Apellido Paterno: " + String.valueOf(listaPersonas.get(position).getApPaterno().toString()));
-        //holder.txtApMaterno.setText("Apellido Materno: " + String.valueOf(listaPersonas.get(position).getApMaterno().toString()));
-        holder.txtEdad.setText("Edad: " + String.valueOf(listaHeridos.get(position).getEdad().toString()));
-        holder.txtTipoSangre.setText("Tipo de Sangre: " + String.valueOf(listaHeridos.get(position).getTipoSangre().toString()));
-        holder.txtGravedad.setText("Estado de salud: " + String.valueOf(listaHeridos.get(position).getGravedad().toString()));
+        holder.txtUbicacion.setText(String.valueOf(listaHeridos.get(position).getUbicacion().toString()));
+
+        holder.txtColor.setText("Edad: " + String.valueOf(listaHeridos.get(position).getColor().toString()));
 
 
     }
@@ -83,7 +80,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
     public class HeridoViewHolder extends RecyclerView.ViewHolder{
 
         CardView personCardView;
-        TextView txtNoPaciente, txtNombre, txtApPaterno, txtApMaterno, txtTipoSangre, txtGravedad, txtEdad, txtGenero, txtPeso, txtAltura, txtFechaNacimiento, txtLugarNacimiento, txtFechaMod, txtSeguridadSocial, txtCENATRA;;
+        TextView txtNoPaciente, txtUbicacion, txtColor;
         ImageView imagen;
 
         public HeridoViewHolder(View itemView) {
@@ -91,12 +88,8 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
             personCardView = (CardView) itemView.findViewById(R.id.herido_card);
             imagen= (ImageView)itemView.findViewById(R.id.imagen);
             txtNoPaciente= (TextView) itemView.findViewById(R.id.txtNoPaciente);
-            txtNombre= (TextView) itemView.findViewById(R.id.txtNombre);
-            ///txtApPaterno= (TextView) itemView.findViewById(R.id.txtApPaterno);
-            ///txtApMaterno= (TextView) itemView.findViewById(R.id.txtApMaterno);
-            txtEdad= (TextView) itemView.findViewById(R.id.txtEdad);
-            txtTipoSangre= (TextView) itemView.findViewById(R.id.txtTipoSangre);
-            txtGravedad= (TextView) itemView.findViewById(R.id.txtGravedad);
+            txtUbicacion= (TextView) itemView.findViewById(R.id.txtUbicacion);
+            txtColor= (TextView) itemView.findViewById(R.id.txtColor);
 
         }
 

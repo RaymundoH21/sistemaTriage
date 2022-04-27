@@ -53,7 +53,7 @@ import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
 
-    EditText nom, apPat, apMat, sexo, edad, grav, les, sangre, aler, enfer, medi, dir, tel, nomFam, parFam, telFam;
+    EditText ubi, color, usuario, estado;
     Button btnGuardar, btnCargar;
 
     private final String CARPETA_RAIZ="misImagenesPrueba/";
@@ -77,22 +77,8 @@ public class RegistrarPaciente extends AppCompatActivity {
         setContentView(R.layout.activity_registrar_paciente);
 
         request = Volley.newRequestQueue(this);
-        nom = ((EditText)findViewById(R.id.etNombre));
-        apPat = ((EditText)findViewById(R.id.etAPaterno));
-        apMat = ((EditText)findViewById(R.id.etAMaterno));
-        sexo = ((EditText)findViewById(R.id.etSexo));
-        edad = ((EditText)findViewById(R.id.etEdad));
-        grav = ((EditText)findViewById(R.id.etEstado));
-        les = ((EditText)findViewById(R.id.etLesiones));
-        sangre = ((EditText)findViewById(R.id.etSangre));
-        aler = ((EditText)findViewById(R.id.etAlergias));
-        enfer = ((EditText)findViewById(R.id.etEnfermedades));
-        medi = ((EditText)findViewById(R.id.etMedicamentos));
-        dir = ((EditText)findViewById(R.id.etDireccion));
-        tel = ((EditText)findViewById(R.id.etTelefono));
-        nomFam = ((EditText)findViewById(R.id.etNombreFamiliar));
-        parFam = ((EditText)findViewById(R.id.etParentesco));
-        telFam = ((EditText)findViewById(R.id.etTelefonoFamiliar));
+        ubi = ((EditText)findViewById(R.id.etUbicacion));
+        color = ((EditText)findViewById(R.id.etColor));
 
         IV = (ImageView) findViewById(R.id.foto);
 
@@ -341,22 +327,8 @@ public class RegistrarPaciente extends AppCompatActivity {
             public void onResponse(String response) {
 
                 ///if (response.trim().equalsIgnoreCase("Registra")) {
-                nom.setText("");
-                apPat.setText("");
-                apMat.setText("");
-                sexo.setText("");
-                edad.setText("");
-                grav.setText("");
-                les.setText("");
-                sangre.setText("");
-                aler.setText("");
-                enfer.setText("");
-                medi.setText("");
-                dir.setText("");
-                tel.setText("");
-                nomFam.setText("");
-                parFam.setText("");
-                telFam.setText("");
+                ubi.setText("");
+                color.setText("");
 
 
                 IV.setImageResource(R.drawable.ic_launcher_background);
@@ -382,43 +354,20 @@ public class RegistrarPaciente extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
-                String Nombre = nom.getText().toString();
-                String ApPaterno = apPat.getText().toString();
-                String ApMaterno = apMat.getText().toString();
-                String Sexo = sexo.getText().toString();
-                String Edad = edad.getText().toString();
-                String Gravedad = grav.getText().toString();
-                String Lesiones = les.getText().toString();
-                String Sangre = sangre.getText().toString();
-                String Alergias = aler.getText().toString();
-                String Enfermedades = enfer.getText().toString();
-                String Medicamentos = medi.getText().toString();
-                String Direccion = dir.getText().toString();
-                String Telefono = tel.getText().toString();
-                String NombreFam = nomFam.getText().toString();
-                String Parentesco = parFam.getText().toString();
-                String TelefonoFam = telFam.getText().toString();
+                String Ubicacion = ubi.getText().toString();
+                String Color = color.getText().toString();
+                String Usuario = "Guillermo Vázquez";
+                String Estado = "En espera";
+
 
                 String imagen = convertirImgString(bitmap);
 
                 Map<String,String> parametros = new HashMap<>();
 
-                parametros.put("Nombre",Nombre);
-                parametros.put("ApPaterno",ApPaterno);
-                parametros.put("ApMaterno",ApMaterno);
-                parametros.put("Sexo",Sexo);
-                parametros.put("Edad",Edad);
-                parametros.put("Gravedad",Gravedad);
-                parametros.put("Lesiones",Lesiones);
-                parametros.put("Sangre",Sangre);
-                parametros.put("Alergias",Alergias);
-                parametros.put("Enfermedades",Enfermedades);
-                parametros.put("Medicamentos",Medicamentos);
-                parametros.put("Direccion",Direccion);
-                parametros.put("Telefono",Telefono);
-                parametros.put("NombreFam",NombreFam);
-                parametros.put("Parentesco",Parentesco);
-                parametros.put("TelefonoFam",TelefonoFam);
+                parametros.put("Ubicacion",Ubicacion);
+                parametros.put("Color",Color);
+                parametros.put("Usuario",Usuario);
+                parametros.put("Estado",Estado);
                 parametros.put("imagen",imagen);
 
                 return parametros;

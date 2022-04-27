@@ -41,7 +41,7 @@
                     android:text="DATOS PERSONALES" />
 
                 <EditText
-                    android:id="@+id/etNombre"
+                    android:id="@+id/etUbicacion"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
@@ -50,12 +50,12 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Nombre"
-                    android:inputType="text" />
+                    android:hint="Ubicación"
+                    android:inputType="text"
+                    android:textColorHint="#B47BA2A8" />
 
                 <EditText
-                    android:id="@+id/etAPaterno"
+                    android:id="@+id/etColor"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
@@ -64,231 +64,9 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Apellido Paterno"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etAMaterno"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Apellido Materno"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etSexo"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Sexo"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etEdad"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Edad"
-                    android:inputType="number" />
-
-                <TextView
-                    android:id="@+id/tvDatosClinicos"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textAlignment="center"
-                    android:text="DATOS CLÍNICOS" />
-
-                <EditText
-                    android:id="@+id/etEstado"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Estado de salud"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etLesiones"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Lesiones"
-                    android:inputType="textMultiLine"/>
-
-                <EditText
-                    android:id="@+id/etSangre"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Tipo de sangre"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etAlergias"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Alergias"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etEnfermedades"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Enfermedades"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etMedicamentos"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Medicamentos que toma"
-                    android:inputType="text" />
-
-                <TextView
-                    android:id="@+id/tvDatosContacto"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textAlignment="center"
-                    android:text="DATOS DE CONTACTO" />
-
-                <EditText
-                    android:id="@+id/etDireccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Dirección"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etTelefono"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Teléfono"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etNombreFamiliar"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Nombre de un familiar"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etParentesco"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Parentesco con el familiar"
-                    android:inputType="text" />
-
-                <EditText
-                    android:id="@+id/etTelefonoFamiliar"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColorHint="#B47BA2A8"
-                    android:hint="Teléfono del familiar"
-                    android:inputType="text" />
+                    android:hint="Color"
+                    android:inputType="text"
+                    android:textColorHint="#B47BA2A8" />
 
             </LinearLayout>
 

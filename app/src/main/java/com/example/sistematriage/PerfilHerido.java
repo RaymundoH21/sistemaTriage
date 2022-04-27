@@ -28,7 +28,7 @@ import org.json.JSONObject;
 public class PerfilHerido extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     String NoPaciente;
-    TextView tvNombre, tvApPat, tvApMat, tvSexo, tvEdad, tvGravedad, tvLesiones, tvSangre, tvAlergias, tvEnfermedades, tvMedicamentos, tvDireccion, tvTel, tvNombreFam, tvParentesco, tvTelFam;
+    TextView tvColor, tvUbicacion, tvEstado, tvUsuario;
     ImageView imagen;
 
     RequestQueue request;
@@ -69,40 +69,19 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
         JSONObject jsonObject= null;
         try {
             jsonObject=json.getJSONObject(0);
-            miUsuario.setNombre(jsonObject.optString("Nombre"));
-            miUsuario.setApPaterno(jsonObject.optString("ApPaterno"));
-            miUsuario.setApMaterno(jsonObject.optString("ApMaterno"));
-            miUsuario.setSexo(jsonObject.optString("Sexo"));
-            miUsuario.setEdad(jsonObject.optInt("Edad"));
-            miUsuario.setGravedad(jsonObject.optString("Gravedad"));
-            miUsuario.setLesiones(jsonObject.optString("Lesiones"));
-            miUsuario.setTipoSangre(jsonObject.optString("Sangre"));
-            miUsuario.setAlergias(jsonObject.optString("Alergias"));
-            miUsuario.setEnfermedades(jsonObject.optString("Enfermedades"));
-            miUsuario.setMedicamentos(jsonObject.optString("Medicamentos"));
-            miUsuario.setDireccion(jsonObject.optString("Direccion"));
-            miUsuario.setTel(jsonObject.optString("Tel"));
-            miUsuario.setNombreFam(jsonObject.optString("NombreFam"));
-            miUsuario.setParentesco(jsonObject.optString("Parentesco"));
-            miUsuario.setTelFam(jsonObject.optString("TelFam"));
+            miUsuario.setColor(jsonObject.optString("Color"));
+            miUsuario.setUbicacion(jsonObject.optString("Ubicacion"));
+            miUsuario.setEstado(jsonObject.optString("Estado"));
+            miUsuario.setUsuario(jsonObject.optString("Usuario"));
             miUsuario.setDato(jsonObject.optString("imagen"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        tvNombre.setText(miUsuario.getNombre()+" "+ miUsuario.getApPaterno() + " " + miUsuario.getApMaterno());
-        tvSexo.setText(miUsuario.getSexo());
-        tvEdad.setText(String.valueOf(miUsuario.getEdad()));
-        tvGravedad.setText(miUsuario.getGravedad());
-        tvLesiones.setText(miUsuario.getLesiones());
-        tvSangre.setText(miUsuario.getTipoSangre());
-        tvAlergias.setText(miUsuario.getAlergias());
-        tvEnfermedades.setText(miUsuario.getEnfermedades());
-        tvMedicamentos.setText(miUsuario.getMedicamentos());
-        tvDireccion.setText(miUsuario.getDireccion());
-        tvTel.setText(miUsuario.getTel());
-        tvNombreFam.setText(miUsuario.getNombreFam());
-        tvParentesco.setText(miUsuario.getParentesco());
-        tvTelFam.setText(miUsuario.getTelFam());
+        tvColor.setText(miUsuario.getColor());
+        tvUbicacion.setText(miUsuario.getUbicacion());
+        tvEstado.setText(miUsuario.getEstado());
+        tvUsuario.setText(miUsuario.getUsuario());
+
 
         if(miUsuario.getImagen()!=null) {
             roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), miUsuario.getImagen());
@@ -117,20 +96,10 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
 
     private void webService(){
 
-        tvNombre = (TextView) findViewById(R.id.txtNombre);
-        tvSexo = (TextView) findViewById(R.id.txtSexo);
-        tvEdad = (TextView) findViewById(R.id.txtEdad);
-        tvGravedad = (TextView) findViewById(R.id.txtGravedad);
-        tvLesiones = (TextView) findViewById(R.id.txtLesiones);
-        tvSangre = (TextView) findViewById(R.id.txtSangre);
-        tvAlergias = (TextView) findViewById(R.id.txtAlergias);
-        tvEnfermedades = (TextView) findViewById(R.id.txtEnfermedades);
-        tvMedicamentos = (TextView) findViewById(R.id.txtMedicamentos);
-        tvDireccion = (TextView) findViewById(R.id.txtDireccion);
-        tvTel =(TextView) findViewById(R.id.txtTelefono);
-        tvNombreFam =(TextView) findViewById(R.id.txtNombreFam);
-        tvParentesco = findViewById(R.id.txtParentesco);
-        tvTelFam = findViewById(R.id.txtTelFamiliar);
+        tvColor = (TextView) findViewById(R.id.txtColor);
+        tvUbicacion = (TextView) findViewById(R.id.txtUbicacion);
+        tvEstado = (TextView) findViewById(R.id.txtEstado);
+        tvUsuario = (TextView) findViewById(R.id.txtUsuario);
         imagen = (ImageView) findViewById(R.id.ImgVFoto);
 
         String url = "http://192.168.0.111/sistematriage/ConsultarPaciente.php?NoPaciente="+NoPaciente;

@@ -98,22 +98,10 @@ public class ListaHeridos extends AppCompatActivity {
                         jsonObject=json.getJSONObject(i);
 
                         herido.setNoPaciente(jsonObject.optInt("NoPaciente"));
-                        herido.setNombre(jsonObject.optString("Nombre"));
-                        herido.setApPaterno(jsonObject.optString("ApellidoPaterno"));
-                        herido.setApMaterno(jsonObject.optString("ApellidoMaterno"));
-                        herido.setSexo(jsonObject.optString("Sexo"));
-                        herido.setEdad(jsonObject.optInt("Edad"));
-                        herido.setGravedad(jsonObject.optString("Gravedad"));
-                        herido.setLesiones(jsonObject.optString("Lesiones"));
-                        herido.setTipoSangre(jsonObject.optString("Sangre"));
-                        herido.setAlergias(jsonObject.optString("Alergias"));
-                        herido.setEnfermedades(jsonObject.optString("Enfermedades"));
-                        herido.setMedicamentos(jsonObject.optString("Medicamentos"));
-                        herido.setDireccion(jsonObject.optString("Direccion"));
-                        herido.setTel(jsonObject.optString("Telefono"));
-                        herido.setNombreFam(jsonObject.optString("NombreFamiliar"));
-                        herido.setParentesco(jsonObject.optString("ParentescoFamiliar"));
-                        herido.setTelFam(jsonObject.optString("TelefonoFamiliar"));
+                        herido.setUbicacion(jsonObject.optString("Ubicacion"));
+                        herido.setColor(jsonObject.optString("Color"));
+                        herido.setEstado(jsonObject.optString("Estado"));
+                        herido.setUsuario(jsonObject.optString("Usuario"));
                         herido.setDato(jsonObject.optString("Foto"));
                         listaHeridos.add(herido);
                         listaHeridosBackup.add(herido);
