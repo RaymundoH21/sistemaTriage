@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="usuarios">
+
+        <item>Seleccione un Usuario</item>
+        <item>Doctor</item>
+        <item>Paramedico</item>
+
+    </string-array>
+</resources>

@@ -80,7 +80,7 @@ public class ListaHeridos extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        String url = "http://192.168.0.111/sistematriage/ConsultarLista.php?";
+        String url = "http://192.168.0.10/bd/ConsultarLista.php?";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

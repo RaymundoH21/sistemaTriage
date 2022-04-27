@@ -320,7 +320,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         progress.setMessage("Cargando...");
         progress.show();
 
-        String url="http://192.168.0.111/sistematriage/RegistrarPaciente.php?";
+        String url="http://192.168.0.12/bd/RegistrarPaciente.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

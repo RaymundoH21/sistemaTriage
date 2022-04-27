@@ -43,27 +43,30 @@
             android:textColorHint="#B47BA2A8"
             android:hint="Contraseña"
             android:inputType="text" />
+        <Spinner
+            android:id="@+id/idSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvSeleccion"
+            android:layout_marginTop="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint=" "
+            android:textSize="2sp"
+             />
 
         <Button
             android:id="@+id/Inicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:onClick="mostrar"
             android:text="Login Now"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="151dp"
-            tools:layout_editor_absoluteY="208dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"/>
-        <Button
-            android:id="@+id/Registro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Registro"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="151dp"
-            tools:layout_editor_absoluteY="208dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"/>
+            tools:layout_editor_absoluteY="208dp" />
 
     </LinearLayout>
 

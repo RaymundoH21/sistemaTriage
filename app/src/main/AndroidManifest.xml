@@ -46,7 +46,8 @@
         </activity>
         <activity
             android:name=".Principal"
-            android:exported="false" />
+            android:exported="true"
+            />
         <activity
             android:name=".registroparamedico"
             android:exported="false" />
