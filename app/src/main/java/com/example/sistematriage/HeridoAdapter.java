@@ -2,6 +2,7 @@ package com.example.sistematriage;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
 
     private View.OnClickListener listener;
     List<herido> listaHeridos;
+
+    int t = 0, r = 0, a = 0, v = 0, n = 0;
 
     public HeridoAdapter(List<herido> listaPersonas) {
         this.listaHeridos = listaPersonas;
@@ -52,7 +55,33 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         holder.txtNoPaciente.setText(listaHeridos.get(position).getNoPaciente().toString());
         holder.txtUbicacion.setText(String.valueOf(listaHeridos.get(position).getUbicacion().toString()));
 
-        holder.txtColor.setText("Edad: " + String.valueOf(listaHeridos.get(position).getColor().toString()));
+        holder.txtColor.setText("Color: " + String.valueOf(listaHeridos.get(position).getColor().toString()));
+
+        switch (listaHeridos.get(position).getColor()){
+            case "Rojo":
+                holder.color.setBackgroundColor(Color.parseColor("#A51717"));
+                r++;
+                break;
+            case "Amarillo":
+                holder.color.setBackgroundColor(Color.parseColor("#FFEB3B"));
+                a++;
+                break;
+            case "Verde":
+                holder.color.setBackgroundColor(Color.parseColor("#287A2C"));
+                v++;
+                break;
+            case "Negro":
+                holder.color.setBackgroundColor(Color.parseColor("#000000"));
+                n++;
+                break;
+            default:
+                holder.color.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                break;
+        }
+
+        t = r + a + v + n;
+
+
 
 
     }
@@ -81,7 +110,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
 
         CardView personCardView;
         TextView txtNoPaciente, txtUbicacion, txtColor;
-        ImageView imagen;
+        ImageView imagen, color;
 
         public HeridoViewHolder(View itemView) {
             super(itemView);
@@ -90,9 +119,16 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
             txtNoPaciente= (TextView) itemView.findViewById(R.id.txtNoPaciente);
             txtUbicacion= (TextView) itemView.findViewById(R.id.txtUbicacion);
             txtColor= (TextView) itemView.findViewById(R.id.txtColor);
+            color = (ImageView)itemView.findViewById(R.id.ivColor);
+
 
         }
 
+    }
+
+    public void Filtrar(ArrayList<herido> filtroPersonas){
+        this.listaHeridos = filtroPersonas;
+        notifyDataSetChanged();
     }
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {

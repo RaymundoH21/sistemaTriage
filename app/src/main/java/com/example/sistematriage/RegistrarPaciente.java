@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -53,7 +54,7 @@ import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
 
-    EditText ubi, color, usuario, estado;
+    EditText ubi, usuario, estado;
     Button btnGuardar, btnCargar;
 
     private final String CARPETA_RAIZ="misImagenesPrueba/";
@@ -70,6 +71,8 @@ public class RegistrarPaciente extends AppCompatActivity {
     StringRequest stringRequest;
     ProgressDialog progress;
 
+    RadioButton rbNegro, rbRojo, rbAmarillo, rbVerde;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +81,17 @@ public class RegistrarPaciente extends AppCompatActivity {
 
         request = Volley.newRequestQueue(this);
         ubi = ((EditText)findViewById(R.id.etUbicacion));
-        color = ((EditText)findViewById(R.id.etColor));
 
         IV = (ImageView) findViewById(R.id.foto);
 
         btnGuardar = ((Button)findViewById(R.id.btnGuardar));
         btnCargar = ((Button)findViewById(R.id.btnCargar));
+
+        rbNegro = (RadioButton)findViewById(R.id.rbNegro);
+        rbRojo = (RadioButton)findViewById(R.id.rbRojo);
+        rbAmarillo = (RadioButton)findViewById(R.id.rbAmarillo);
+        rbVerde = (RadioButton)findViewById(R.id.rbVerde);
+
 
         btnCargar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +109,8 @@ public class RegistrarPaciente extends AppCompatActivity {
             btnCargar.setEnabled(false);
         }
     }
+
+
 
     private boolean validaPermisos() {
 
@@ -320,7 +330,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         progress.setMessage("Cargando...");
         progress.show();
 
-        String url="http://192.168.0.12/bd/RegistrarPaciente.php";
+        String url="http://192.168.0.106/sistemaTriage/RegistrarPaciente.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -328,16 +338,15 @@ public class RegistrarPaciente extends AppCompatActivity {
 
                 ///if (response.trim().equalsIgnoreCase("Registra")) {
                 ubi.setText("");
-                color.setText("");
 
 
                 IV.setImageResource(R.drawable.ic_launcher_background);
 
-                Toast.makeText(RegistrarPaciente.this, response, Toast.LENGTH_LONG).show();
+                //Toast.makeText(RegistrarPaciente.this, response, Toast.LENGTH_LONG).show();
                 showToast("Se ha Registrado Exitosamente");
                 //Intent nuevoform = new Intent(RegistrarPaciente.this, listaEspera.class);
                 //startActivity(nuevoform);
-                finish();
+                finish(); startActivity(getIntent());
                 /*}else{
                     showToast("No se puede registrar");
                     Log.i("RESPUESTA: ",""+response);
@@ -354,8 +363,9 @@ public class RegistrarPaciente extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
+
                 String Ubicacion = ubi.getText().toString();
-                String Color = color.getText().toString();
+                String Color = ValidarColor();
                 String Usuario = "Guillermo Vázquez";
                 String Estado = "En espera";
 
@@ -430,6 +440,35 @@ public class RegistrarPaciente extends AppCompatActivity {
         });
         dialogo.show();
 
+    }
+
+    public void AListaHeridos(View view){
+        Intent Paciente = new Intent(this,ListaHeridos.class);
+        startActivity(Paciente);
+        finish();
+    }
+
+    public String ValidarColor(){
+
+        String color = "";
+
+        if (rbNegro.isChecked()==true){
+            color = "Negro";
+        }
+
+        if (rbRojo.isChecked()==true){
+            color = "Rojo";
+        }
+
+        if (rbAmarillo.isChecked()==true){
+            color = "Amarillo";
+        }
+
+        if (rbVerde.isChecked()==true){
+            color = "Verde";
+        }
+
+        return color;
     }
 
 }

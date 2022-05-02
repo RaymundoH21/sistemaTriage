@@ -102,7 +102,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
         tvUsuario = (TextView) findViewById(R.id.txtUsuario);
         imagen = (ImageView) findViewById(R.id.ImgVFoto);
 
-        String url = "http://192.168.0.10/bd/ConsultarPaciente.php?NoPaciente="+NoPaciente;
+        String url = "http://192.168.0.106/sistemaTriage/ConsultarPaciente.php?NoPaciente="+NoPaciente;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         request.add(jsonObjectRequest);
 

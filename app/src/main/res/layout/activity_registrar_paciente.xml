@@ -17,28 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvDatosPersonales"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:textAlignment="center"
-                    android:text="DATOS PERSONALES" />
 
                 <EditText
                     android:id="@+id/etUbicacion"
@@ -54,23 +38,44 @@
                     android:inputType="text"
                     android:textColorHint="#B47BA2A8" />
 
-                <EditText
-                    android:id="@+id/etColor"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:hint="Color"
-                    android:inputType="text"
-                    android:textColorHint="#B47BA2A8" />
-
             </LinearLayout>
 
-        </ScrollView>
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp">
+
+            <RadioButton
+                android:id="@+id/rbNegro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Negro"
+                android:layout_marginBottom="10dp"/>
+
+            <RadioButton
+                android:id="@+id/rbRojo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rojo"
+                android:layout_marginBottom="10dp"/>
+
+            <RadioButton
+                android:id="@+id/rbAmarillo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amarillo"
+                android:layout_marginBottom="10dp"/>
+
+            <RadioButton
+                android:id="@+id/rbVerde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verde"
+                android:layout_marginBottom="10dp"/>
+
+        </RadioGroup>
+
+
 
     </LinearLayout>
 
@@ -120,5 +125,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/foto" />
+
+    <Button
+        android:id="@+id/btnRegresar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:onClick="AListaHeridos"
+        android:text="Atrás"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

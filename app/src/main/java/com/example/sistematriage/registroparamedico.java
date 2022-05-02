@@ -53,7 +53,7 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
     Button btnRegistrar;
     Bitmap bitmap;
 
-    String UPLOAD_URL ="http://192.168.0.111/sistematriage/registro.php";
+    String UPLOAD_URL ="http://192.168.0.106/sistematriage/registro.php";
 
     private static final int REQUEST_PERMISSION_CAMERA = 101;
     private static final int REQUEST_IMAGE_CAMERA = 101;

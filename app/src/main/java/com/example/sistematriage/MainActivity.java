@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         estado = findViewById(R.id.tvSeleccion);
         spinner1 = (Spinner) findViewById(R.id.idSpinner);
 
-        String [] opciones = {"Doctor","Paramedico"};
+        String [] opciones = {"Doctor","Bombero"};
 
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,opciones);
         spinner1.setAdapter(adapter);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         String seleccion = spinner1.getSelectedItem().toString();
         if(seleccion.equals("Doctor")){
             confirmarLogeo();
-        }else if(seleccion.equals("Paramedico")){
+        }else if(seleccion.equals("Bombero")){
             confirmarLogeo2();
         }
     }
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean ok = jsonObject.getBoolean("success");
 
                         if (ok == true) {
-                            Intent intent = new Intent(MainActivity.this, Principal.class);
+                            Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
                             startActivity(intent);
                             limpiarCampo();
                         } else {
