@@ -59,12 +59,37 @@ public class ListaHeridos extends AppCompatActivity {
     TextView NoPaciente;
     String stringNoPaciente;
 
+    ArrayList<String> filtros;
+    boolean filtroColor;
+    String cadenaFiltros;
+
+    TextView tvTotal, tvRojo, tvAmarillo, tvVerde, tvNegro;
+
+    public int t = 0, r = 0, a = 0, v = 0, n = 0;
+
+    String total;
+    String rojo;
+    String amarillo;
+    String verde;
+    String negro;
+
+
     private RecyclerView.LayoutManager IManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
+
+        tvTotal = (TextView) findViewById(R.id.tvTotal);
+        tvRojo = (TextView) findViewById(R.id.tvTRojos);
+        tvAmarillo = (TextView) findViewById(R.id.tvTAmarillos);
+        tvVerde = (TextView) findViewById(R.id.tvTVerdes);
+        tvNegro = (TextView) findViewById(R.id.tvTNegros);
+
+        filtroColor = false;
+        cadenaFiltros = "";
+        filtros = new ArrayList<>();
 
         listaHeridos = new ArrayList<>();
         listaHeridosBackup = new ArrayList<>();
@@ -105,6 +130,9 @@ public class ListaHeridos extends AppCompatActivity {
         });
 
         webService();
+
+
+
     }
 
     private void webService() {
@@ -112,7 +140,7 @@ public class ListaHeridos extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        String url = "http://192.168.0.10/bd/ConsultarLista.php?";
+        String url = "http://192.168.0.106/sistemaTriage/ConsultarLista.php?";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -137,7 +165,37 @@ public class ListaHeridos extends AppCompatActivity {
                         herido.setDato(jsonObject.optString("Foto"));
                         listaHeridos.add(herido);
                         listaHeridosBackup.add(herido);
+
+                        switch (herido.getColor()){
+                            case "Rojo":
+                                r++;
+                                break;
+                            case "Amarillo":
+                                a++;
+                                break;
+                            case "Verde":
+                                v++;
+                                break;
+                            case "Negro":
+                                n++;
+                                break;
+                        }
+
+                        t++;
+
                     }
+
+                    total = "T: " + t;
+                    rojo = "R: " + r;
+                    amarillo = "A: " + a;
+                    verde = "V: " + v;
+                    negro = "N: " + n;
+
+                    tvTotal.setText(total);
+                    tvRojo.setText(rojo);
+                    tvAmarillo.setText(amarillo);
+                    tvVerde.setText(verde);
+                    tvNegro.setText(negro);
 
 
                     adapter.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +238,12 @@ public class ListaHeridos extends AppCompatActivity {
         finish();
     }
 
+    public void ANuevoPaciente(View view){
+        Intent Paciente = new Intent(this,RegistrarPaciente.class);
+        startActivity(Paciente);
+        finish();
+    }
+
     public static Bitmap loadBitmapFrmView(View v, int width, int height) {
         Bitmap bmpImg = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(bmpImg);
@@ -216,5 +280,52 @@ public class ListaHeridos extends AppCompatActivity {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+    public void QuitarFiltro(){
+        adapter.Filtrar(listaHeridosBackup);
+        filtros.clear();
+        filtroColor = false;
+        cadenaFiltros = "";
+    }
+
+    public void Filtrar(String texto){
+        ArrayList<herido> FiltrarLista = new ArrayList<>();
+
+        for(herido Herido : listaHeridos) {
+            if(Herido.getColor().toLowerCase().contains(texto.toLowerCase())){
+                FiltrarLista.add(Herido);
+            }
+        }
+        adapter.Filtrar(FiltrarLista);
+    }
+
+    public void FiltrarRojo(View view)
+    {
+        QuitarFiltro();
+        Filtrar("Rojo");
+    }
+
+    public void FiltrarAmarillo(View view)
+    {
+        QuitarFiltro();
+        Filtrar("Amarillo");
+    }
+
+    public void FiltrarVerde(View view)
+    {
+        QuitarFiltro();
+        Filtrar("Verde");
+    }
+
+    public void FiltrarNegro(View view)
+    {
+        QuitarFiltro();
+        Filtrar("Negro");
+    }
+
+    public void SinFiltro(View view)
+    {
+        QuitarFiltro();
     }
 }
