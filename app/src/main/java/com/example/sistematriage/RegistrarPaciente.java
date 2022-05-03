@@ -29,6 +29,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +43,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,6 +54,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
+
 
     EditText ubi, color, usuario, estado;
     Button btnGuardar, btnCargar;
@@ -70,6 +73,8 @@ public class RegistrarPaciente extends AppCompatActivity {
     StringRequest stringRequest;
     ProgressDialog progress;
 
+    BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,34 @@ public class RegistrarPaciente extends AppCompatActivity {
 
         btnGuardar = ((Button)findViewById(R.id.btnGuardar));
         btnCargar = ((Button)findViewById(R.id.btnCargar));
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setSelectedItemId(R.id.registrarpaciente);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.listaheridos:
+                        startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.registrarpaciente:
+
+                        return true;
+
+                    case R.id.registroparamedico:
+                        startActivity(new Intent(getApplicationContext(),registroparamedico.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                }
+                return false;
+            }
+        });
+
 
         btnCargar.setOnClickListener(new View.OnClickListener() {
             @Override

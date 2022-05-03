@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,8 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
     Bitmap bitmap;
 
     String UPLOAD_URL ="http://192.168.0.111/sistematriage/registro.php";
+
+    BottomNavigationView bottomNavigationView;
 
     private static final int REQUEST_PERMISSION_CAMERA = 101;
     private static final int REQUEST_IMAGE_CAMERA = 101;
@@ -75,7 +79,38 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
         etContra = findViewById(R.id.etContra);
         etConfirmar = findViewById(R.id.etConfirmar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setSelectedItemId(R.id.registroparamedico);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.listaheridos:
+                        startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.registrarpaciente:
+                        startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.registroparamedico:
+
+                        return true;
+
+                }
+                return false;
+            }
+        });
+
         opencamara.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

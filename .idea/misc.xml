@@ -5,12 +5,17 @@
       <map>
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_add_location_alt_24.xml" value="0.2421875" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_content_paste_search_24.xml" value="0.2421875" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2421875" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_person_add_alt_1_24.xml" value="0.2421875" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_photo_24.xml" value="0.2703125" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.2703125" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_baseline_trip_origin_24.xml" value="0.2703125" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/screen.xml" value="0.2703125" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/drawable/selector.xml" value="0.2421875" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/activity_lista_heridos.xml" value="0.22604166666666667" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/activity_pantalla_inicio.xml" value="0.21331521739130435" />
@@ -19,6 +24,7 @@
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/activity_registrar_paciente.xml" value="0.1875" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/activity_registroparamedico.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/layout/herido_card.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/menu/bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/josel/Desktop/Android Studio/sistemaTriage/app/src/main/res/xml/provider_paths.xml" value="0.22604166666666667" />
       </map>
     </option>

@@ -1,5 +1,6 @@
 package com.example.sistematriage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +40,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListaHeridos extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     HeridoAdapter adapter;
 
@@ -71,6 +76,33 @@ public class ListaHeridos extends AppCompatActivity {
 
         request1= Volley.newRequestQueue(this);
         adapter=new HeridoAdapter(listaHeridos);
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.listaheridos:
+
+                        return true;
+
+                    case R.id.registrarpaciente:
+                        startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.registroparamedico:
+                        startActivity(new Intent(getApplicationContext(),registroparamedico.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                }
+                return false;
+            }
+        });
 
         webService();
     }
