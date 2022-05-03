@@ -111,7 +111,6 @@ public class ListaHeridos extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.listaheridos:
-
                         return true;
 
                     case R.id.registrarpaciente:
@@ -119,8 +118,13 @@ public class ListaHeridos extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
 
-                    case R.id.registroparamedico:
-                        startActivity(new Intent(getApplicationContext(),registroparamedico.class));
+                    case R.id.mapa:
+                        startActivity(new Intent(getApplicationContext(),Mapa.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.historial:
+                        startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
                         overridePendingTransition(0,0);
                         return true;
 

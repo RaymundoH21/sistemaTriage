@@ -80,33 +80,7 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
         etConfirmar = findViewById(R.id.etConfirmar);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
-        bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setSelectedItemId(R.id.registroparamedico);
 
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId())
-                {
-                    case R.id.listaheridos:
-                        startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
-                    case R.id.registrarpaciente:
-                        startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
-                        overridePendingTransition(0,0);
-                        return true;
-
-                    case R.id.registroparamedico:
-
-                        return true;
-
-                }
-                return false;
-            }
-        });
 
         opencamara.setOnClickListener(new View.OnClickListener() {
 

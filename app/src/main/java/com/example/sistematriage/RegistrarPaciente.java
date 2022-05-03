@@ -29,6 +29,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +43,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -70,6 +72,8 @@ public class RegistrarPaciente extends AppCompatActivity {
     StringRequest stringRequest;
     ProgressDialog progress;
 
+    BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,6 @@ public class RegistrarPaciente extends AppCompatActivity {
 
         request = Volley.newRequestQueue(this);
         ubi = ((EditText)findViewById(R.id.etUbicacion));
-        color = ((EditText)findViewById(R.id.etColor));
 
         IV = (ImageView) findViewById(R.id.foto);
 
@@ -92,6 +95,37 @@ public class RegistrarPaciente extends AppCompatActivity {
                 onclick();
 
 
+            }
+        });
+
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.listaheridos:
+                        startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.registrarpaciente:
+                        return true;
+
+                    case R.id.mapa:
+                        startActivity(new Intent(getApplicationContext(),Mapa.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                    case R.id.historial:
+                        startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
+                }
+                return false;
             }
         });
 
@@ -430,6 +464,12 @@ public class RegistrarPaciente extends AppCompatActivity {
         });
         dialogo.show();
 
+    }
+
+    public void AListaHeridos (View view){
+        Intent regr = new Intent(RegistrarPaciente.this,ListaHeridos.class);
+        startActivity(regr);
+        finish();
     }
 
 }

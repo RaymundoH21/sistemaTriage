@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean ok = jsonObject.getBoolean("success");
 
                         if (ok == true) {
-                            Intent intent = new Intent(MainActivity.this, Principal.class);
+                            Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
                             startActivity(intent);
                             limpiarCampo();
                         } else {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         if (ok == true) {
-                            Intent intent = new Intent(MainActivity.this, Principal.class);
+                            Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
                             startActivity(intent);
                             limpiarCampo();
                         } else {
