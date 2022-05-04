@@ -6,72 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".RegistrarPaciente">
 
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="413dp"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:orientation="vertical"
-        android:layout_marginTop="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintTop_toBottomOf="@+id/foto"
+        app:layout_constraintVertical_bias="1.0">
 
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/etUbicacion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="vertical">
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:hint="Ubicación"
+                android:inputType="text"
+                android:textColorHint="#B47BA2A8" />
 
-                <EditText
-                    android:id="@+id/etUbicacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:hint="Ubicación"
-                    android:inputType="text"
-                    android:textColorHint="#B47BA2A8" />
-
-            </LinearLayout>
+        </LinearLayout>
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="50dp">
 
             <RadioButton
                 android:id="@+id/rbNegro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Negro"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Negro" />
 
             <RadioButton
                 android:id="@+id/rbRojo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rojo"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Rojo" />
 
             <RadioButton
                 android:id="@+id/rbAmarillo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amarillo"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Amarillo" />
 
             <RadioButton
                 android:id="@+id/rbVerde"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Verde"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Verde" />
 
         </RadioGroup>
 
@@ -79,9 +82,10 @@
             android:id="@+id/btnGuardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:onClick="Guardar"
             android:text="Guardar"
-            android:layout_gravity="center_horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,13 +93,6 @@
 
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="276dp" />
 
     <ImageView
         android:id="@+id/foto"
@@ -107,35 +104,23 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="104dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413"
         app:srcCompat="@drawable/ic_launcher_background" />
-
-
-    <Button
-        android:id="@+id/btnCargar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tomar Fotografía"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foto" />
 
     <Button
         android:id="@+id/btnRegresar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:onClick="AListaHeridos"
         android:text="Atrás"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,7 +128,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="660dp"
         tools:context=".RegistrarPaciente">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

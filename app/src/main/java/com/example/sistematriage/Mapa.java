@@ -19,7 +19,7 @@ public class Mapa extends AppCompatActivity {
         setContentView(R.layout.activity_mapa);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+        bottomNavigationView.setSelectedItemId(R.id.mapa);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

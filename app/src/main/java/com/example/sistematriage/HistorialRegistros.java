@@ -19,7 +19,7 @@ public class HistorialRegistros extends AppCompatActivity {
         setContentView(R.layout.activity_historial_registros);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+        bottomNavigationView.setSelectedItemId(R.id.historial);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

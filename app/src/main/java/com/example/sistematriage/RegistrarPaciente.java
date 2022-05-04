@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -56,7 +57,7 @@ import java.util.Map;
 public class RegistrarPaciente extends AppCompatActivity {
 
     EditText ubi, color, usuario, estado;
-    Button btnGuardar, btnCargar;
+    Button btnGuardar;
 
     private final String CARPETA_RAIZ="misImagenesPrueba/";
     private final String RUTA_IMAGEN=CARPETA_RAIZ+"misFotos";
@@ -74,6 +75,8 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
 
+    RadioButton rbRojo, rbAmarillo, rbVerde, rbNegro;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +89,8 @@ public class RegistrarPaciente extends AppCompatActivity {
         IV = (ImageView) findViewById(R.id.foto);
 
         btnGuardar = ((Button)findViewById(R.id.btnGuardar));
-        btnCargar = ((Button)findViewById(R.id.btnCargar));
 
-        btnCargar.setOnClickListener(new View.OnClickListener() {
+        IV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -99,7 +101,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+        bottomNavigationView.setSelectedItemId(R.id.registrarpaciente);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -129,10 +131,15 @@ public class RegistrarPaciente extends AppCompatActivity {
             }
         });
 
+        rbNegro = (RadioButton) findViewById(R.id.rbNegro);
+        rbRojo = (RadioButton) findViewById(R.id.rbRojo);
+        rbAmarillo = (RadioButton) findViewById(R.id.rbAmarillo);
+        rbVerde = (RadioButton) findViewById(R.id.rbVerde);
+
         if(validaPermisos()){
-            btnCargar.setEnabled(true);
+            IV.setEnabled(true);
         }else{
-            btnCargar.setEnabled(false);
+            IV.setEnabled(false);
         }
     }
 
@@ -163,7 +170,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         if(requestCode==100){
             if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
                     && grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                btnCargar.setEnabled(true);
+                IV.setEnabled(true);
             }else{
                 solicitarPermisosManual();
             }
@@ -354,7 +361,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         progress.setMessage("Cargando...");
         progress.show();
 
-        String url="http://192.168.0.12/bd/RegistrarPaciente.php";
+        String url="http://192.168.0.106/sistemaTriage/RegistrarPaciente.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -362,7 +369,6 @@ public class RegistrarPaciente extends AppCompatActivity {
 
                 ///if (response.trim().equalsIgnoreCase("Registra")) {
                 ubi.setText("");
-                color.setText("");
 
 
                 IV.setImageResource(R.drawable.ic_launcher_background);
@@ -380,7 +386,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RegistrarPaciente.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(RegistrarPaciente.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
             }
         }
         )
@@ -389,7 +395,7 @@ public class RegistrarPaciente extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 String Ubicacion = ubi.getText().toString();
-                String Color = color.getText().toString();
+                String Color = obtenerColor();
                 String Usuario = "Guillermo Vázquez";
                 String Estado = "En espera";
 
@@ -470,6 +476,29 @@ public class RegistrarPaciente extends AppCompatActivity {
         Intent regr = new Intent(RegistrarPaciente.this,ListaHeridos.class);
         startActivity(regr);
         finish();
+    }
+
+    public String obtenerColor() {
+
+        if (rbNegro.isChecked()==true){
+            return "Negro";
+        }
+
+        else if (rbRojo.isChecked()==true){
+            return "Rojo";
+        }
+
+        else if (rbAmarillo.isChecked()==true){
+            return "Amarillo";
+        }
+
+        else if (rbVerde.isChecked()==true){
+            return "Verde";
+        }
+
+        else{
+            return "";
+        }
     }
 
 }
