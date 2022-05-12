@@ -6,48 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".PerfilHerido">
 
+
     <ImageView
         android:id="@+id/ImgVFoto"
         android:layout_width="160dp"
         android:layout_height="160dp"
+        android:layout_marginTop="68dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="405dp"
-        android:layout_height="466dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintTop_toBottomOf="@+id/ivEFoto"
+        app:layout_constraintVertical_bias="0.241">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="401dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="7dp">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="340dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView12"
@@ -69,35 +70,64 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ubicación: "
-                        android:textColor="#009688"
-                        android:textSize="18sp" />
+                    <ImageView
+                        android:id="@+id/ivEColor"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:onClick="editarColor"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/btn_edit"
+                        tools:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/txtUbicacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ubicación:"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                    </ImageView>
 
                 </LinearLayout>
 
 
 
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación: "
+                    android:textColor="#009688"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtUbicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubicación:"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="340dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView6"
@@ -119,39 +149,79 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Evaluación hecha por: "
-                        android:textColor="#009688"
-                        android:textSize="18sp" />
+                    <ImageView
+                        android:id="@+id/ivEEstado"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:onClick="editarEstado"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/btn_edit"
+                        tools:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/txtUsuario"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Evaluación:"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                    </ImageView>
 
                 </LinearLayout>
 
+
+
             </LinearLayout>
-        </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Evaluación hecha por: "
+                    android:textColor="#009688"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Evaluación:"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Última actualización: "
+                    android:textColor="#009688"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Actualización:"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
 
     <ImageView
         android:id="@+id/flechaAtras"
@@ -166,6 +236,69 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.04"
         app:srcCompat="@drawable/fab_bg_normal" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="#127BCB"
+        app:fab_colorPressed="#094886"
+        app:fab_icon="@drawable/pencil"
+        app:fab_size="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.975" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSalEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="#FF5757"
+        app:fab_colorPressed="#B50E13"
+        app:fab_icon="@drawable/equis"
+        app:fab_size="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.975"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fab_colorNormal="#127BCB"
+        app:fab_colorPressed="#094886"
+        app:fab_icon="@drawable/savedisk"
+        app:fab_size="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.863"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivEFoto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:onClick="tomarFotografia"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImgVFoto"
+        app:srcCompat="@drawable/btn_camara" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

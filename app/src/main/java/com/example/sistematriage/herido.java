@@ -14,6 +14,7 @@ public class herido {
     private String dato;
     private Bitmap imagen;
     private String rutaImagen;
+    private String fecha;
 
 
     public Bitmap getImagen() {
@@ -70,6 +71,11 @@ public class herido {
 
     public String getRutaImagen() { return rutaImagen; }
     public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+
+    public String getFecha() {
+        return fecha;
+    }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
 }
 
