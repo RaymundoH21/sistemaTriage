@@ -50,7 +50,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,6 +78,8 @@ public class RegistrarPaciente extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
     RadioButton rbRojo, rbAmarillo, rbVerde, rbNegro;
+
+    DateFormat df = new SimpleDateFormat("dd-MM-yyyy, HH:mm");
 
 
     @Override
@@ -375,8 +379,8 @@ public class RegistrarPaciente extends AppCompatActivity {
 
                 Toast.makeText(RegistrarPaciente.this, response, Toast.LENGTH_LONG).show();
                 showToast("Se ha Registrado Exitosamente");
-                //Intent nuevoform = new Intent(RegistrarPaciente.this, listaEspera.class);
-                //startActivity(nuevoform);
+                Intent nuevoform = new Intent(RegistrarPaciente.this, ListaHeridos.class);
+                startActivity(nuevoform);
                 finish();
                 /*}else{
                     showToast("No se puede registrar");
@@ -394,10 +398,12 @@ public class RegistrarPaciente extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
+
                 String Ubicacion = ubi.getText().toString();
                 String Color = obtenerColor();
                 String Usuario = "Guillermo Vázquez";
                 String Estado = "En espera";
+                String Fecha = df.format(Calendar.getInstance().getTime());
 
 
                 String imagen = convertirImgString(bitmap);
@@ -408,6 +414,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                 parametros.put("Color",Color);
                 parametros.put("Usuario",Usuario);
                 parametros.put("Estado",Estado);
+                parametros.put("Fecha", Fecha);
                 parametros.put("imagen",imagen);
 
                 return parametros;

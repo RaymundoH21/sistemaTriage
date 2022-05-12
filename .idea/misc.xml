@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/ic_baseline_add_location_alt_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/ic_baseline_health_and_safety_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.2703125" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_historial_registros.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_lista_heridos.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_mapa.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_perfil_herido.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_perfil_herido.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_principal.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registrar_paciente.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registroparamedico.xml" value="0.25416666666666665" />

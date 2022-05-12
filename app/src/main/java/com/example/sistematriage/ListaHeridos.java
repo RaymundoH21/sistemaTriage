@@ -41,6 +41,8 @@ import java.util.ArrayList;
 
 public class ListaHeridos extends AppCompatActivity {
 
+    ProgressDialog pDialog;
+
     BottomNavigationView bottomNavigationView;
 
     HeridoAdapter adapter;
@@ -140,9 +142,10 @@ public class ListaHeridos extends AppCompatActivity {
     }
 
     private void webService() {
-        //progress = new ProgressDialog(this);
-        //progress.setMessage("Cargando...");
-        //progress.show();
+
+        progress = new ProgressDialog(this);
+        progress.setMessage("Cargando...");
+        progress.show();
 
         String url = "http://192.168.0.106/sistemaTriage/ConsultarLista.php?";
 
@@ -150,6 +153,7 @@ public class ListaHeridos extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 //showToast("Consulta Exitosa");
+                progress.hide();
                 herido herido=null;
 
                 JSONArray json=response.optJSONArray("paciente");
@@ -218,7 +222,7 @@ public class ListaHeridos extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(ListaHeridos.this, "No se ha podido establecer conexión con el servidor" +" "+response, Toast.LENGTH_LONG).show();
-                    //progress.hide();
+                    progress.hide();
                 }
 
             }
@@ -226,7 +230,7 @@ public class ListaHeridos extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(ListaHeridos.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                //progress.hide();
+                progress.hide();
             }
         });
 
