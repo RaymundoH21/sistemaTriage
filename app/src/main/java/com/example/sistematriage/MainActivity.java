@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         spinner1.setAdapter(adapter);
 
     }
+
     public void mostrar(View view){
         String seleccion = spinner1.getSelectedItem().toString();
         if(seleccion.equals("Doctor")){
@@ -92,9 +94,12 @@ public class MainActivity extends AppCompatActivity {
                         boolean ok = jsonObject.getBoolean("success");
 
                         if (ok == true) {
+                            String nombre = jsonObject.getString("nombre");
                             Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
+                            intent.putExtra("nombre",nombre);
                             startActivity(intent);
                             limpiarCampo();
+                            finish();
                         } else {
                             AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
                             alerta.setMessage("Fallo en el Logeo")
@@ -138,9 +143,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                         if (ok == true) {
+                            String nombre = jsonObject.getString("nombre");
                             Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
+                            intent.putExtra("nombre",nombre);
                             startActivity(intent);
                             limpiarCampo();
+                            finish();
+
                         } else {
                             AlertDialog.Builder alerta = new AlertDialog.Builder(MainActivity.this);
                             alerta.setMessage("Fallo en el Logeo")

@@ -1,13 +1,20 @@
 package com.example.sistematriage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +25,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
@@ -40,6 +50,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListaHeridos extends AppCompatActivity {
+
+    String NombreUsuario;
+
+    private SharedPreferences prefs;
+    TextView usuario;
+    Toolbar toolbar;
 
     BottomNavigationView bottomNavigationView;
 
@@ -81,6 +97,16 @@ public class ListaHeridos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        usuario = (TextView) findViewById(R.id.NombresUsuario);
+
+        Intent intent = getIntent();
+        String nombre = intent.getStringExtra("nombre");
+
+        usuario.setText(nombre);
+
         tvTotal = (TextView) findViewById(R.id.tvTotal);
         tvRojo = (TextView) findViewById(R.id.tvTRojos);
         tvAmarillo = (TextView) findViewById(R.id.tvTAmarillos);
@@ -102,19 +128,25 @@ public class ListaHeridos extends AppCompatActivity {
         request1= Volley.newRequestQueue(this);
         adapter=new HeridoAdapter(listaHeridos);
 
+        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.listaheridos);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 switch (item.getItemId())
                 {
                     case R.id.listaheridos:
                         return true;
 
                     case R.id.registrarpaciente:
-                        startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
+                        //startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
+                        Intent intent = new Intent(ListaHeridos.this,RegistrarPaciente.class);
+                        intent.putExtra("nombre",nombre);
+                        startActivity(intent);
                         overridePendingTransition(0,0);
                         return true;
 
@@ -135,8 +167,64 @@ public class ListaHeridos extends AppCompatActivity {
 
         webService();
 
+    }
 
 
+    //Controlar la pulsacion del boton Atras
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==event.KEYCODE_BACK){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("¿Desea salir de StrooperS?")
+                    .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent= new Intent(Intent.ACTION_MAIN);
+                            intent.addCategory(Intent.CATEGORY_HOME);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            builder.show();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu2,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.item2:
+                this.logout();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("UsuarioJson");
+        editor.apply();
+        this.finish();
+        this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+         */
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void webService() {
@@ -144,7 +232,7 @@ public class ListaHeridos extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        String url = "http://192.168.0.106/sistemaTriage/ConsultarLista.php?";
+        String url = "http://192.168.0.17/bd/ConsultarListas.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

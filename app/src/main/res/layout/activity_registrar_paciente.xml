@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".RegistrarPaciente">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -116,7 +125,7 @@
         android:id="@+id/btnRegresar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="60dp"
         android:onClick="AListaHeridos"
         android:text="Atrás"
         app:layout_constraintEnd_toEndOf="parent"

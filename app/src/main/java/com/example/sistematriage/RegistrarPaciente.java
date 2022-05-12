@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -14,6 +15,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,12 +31,15 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -55,6 +60,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
+
+    private SharedPreferences prefs;
+    TextView usuario2;
+    Toolbar toolbar;
 
     EditText ubi, color, usuario, estado;
     Button btnGuardar;
@@ -83,6 +92,16 @@ public class RegistrarPaciente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_paciente);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        usuario2 = (TextView) findViewById(R.id.NombresUsuario);
+
+        Intent intent = getIntent();
+        String nombre = intent.getStringExtra("nombre");
+
+        usuario2.setText(nombre);
+
         request = Volley.newRequestQueue(this);
         ubi = ((EditText)findViewById(R.id.etUbicacion));
 
@@ -109,7 +128,10 @@ public class RegistrarPaciente extends AppCompatActivity {
                 switch (item.getItemId())
                 {
                     case R.id.listaheridos:
-                        startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
+                        //startActivity(new Intent(getApplicationContext(),ListaHeridos.class));
+                        Intent intent = new Intent(RegistrarPaciente.this,ListaHeridos.class);
+                        intent.putExtra("nombre",nombre);
+                        startActivity(intent);
                         overridePendingTransition(0,0);
                         return true;
 
@@ -141,6 +163,37 @@ public class RegistrarPaciente extends AppCompatActivity {
         }else{
             IV.setEnabled(false);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu2,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.item2:
+                this.logout();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("UsuarioJson");
+        editor.apply();
+        this.finish();
+        this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+         */
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private boolean validaPermisos() {
@@ -361,7 +414,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         progress.setMessage("Cargando...");
         progress.show();
 
-        String url="http://192.168.0.106/sistemaTriage/RegistrarPaciente.php";
+        String url="http://192.168.0.17/bd/RegistrarPacientes.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -375,8 +428,8 @@ public class RegistrarPaciente extends AppCompatActivity {
 
                 Toast.makeText(RegistrarPaciente.this, response, Toast.LENGTH_LONG).show();
                 showToast("Se ha Registrado Exitosamente");
-                //Intent nuevoform = new Intent(RegistrarPaciente.this, listaEspera.class);
-                //startActivity(nuevoform);
+                Intent nuevoform = new Intent(RegistrarPaciente.this, ListaHeridos.class);
+                startActivity(nuevoform);
                 finish();
                 /*}else{
                     showToast("No se puede registrar");

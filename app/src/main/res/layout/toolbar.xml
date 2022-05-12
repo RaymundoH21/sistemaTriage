@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/green_light"
+    app:title="  "
+    tools:ignore="NamespaceTypo">
+    <ImageView
+        android:src="@drawable/ic_baseline_person_add_alt_1_24"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/NombresUsuario"
+        android:layout_gravity="right"
+        android:layout_width="80dp"
+        android:layout_height="30dp"/>
+
+</androidx.appcompat.widget.Toolbar>

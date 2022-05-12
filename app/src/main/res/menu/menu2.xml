@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <item android:title="Mas"
+        android:id="@+id/btnMore"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_person_24">
+    <menu>
+        <item
+            android:title="Cerrar Sesion"
+            android:id="@+id/item2"
+            app:showAsAction="always"
+            android:icon="@drawable/ic_baseline_cancel_24" />
+
+    </menu>
+
+
+        </item>
+
+</menu>
