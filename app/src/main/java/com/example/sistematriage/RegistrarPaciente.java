@@ -418,7 +418,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         progress.setMessage("Cargando...");
         progress.show();
 
-        String url="http://192.168.0.17/bd/RegistrarPacientes.php";
+        String url="http://192.168.0.106/sistematriage/RegistrarPacientes.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

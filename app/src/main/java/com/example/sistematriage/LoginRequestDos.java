@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginRequestDos extends StringRequest {
-    private static final String LOGIN_REQUEST_URLDOS="http://192.168.0.17/bd/Loginparamedico.php";
+    private static final String LOGIN_REQUEST_URLDOS="http://192.168.0.106/sistematriage/Loginparamedico.php";
 
     private Map<String,String> para;
     public  LoginRequestDos(String num, String con, Response.Listener<String> listenere ){

@@ -41,6 +41,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -92,10 +93,14 @@ public class ListaHeridos extends AppCompatActivity {
 
     private RecyclerView.LayoutManager IManager;
 
+    private ShimmerFrameLayout shimmerFrameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
+
+        shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -169,6 +174,17 @@ public class ListaHeridos extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        shimmerFrameLayout.startShimmer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        shimmerFrameLayout.stopShimmer();
+    }
 
     //Controlar la pulsacion del boton Atras
     @Override
@@ -232,12 +248,14 @@ public class ListaHeridos extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        String url = "http://192.168.0.17/bd/ConsultarListas.php";
+        String url = "http://192.168.0.106/sistematriage/ConsultarLista.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //showToast("Consulta Exitosa");
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
                 herido herido=null;
 
                 JSONArray json=response.optJSONArray("paciente");

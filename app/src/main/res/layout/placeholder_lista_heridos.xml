@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:id="@+id/herido_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="3dp"
-    android:background="@android:color/transparent"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardCornerRadius="4dp"
-    card_view:cardElevation="0dp">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,8 +31,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_foreground"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            android:background="@drawable/circle" />
 
         <LinearLayout
             android:layout_width="280dp"
@@ -67,37 +60,38 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txtUbicacion"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
                     android:layout_weight=".8"
-                    android:text="Ubicación: "
                     android:textColor="#000000"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:background="#dddddd" />
 
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="20dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txtColor"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:layout_weight=".8"
-                    android:text="Color: "
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:background="#dddddd"/>
             </LinearLayout>
 
 
@@ -115,11 +109,10 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="#000000"
+            android:background="#dddddd"
             android:scaleType="centerCrop" />
 
 
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>

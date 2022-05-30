@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -36,6 +38,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.sistematriage.dialogos.DialogoModificacionesFragment;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -47,6 +50,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,10 +87,25 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
 
     ProgressDialog pDialog;
 
+    String tempColor, tempEstado;
+
+    DateFormat df = new SimpleDateFormat("dd-MM-yyyy, HH:mm");
+
+    /*
+
+
+
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_herido);
+/*
+
+
+
+ */
 
         imagen = (ImageView) findViewById(R.id.ImgVFoto);
         ivEFoto = (ImageView) findViewById(R.id.ivEFoto);
@@ -179,7 +199,8 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
         tvUsuario.setText(miUsuario.getUsuario());
         tvFecha.setText(miUsuario.getFecha());
 
-
+        tempColor = tvColor.getText().toString();
+        tempEstado = tvEstado.getText().toString();
 
 
         if(miUsuario.getImagen()!=null) {
@@ -202,7 +223,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
         tvFecha = (TextView) findViewById(R.id.tvFecha);
         imagen = (ImageView) findViewById(R.id.ImgVFoto);
 
-        String url = "http://192.168.0.17/bd/ConsultarPacientes.php?NoPaciente="+NoPaciente;
+        String url = "http://192.168.0.106/sistematriage/ConsultarPaciente.php?NoPaciente="+NoPaciente;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
         request.add(jsonObjectRequest);
 
@@ -255,7 +276,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
 
     public void editarEstado(View view) {
 
-        final CharSequence[] opciones={"En espera","Trasladando","Hospital","SEMEFO","Alta","Cancelar"};
+        final CharSequence[] opciones={"En espera","Trasladando","Hospital","SEMEFO","Alta médica","Cancelar"};
         final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(PerfilHerido.this);
         alertOpciones.setTitle("Selecciona el estado");
         alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
@@ -487,6 +508,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                webServiceAddModificacion();
                 webServiceActualizar();
             }
         });
@@ -502,24 +524,20 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
     }
 
     private void webServiceActualizar() {
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Cargando...");
-        pDialog.show();
 
         String url;
 
 
         if (cambioFoto) {
 
-            url = "http://192.168.0.106/sistemaTriage/ActualizarHerido.php?";
+            url = "http://192.168.0.106/sistematriage/ActualizarHerido.php?";
 
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    pDialog.hide();
 
 
-                    Toast.makeText(PerfilHerido.this, "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PerfilHerido.this, "Se ha Actualizado con éxito", Toast.LENGTH_SHORT).show();
                     Intent APerfil = new Intent(PerfilHerido.this,PerfilHerido.class);
                     APerfil.putExtra("NoPaciente",NoPaciente);
                     startActivity(APerfil);
@@ -530,7 +548,6 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(PerfilHerido.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                    pDialog.hide();
                 }
             }) {
                 @Override
@@ -538,7 +555,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
                     String Pac = NoPaciente;
                     String Color = tvColor.getText().toString();
                     String Estado = tvEstado.getText().toString();
-                    String Fecha = DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
+                    String Fecha = df.format(Calendar.getInstance().getTime());
                     String imagen = convertirImgString(bitmap);
 
                     Map<String, String> parametros = new HashMap<>();
@@ -560,7 +577,6 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    pDialog.hide();
 
 
                     Toast.makeText(PerfilHerido.this, "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();
@@ -574,7 +590,6 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(PerfilHerido.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
-                    pDialog.hide();
                 }
             }) {
                 @Override
@@ -582,7 +597,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
                     String Pac = NoPaciente;
                     String Color = tvColor.getText().toString();
                     String Estado = tvEstado.getText().toString();
-                    String Fecha = DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
+                    String Fecha = df.format(Calendar.getInstance().getTime());
 
                     Map<String, String> parametros = new HashMap<>();
                     parametros.put("NoPaciente", Pac);
@@ -596,5 +611,54 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
             VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
         }
 
+    }
+
+    private void webServiceAddModificacion() {
+
+        String url;
+
+            url = "http://192.168.0.106/sistematriage/HistorialModificacion.php?";
+
+            stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    //Toast.makeText(PerfilHerido.this, "Se ha Actualizado con éxito", Toast.LENGTH_SHORT).show();
+                    //Intent APerfil = new Intent(PerfilHerido.this,PerfilHerido.class);
+                    //APerfil.putExtra("NoPaciente",NoPaciente);
+                    //startActivity(APerfil);
+                    //finish();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(PerfilHerido.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    String Pac = NoPaciente;
+                    String Usuario = tvUsuario.getText().toString();
+                    String Color = tempColor;
+                    String Estado = tempEstado;
+                    String Fecha = tvFecha.getText().toString();
+
+                    Map<String, String> parametros = new HashMap<>();
+                    parametros.put("NoPaciente", Pac);
+                    parametros.put("Usuario", Usuario);
+                    parametros.put("Color", Color);
+                    parametros.put("Estado", Estado);
+                    parametros.put("Fecha", Fecha);
+                    return parametros;
+                }
+            };
+            //request.add(stringRequest);
+            VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
+    }
+
+    public void MostrarModificaciones(View view){
+        DialogoModificacionesFragment dialogoModificaciones = new DialogoModificacionesFragment(this, NoPaciente);
+        dialogoModificaciones.show(getSupportFragmentManager(),"DialogoModificaciones");
     }
 }
