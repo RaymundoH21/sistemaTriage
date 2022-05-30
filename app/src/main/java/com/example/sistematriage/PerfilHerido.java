@@ -160,7 +160,7 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
     public void onResponse(JSONObject response) {
         //showToast("Consulta Exitosa");
         miUsuario = new herido();
-        JSONArray json = response.optJSONArray("paciente");
+        JSONArray json = response.optJSONArray("paciente2");
         JSONObject jsonObject= null;
         try {
             jsonObject=json.getJSONObject(0);
@@ -502,16 +502,16 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
     }
 
     private void webServiceActualizar() {
-        pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Cargando...");
-        pDialog.show();
+        //pDialog = new ProgressDialog(this);
+       // pDialog.setMessage("Cargando...");
+        //pDialog.show();
 
         String url;
 
 
         if (cambioFoto) {
 
-            url = "http://192.168.0.106/sistemaTriage/ActualizarHerido.php?";
+            url = "http://192.168.0.17/bd/ActualizarHerido.php?";
 
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -555,12 +555,12 @@ public class PerfilHerido extends AppCompatActivity implements Response.Listener
 
         }else
         {
-            url = "http://192.168.0.106/sistemaTriage/ActualizarHeridoSinFoto.php?";
+            url = "http://192.168.0.17/bd/ActualizarHeridoSinFoto.php?";
 
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    pDialog.hide();
+                    //pDialog.hide();
 
 
                     Toast.makeText(PerfilHerido.this, "Se ha Actualizado con exito", Toast.LENGTH_SHORT).show();

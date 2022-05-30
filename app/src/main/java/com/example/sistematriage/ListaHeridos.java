@@ -151,12 +151,18 @@ public class ListaHeridos extends AppCompatActivity {
                         return true;
 
                     case R.id.mapa:
-                        startActivity(new Intent(getApplicationContext(),Mapa.class));
+                        //startActivity(new Intent(getApplicationContext(),Mapa.class));
+                        Intent intent2 = new Intent(ListaHeridos.this,Mapa.class);
+                        intent2.putExtra("nombre",nombre);
+                        startActivity(intent2);
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.historial:
-                        startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
+                        //startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
+                        Intent intent3 = new Intent(ListaHeridos.this,HistorialRegistros.class);
+                        intent3.putExtra("nombre",nombre);
+                        startActivity(intent3);
                         overridePendingTransition(0,0);
                         return true;
 
