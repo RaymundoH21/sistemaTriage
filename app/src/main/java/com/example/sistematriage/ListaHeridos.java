@@ -5,9 +5,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.IntentCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
@@ -15,6 +20,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,11 +30,14 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Icon;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
@@ -77,12 +87,12 @@ public class ListaHeridos extends AppCompatActivity {
     String stringNoPaciente;
 
     ArrayList<String> filtros;
-    boolean filtroColor;
+    Boolean filtroColor;
     String cadenaFiltros;
 
     TextView tvTotal, tvRojo, tvAmarillo, tvVerde, tvNegro;
 
-    public int t = 0, r = 0, a = 0, v = 0, n = 0;
+    public Integer t = 0, r = 0, a = 0, v = 0, n = 0;
 
     String total;
     String rojo;
@@ -95,20 +105,36 @@ public class ListaHeridos extends AppCompatActivity {
 
     private ShimmerFrameLayout shimmerFrameLayout;
 
+    String nombre;
+
+    JSONObject jsonObject;
+    String url;
+    herido herido;
+    JSONArray json;
+    Boolean webserviceTerminado = false;
+    Intent Paciente;
+    String lista;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
 
+
+        getLocalizacion();
+
+        lista = "Espera";
         shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         usuario = (TextView) findViewById(R.id.NombresUsuario);
 
         Intent intent = getIntent();
-        String nombre = intent.getStringExtra("nombre");
+        nombre = intent.getStringExtra("nombre");
 
         usuario.setText(nombre);
 
@@ -137,48 +163,120 @@ public class ListaHeridos extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.listaheridos);
+        bottomNavigationView.setItemIconTintList(null);
+        //bottomNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-                switch (item.getItemId())
-                {
-                    case R.id.listaheridos:
-                        return true;
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                    case R.id.registrarpaciente:
-                        //startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
-                        Intent intent = new Intent(ListaHeridos.this,RegistrarPaciente.class);
-                        intent.putExtra("nombre",nombre);
-                        startActivity(intent);
-                        overridePendingTransition(0,0);
-                        return true;
 
-                    case R.id.mapa:
-                        //startActivity(new Intent(getApplicationContext(),Mapa.class));
-                        Intent intent2 = new Intent(ListaHeridos.this,Mapa.class);
-                        intent2.putExtra("nombre",nombre);
-                        startActivity(intent2);
-                        overridePendingTransition(0,0);
-                        return true;
+                    switch (item.getItemId())
+                    {
+                        case R.id.listaheridos:
+                            return true;
 
-                    case R.id.historial:
-                        //startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
-                        Intent intent3 = new Intent(ListaHeridos.this,HistorialRegistros.class);
-                        intent3.putExtra("nombre",nombre);
-                        startActivity(intent3);
-                        overridePendingTransition(0,0);
-                        return true;
+                        case R.id.registrarpaciente:
+                            //startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
+                            Intent intent = new Intent(ListaHeridos.this,RegistrarPaciente.class);
+                            intent.putExtra("nombre",nombre);
+                            startActivity(intent);
+                            /*startActivity(intent
+                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));*/
+                            overridePendingTransition(0,0);
+                            finish();
+                            //finish();
+                            return true;
 
+                        case R.id.mapa:
+                            //startActivity(new Intent(getApplicationContext(),Mapa.class));
+                            Intent intent2 = new Intent(ListaHeridos.this,MapaPrincipal.class);
+                            intent2.putExtra("nombre",nombre);
+                            startActivity(intent2);
+                            overridePendingTransition(0,0);
+                            finish();
+                            return true;
+
+                        case R.id.historial:
+                            //startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
+                            Intent intent3 = new Intent(ListaHeridos.this,HistorialRegistros.class);
+                            intent3.putExtra("nombre",nombre);
+                            startActivity(intent3);
+                            overridePendingTransition(0,0);
+                            finish();
+                            return true;
+
+                    }
+                    return false;
                 }
-                return false;
+            });
+
+        recyclerHeridos.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL) {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                // Do not draw the divider
             }
         });
 
         webService();
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //finish();
+        jsonObjectRequest.cancel();
+        json = null;
+        request = null;
+        jsonObjectRequest = null;
+        request1 = null;
+        jsonObjectRequest1 = null;
+        filtros = null;
+        progress = null;
+        adapter.setOnClickListener(null);
+        adapter = null;
+        usuario = null;
+        toolbar = null;
+        NoPaciente = null;
+        stringNoPaciente = null;
+        NombreUsuario = null;
+        bottomNavigationView = null;
+        cadenaFiltros = null;
+        tvTotal = null;
+        tvRojo = null;
+        tvAmarillo = null;
+        tvVerde = null;
+        tvNegro = null;
+        IManager = null;
+        total = null;
+        rojo = null;
+        amarillo = null;
+        verde = null;
+        negro = null;
+        shimmerFrameLayout = null;
+        nombre = null;
+        prefs = null;
+        filtroColor = null;
+        t = null;
+        r = null;
+        a = null;
+        v = null;
+        n = null;
+        jsonObject = null;
+        url = null;
+        herido = null;
+        recyclerHeridos = null;
+        listaHeridos = null;
+        listaHeridosBackup = null;
+        Paciente = null;
+        lista = null;
+        Runtime.getRuntime().gc();
+        //placePicutreimgView.setImageDrawable(null);
+
+    }
+
 
     @Override
     protected void onResume() {
@@ -197,7 +295,7 @@ public class ListaHeridos extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==event.KEYCODE_BACK){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("¿Desea salir de StrooperS?")
+            builder.setMessage("¿Desea salir de sistema triage?")
                     .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -247,89 +345,94 @@ public class ListaHeridos extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void webService() {
-        //progress = new ProgressDialog(this);
-        //progress.setMessage("Cargando...");
-        //progress.show();
 
-        String url = "http://192.168.0.106/sistematriage/ConsultarLista.php";
+        //String url = "http://192.168.1.12/sistematriage/ConsultarLista.php";
+        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarLista.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //showToast("Consulta Exitosa");
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                herido herido=null;
+                herido=null;
 
-                JSONArray json=response.optJSONArray("paciente");
+                json=response.optJSONArray("paciente");
 
                 try {
 
-                    for (int i=0;i<json.length();i++){
-                        herido = new herido();
-                        JSONObject jsonObject=null;
-                        jsonObject=json.getJSONObject(i);
+                        for (int i=0;i<json.length();i++){
+                            herido = new herido();
+                            jsonObject=null;
+                            jsonObject=json.getJSONObject(i);
 
-                        herido.setNoPaciente(jsonObject.optInt("NoPaciente"));
-                        herido.setUbicacion(jsonObject.optString("Ubicacion"));
-                        herido.setColor(jsonObject.optString("Color"));
-                        herido.setEstado(jsonObject.optString("Estado"));
-                        herido.setUsuario(jsonObject.optString("Usuario"));
-                        herido.setDato(jsonObject.optString("Foto"));
-                        listaHeridos.add(herido);
-                        listaHeridosBackup.add(herido);
+                            herido.setNoPaciente(jsonObject.optInt("NoPaciente"));
+                            herido.setUbicacion(jsonObject.optString("Ubicacion"));
+                            herido.setColor(jsonObject.optString("Color"));
+                            herido.setEstado(jsonObject.optString("Estado"));
+                            herido.setUsuario(jsonObject.optString("Usuario"));
+                            herido.setDato(jsonObject.optString("Foto"));
+                            herido.setLatitud(jsonObject.optDouble("Latitud"));
+                            herido.setLongitud(jsonObject.optDouble("Longitud"));
+                            herido.setAltitud(jsonObject.optDouble("Altitud"));
+                            listaHeridos.add(herido);
+                            listaHeridosBackup.add(herido);
 
-                        switch (herido.getColor()){
-                            case "Rojo":
-                                r++;
-                                break;
-                            case "Amarillo":
-                                a++;
-                                break;
-                            case "Verde":
-                                v++;
-                                break;
-                            case "Negro":
-                                n++;
-                                break;
+                            switch (herido.getColor()){
+                                case "Rojo":
+                                    r++;
+                                    break;
+                                case "Amarillo":
+                                    a++;
+                                    break;
+                                case "Verde":
+                                    v++;
+                                    break;
+                                case "Negro":
+                                    n++;
+                                    break;
+                            }
+
+                            t++;
+
                         }
 
-                        t++;
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        total = "T: " + t;
+                        rojo = "R: " + r;
+                        amarillo = "A: " + a;
+                        verde = "V: " + v;
+                        negro = "N: " + n;
 
-                    }
-
-                    total = "T: " + t;
-                    rojo = "R: " + r;
-                    amarillo = "A: " + a;
-                    verde = "V: " + v;
-                    negro = "N: " + n;
-
-                    tvTotal.setText(total);
-                    tvRojo.setText(rojo);
-                    tvAmarillo.setText(amarillo);
-                    tvVerde.setText(verde);
-                    tvNegro.setText(negro);
+                        tvTotal.setText(total);
+                        tvRojo.setText(rojo);
+                        tvAmarillo.setText(amarillo);
+                        tvVerde.setText(verde);
+                        tvNegro.setText(negro);
 
 
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            NoPaciente = view.findViewById(R.id.txtNoPaciente);
-                            stringNoPaciente = NoPaciente.getText().toString();
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                NoPaciente = view.findViewById(R.id.txtNoPaciente);
+                                stringNoPaciente = NoPaciente.getText().toString();
 
-                            APacienteSeleccionado(recyclerHeridos);
-                        }
-                    });
+                                APacienteSeleccionado(recyclerHeridos);
+                            }
+                        });
 
-                    recyclerHeridos.setAdapter(adapter);
-
+                        recyclerHeridos.setAdapter(adapter);
+                        webserviceTerminado = true;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(ListaHeridos.this, "No se ha podido establecer conexión con el servidor" +" "+response, Toast.LENGTH_LONG).show();
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    webserviceTerminado = true;
                     //progress.hide();
                 }
 
@@ -337,7 +440,10 @@ public class ListaHeridos extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ListaHeridos.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListaHeridos.this, "No se encontraron registros", Toast.LENGTH_SHORT).show();
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                webserviceTerminado = true;
                 //progress.hide();
             }
         });
@@ -348,14 +454,27 @@ public class ListaHeridos extends AppCompatActivity {
     }
 
     public void APacienteSeleccionado(View view){
-        Intent Paciente = new Intent(this,PerfilHerido.class);
+        Paciente = new Intent(this,PerfilHerido.class);
         Paciente.putExtra("NoPaciente",stringNoPaciente);
+        Paciente.putExtra("nombre", nombre);
+        Paciente.putExtra("lista", lista);
+        startActivity(Paciente);
+        finish();
+    }
+
+    public void RefrescarLista(View view){
+        Paciente = new Intent(this, ListaHeridos.class);
+        Paciente.putExtra("NoPaciente",stringNoPaciente);
+        Paciente.putExtra("nombre", nombre);
+        startActivity(Paciente
+                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        overridePendingTransition(0,0);
         startActivity(Paciente);
         finish();
     }
 
     public void ANuevoPaciente(View view){
-        Intent Paciente = new Intent(this,RegistrarPaciente.class);
+        Paciente = new Intent(this,RegistrarPaciente.class);
         startActivity(Paciente);
         finish();
     }
@@ -443,5 +562,15 @@ public class ListaHeridos extends AppCompatActivity {
     public void SinFiltro(View view)
     {
         QuitarFiltro();
+    }
+
+    private void getLocalizacion() {
+        int permiso = ContextCompat.checkSelfPermission(ListaHeridos.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(permiso == PackageManager.PERMISSION_DENIED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(ListaHeridos.this, Manifest.permission.ACCESS_FINE_LOCATION)){
+            }else{
+                ActivityCompat.requestPermissions(ListaHeridos.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
     }
 }

@@ -2,10 +2,14 @@ package com.example.sistematriage;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -29,8 +33,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -45,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getLocalizacion();
+
         Inicio = (Button) findViewById(R.id.Inicio);
 
         enumero = findViewById(R.id.NumEmpleado);
@@ -53,18 +62,30 @@ public class MainActivity extends AppCompatActivity {
         estado = findViewById(R.id.tvSeleccion);
         spinner1 = (Spinner) findViewById(R.id.idSpinner);
 
-        String [] opciones = {"Doctor","Paramedico"};
+        String [] opciones = {"Paramédico","Bombero"};
 
-        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,opciones);
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, R.layout.spinner_textview,opciones);
         spinner1.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Inicio = null;
+        enumero = null;
+        Contrasena = null;
+        spinner1 = null;
+        Runtime.getRuntime().gc();
 
     }
 
     public void mostrar(View view){
         String seleccion = spinner1.getSelectedItem().toString();
-        if(seleccion.equals("Doctor")){
+        if(seleccion.equals("Paramédico")){
             confirmarLogeo();
-        }else if(seleccion.equals("Paramedico")){
+        }else if(seleccion.equals("Bombero")){
             confirmarLogeo2();
         }
     }
@@ -212,4 +233,21 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void getLocalizacion() {
+        int permiso = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(permiso == PackageManager.PERMISSION_DENIED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)){
+            }else{
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+    }
+
+    public void APantallaPrincipal(View view){
+        Intent regresar = new Intent(this, MenuPrincipal.class);
+        startActivity(regresar);
+        finish();
+    }
+
 }

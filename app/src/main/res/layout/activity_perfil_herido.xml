@@ -1,316 +1,424 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PerfilHerido">
+    tools:context=".PerfilHerido"
+    android:orientation="vertical"
+    android:background="#E9F1F5">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        />
 
-    <ImageView
-        android:id="@+id/ImgVFoto"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="68dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="405dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivEFoto"
-        app:layout_constraintVertical_bias="0.241">
+        android:background="#ffffff"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:orientation="vertical">
+            android:layout_marginTop="10dp">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/flechaAtras"
+                android:layout_width="27dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
+                android:onClick="Volver"
+                app:srcCompat="@drawable/flecha_atras" />
+
+            <TextView
+                android:id="@+id/tvPerfil"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="Detalles"
+                android:textAlignment="center"
+                android:textColor="#127BCB"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="340dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:orientation="vertical">
+            <ImageView
+                android:id="@+id/btnHistColor"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:onClick="MostrarModificaciones"
+                app:srcCompat="@drawable/btn_modificaciones_azul2" />
 
-                    <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Color: "
-                        android:textColor="#009688"
-                        android:textSize="18sp" />
+        </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/txtColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Color:"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/ImgVFoto"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/imagen_no_disponible"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"/>
 
-                </LinearLayout>
+        <ImageView
+            android:id="@+id/ivEFoto"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:onClick="tomarFotografia"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:srcCompat="@drawable/btn_camara"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="30dp"
-                    android:gravity="center">
+    </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivEColor"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:onClick="editarColor"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/btn_edit"
-                        tools:visibility="visible">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-                    </ImageView>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ubicación: "
-                    android:textColor="#009688"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtUbicacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ubicación:"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="340dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Estado: "
-                        android:textColor="#009688"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/txtEstado"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Estado:"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="30dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ivEEstado"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:onClick="editarEstado"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/btn_edit"
-                        tools:visibility="visible">
-
-                    </ImageView>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="30dp">
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Evaluación hecha por: "
-                    android:textColor="#009688"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtUsuario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Evaluación:"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Última actualización: "
-                    android:textColor="#009688"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="1dp"
+                    android:background="#ffffff">
 
-                <TextView
-                    android:id="@+id/tvFecha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Actualización:"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    <LinearLayout
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Color Triage: "
+                            android:textColor="#127BCB"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:id="@+id/colorPerfil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/fondo_perfil_color"
+                            android:backgroundTint="#ffffff"
+                            android:layout_marginTop="2dp">
+
+                            <TextView
+                                android:id="@+id/txtColor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Color:"
+                                android:textColor="#ffffff"
+                                android:textSize="16sp"
+                                android:paddingLeft="14dp"
+                                android:paddingRight="14dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivEColor"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center"
+                            android:onClick="editarColor"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/btn_edit"
+                            tools:visibility="visible">
+
+                        </ImageView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="1dp"
+                    android:background="#ffffff">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ubicación: "
+                        android:textColor="#127BCB"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/txtUbicacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ubicación:"
+                        android:textColor="#094886"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="1dp"
+                    android:background="#ffffff">
+
+                    <LinearLayout
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado: "
+                            android:textColor="#127BCB"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtEstado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado:"
+                            android:textColor="#094886"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivEEstado"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_gravity="center"
+                            android:onClick="editarEstado"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/btn_edit"
+                            tools:visibility="visible">
+
+                        </ImageView>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="1dp"
+                    android:background="#ffffff">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Evaluación hecha por: "
+                        android:textColor="#127BCB"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/txtUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Evaluación:"
+                        android:textColor="#094886"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="1dp"
+                    android:background="#ffffff">
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Última actualización: "
+                        android:textColor="#127BCB"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Actualización:"
+                        android:textColor="#094886"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
 
             </LinearLayout>
 
         </LinearLayout>
 
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/flechaAtras"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:onClick="Volver"
-        app:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04"
-        app:srcCompat="@drawable/fab_bg_normal" />
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabEditar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="#127BCB"
-        app:fab_colorPressed="#094886"
-        app:fab_icon="@drawable/pencil"
-        app:fab_size="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.952"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975" />
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSalEditar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="#FF5757"
-        app:fab_colorPressed="#B50E13"
-        app:fab_icon="@drawable/equis"
-        app:fab_size="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.952"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.975"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabGuardar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_colorNormal="#127BCB"
-        app:fab_colorPressed="#094886"
-        app:fab_icon="@drawable/savedisk"
-        app:fab_size="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.952"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/ivEFoto"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:onClick="tomarFotografia"
-        android:visibility="invisible"
-        tools:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImgVFoto"
-        app:srcCompat="@drawable/btn_camara" />
-
-    <ImageView
-        android:id="@+id/btnHistColor"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:onClick="MostrarModificaciones"
-        app:layout_constraintEnd_toStartOf="@+id/ivEFoto"
-        app:layout_constraintHorizontal_bias="0.206"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImgVFoto"
-        app:srcCompat="@drawable/ic_baseline_content_paste_search_24" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FF5757"
+            app:fab_colorPressed="#B50E13"
+            app:fab_icon="@drawable/eliminar"
+            app:fab_size="normal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="88dp"
+            android:layout_marginRight="88dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabEditar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#127BCB"
+            app:fab_colorPressed="#094886"
+            app:fab_icon="@drawable/pencil"
+            app:fab_size="normal"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSalEditar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FF5757"
+            app:fab_colorPressed="#B50E13"
+            app:fab_icon="@drawable/equis"
+            app:fab_size="normal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#127BCB"
+            app:fab_colorPressed="#094886"
+            app:fab_icon="@drawable/savedisk"
+            app:fab_size="normal"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="81dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -3,8 +3,8 @@
     <string-array name="usuarios">
 
         <item>Seleccione un Usuario</item>
-        <item>Doctor</item>
-        <item>Paramedico</item>
+        <item>Paramédico</item>
+        <item>Bombero</item>
 
     </string-array>
 </resources>

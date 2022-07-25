@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">sistemaTriage</string>
+    <string name="app_name"></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_mapa_principal">MapaPrincipal</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoic3F1aWVsIiwiYSI6ImNsNHdjbzMyZTJkOWozaXFjMDd4dGw1dnUifQ.WE9wfpsNsn4WTZ28f0d4Tg</string>
+    <string name="navigation_guidance_day" translatable="false">mapbox://styles/squiel/cl538r9pm002l16nzdvis6p5e</string>
 </resources>

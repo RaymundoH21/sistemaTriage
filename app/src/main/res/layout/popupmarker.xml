@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/fondo_redondeado"
+    android:padding="10dp">
+
+
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="2dip"
+            android:src="@drawable/imagen_no_disponible"
+            android:contentDescription="Foto"
+            android:scaleType="centerCrop"
+            />
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvLatTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text="Lat: "
+                android:textColor="#127BCB"/>
+
+            <TextView
+                android:id="@+id/tvLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text=""
+                android:textColor="#094886"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvLngTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text="Long: "
+                android:textColor="#127BCB"/>
+
+            <TextView
+                android:id="@+id/tvLng"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text=""
+                android:textColor="#094886"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAltTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text="Altitud: "
+                android:textColor="#127BCB"/>
+
+            <TextView
+                android:id="@+id/tvAlt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textStyle="normal"
+                android:text=""
+                android:textColor="#094886"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

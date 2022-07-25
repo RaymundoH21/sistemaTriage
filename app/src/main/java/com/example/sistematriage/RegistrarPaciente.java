@@ -3,16 +3,9 @@ package com.example.sistematriage;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,27 +13,43 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -49,11 +58,24 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.apache.http.client.methods.HttpGet;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -68,7 +90,7 @@ public class RegistrarPaciente extends AppCompatActivity {
     Toolbar toolbar;
 
     EditText ubi, color, usuario, estado;
-    Button btnGuardar;
+    ImageView btnGuardar;
 
     private final String CARPETA_RAIZ="misImagenesPrueba/";
     private final String RUTA_IMAGEN=CARPETA_RAIZ+"misFotos";
@@ -79,10 +101,10 @@ public class RegistrarPaciente extends AppCompatActivity {
     ImageView IV;
     String path;
     Bitmap bitmap;
+    Uri file;
 
     RequestQueue request;
     StringRequest stringRequest;
-    ProgressDialog progress;
 
     BottomNavigationView bottomNavigationView;
 
@@ -90,28 +112,62 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     DateFormat df = new SimpleDateFormat("dd-MM-yyyy, HH:mm");
 
+    String nombre;
+
+    String lat, lon, locat, alt;
+
+    Double latitud, longitud, altitud;
+
+    Double latitude, longitude, altitude;
+
+    String timeStamp;
+    String imageFileName;
+    File storageDir;
+    File image;
+
+    String url;
+    Bitmap adjustedBitmap;
+
+    ByteArrayOutputStream array;
+    byte[] imagenByte;
+    String imagenString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_paciente);
 
+        lat = "";
+        lon = "";
+        locat = "";
+        alt = "";
+        latitud = 0.0;
+        longitud = 0.0;
+        latitude = 0.0;
+        longitude = 0.0;
+        altitud = 0.0;
+        altitude = 0.0;
+        file = null;
+
+        getLocalizacion();
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         usuario2 = (TextView) findViewById(R.id.NombresUsuario);
 
         Intent intent = getIntent();
-        String nombre = intent.getStringExtra("nombre");
+        nombre = intent.getStringExtra("nombre");
 
         usuario2.setText(nombre);
 
         request = Volley.newRequestQueue(this);
-        ubi = ((EditText)findViewById(R.id.etUbicacion));
 
         IV = (ImageView) findViewById(R.id.foto);
 
-        btnGuardar = ((Button)findViewById(R.id.btnGuardar));
+        btnGuardar = ((ImageView)findViewById(R.id.btnGuardar));
 
         IV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +181,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.registrarpaciente);
+        bottomNavigationView.setItemIconTintList(null);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -137,6 +194,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                         intent.putExtra("nombre",nombre);
                         startActivity(intent);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                     case R.id.registrarpaciente:
@@ -144,10 +202,11 @@ public class RegistrarPaciente extends AppCompatActivity {
 
                     case R.id.mapa:
                         //startActivity(new Intent(getApplicationContext(),Mapa.class));
-                        Intent intent2 = new Intent(RegistrarPaciente.this,Mapa.class);
+                        Intent intent2 = new Intent(RegistrarPaciente.this,MapaPrincipal.class);
                         intent2.putExtra("nombre",nombre);
                         startActivity(intent2);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                     case R.id.historial:
@@ -156,6 +215,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                         intent3.putExtra("nombre",nombre);
                         startActivity(intent3);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                 }
@@ -168,10 +228,154 @@ public class RegistrarPaciente extends AppCompatActivity {
         rbAmarillo = (RadioButton) findViewById(R.id.rbAmarillo);
         rbVerde = (RadioButton) findViewById(R.id.rbVerde);
 
+
         if(validaPermisos()){
             IV.setEnabled(true);
         }else{
             IV.setEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //stringRequest.cancel();
+        prefs = null;
+        usuario2 = null;
+        toolbar = null;
+        ubi = null;
+        color = null;
+        usuario = null;
+        estado = null;
+        btnGuardar = null;
+        IV = null;
+        path = null;
+        bitmap = null;
+        request = null;
+        stringRequest = null;
+        bottomNavigationView = null;
+        rbRojo = null;
+        rbAmarillo = null;
+        rbVerde = null;
+        rbNegro = null;
+        df = null;
+        nombre = null;
+        lat = null;
+        lon = null;
+        locat = null;
+        latitud = null;
+        longitud = null;
+        latitude = null;
+        longitude = null;
+        timeStamp = null;
+        imageFileName = null;
+        storageDir = null;
+        image = null;
+        url = null;
+        adjustedBitmap = null;
+        array = null;
+        imagenByte = null;
+        imagenString = null;
+        Runtime.getRuntime().gc();
+
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean marcado = ((RadioButton) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.rbNegro:
+                if (marcado) {
+                    rbRojo.setChecked(false);
+                    rbAmarillo.setChecked(false);
+                    rbVerde.setChecked(false);
+                }
+                break;
+
+            case R.id.rbRojo:
+                if (marcado) {
+                    rbNegro.setChecked(false);
+                    rbAmarillo.setChecked(false);
+                    rbVerde.setChecked(false);
+                }
+                break;
+
+            case R.id.rbAmarillo:
+                if (marcado) {
+                    rbRojo.setChecked(false);
+                    rbNegro.setChecked(false);
+                    rbVerde.setChecked(false);
+                }
+                break;
+
+            case R.id.rbVerde:
+                if (marcado) {
+                    rbRojo.setChecked(false);
+                    rbNegro.setChecked(false);
+                    rbAmarillo.setChecked(false);
+                }
+                break;
+        }
+    }
+
+    private void cargarLocalizacion() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        LocationManager locationManager = (LocationManager) RegistrarPaciente.this.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+                altitud = location.getAltitude();
+                lat = Double.toString(location.getLatitude());
+                lon = Double.toString(location.getLongitude());
+                alt = Double.toString(location.getAltitude());
+                //LatLng ubicacion = new LatLng(location.getLatitude(),location.getLongitude());
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider){
+
+            }
+        };
+
+        int permiso = ContextCompat.checkSelfPermission(RegistrarPaciente.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        //Toast.makeText(RegistrarPaciente.this, "Ubicación generada con éxito", Toast.LENGTH_LONG).show();
+    }
+
+    private void getLocalizacion() {
+        int permiso = ContextCompat.checkSelfPermission(RegistrarPaciente.this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(permiso == PackageManager.PERMISSION_DENIED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(RegistrarPaciente.this, Manifest.permission.ACCESS_FINE_LOCATION)){
+            }else{
+                ActivityCompat.requestPermissions(RegistrarPaciente.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
         }
     }
 
@@ -204,6 +408,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private boolean validaPermisos() {
@@ -283,31 +488,11 @@ public class RegistrarPaciente extends AppCompatActivity {
     }
 
     private void cargarImagen() {
-
-        final CharSequence[] opciones={"Tomar Foto","Cargar Imagen","Cancelar"};
-        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(RegistrarPaciente.this);
-        alertOpciones.setTitle("Seleccione una Opción");
-        alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (opciones[i].equals("Tomar Foto")){
-                    tomarFotografia();
-                }else{
-                    if (opciones[i].equals("Cargar Imagen")){
-                        Intent intent=new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/");
-                        startActivityForResult(intent.createChooser(intent,"Seleccione la Aplicación"),COD_SELECCIONA);
-                    }else{
-                        dialogInterface.dismiss();
-                    }
-                }
-            }
-        });
-        alertOpciones.show();
-
+        tomarFotografia();
     }
 
     private void tomarFotografia() {
+/*
         File fileImagen=new File(Environment.getExternalStorageDirectory(),RUTA_IMAGEN);
         boolean isCreada=fileImagen.exists();
         String nombreImagen="";
@@ -339,31 +524,35 @@ public class RegistrarPaciente extends AppCompatActivity {
         }
         startActivityForResult(intent,COD_FOTO);
 
-        ////
+        ////*/
+
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.sistematriage.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, 1);
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode==RESULT_OK){
-
-            switch (requestCode){
-                case COD_SELECCIONA:
-                    Uri miPath=data.getData();
-                    IV.setImageURI(miPath);
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),miPath);
-                        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                        roundedBitmapDrawable.setCircular(true);
-                        IV.setImageDrawable(roundedBitmapDrawable);
-                        //IV.setImageBitmap(bitmap);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case COD_FOTO:
 
                     MediaScannerConnection.scanFile(this, new String[]{path}, null,
                             new MediaScannerConnection.OnScanCompletedListener() {
@@ -392,19 +581,31 @@ public class RegistrarPaciente extends AppCompatActivity {
 
 
 
-                    Bitmap adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                     bitmap = adjustedBitmap;
                     RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                     roundedBitmapDrawable.setCircular(true);
                     IV.setImageDrawable(roundedBitmapDrawable);
                     //IV.setImageBitmap(bitmap);
 
-                    break;
-            }
-
             bitmap = redimensionarImagen(bitmap, 600, 800);
         }
+    }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        imageFileName = "JPEG_" + timeStamp + "_";
+        storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        path = image.getAbsolutePath();
+        return image;
     }
 
     private static int exifToDegrees(int exifOrientation) { if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) { return 180; } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) { return 270; } return 0; }
@@ -420,25 +621,23 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     private void cargarWebService(){
 
-        progress = new ProgressDialog(this);
-        progress.setMessage("Cargando...");
-        progress.show();
-
-        String url="http://192.168.0.106/sistematriage/RegistrarPacientes.php";
+        //String url="http://192.168.1.12/sistematriage/RegistrarPaciente.php";
+        url="http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/RegistrarPaciente.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 ///if (response.trim().equalsIgnoreCase("Registra")) {
-                ubi.setText("");
+                //ubi.setText("");
 
 
-                IV.setImageResource(R.drawable.ic_launcher_background);
+                IV.setImageResource(R.drawable.boton_tomar_foto);
 
                 Toast.makeText(RegistrarPaciente.this, response, Toast.LENGTH_LONG).show();
                 showToast("Se ha Registrado Exitosamente");
-                Intent nuevoform = new Intent(RegistrarPaciente.this, ListaHeridos.class);
+                Intent nuevoform = new Intent(RegistrarPaciente.this, RegistrarPaciente.class);
+                nuevoform.putExtra("nombre", nombre);
                 startActivity(nuevoform);
                 finish();
                 /*}else{
@@ -457,15 +656,16 @@ public class RegistrarPaciente extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
-
-                String Ubicacion = ubi.getText().toString();
+                String Ubicacion = locat;
                 String Color = obtenerColor();
-                String Usuario = "Guillermo Vázquez";
+                String Usuario = nombre;
                 String Estado = "En espera";
                 String Fecha = df.format(Calendar.getInstance().getTime());
 
-
                 String imagen = convertirImgString(bitmap);
+                String Latitud = lat;
+                String Longitud = lon;
+                String Altitud = alt;
 
                 Map<String,String> parametros = new HashMap<>();
 
@@ -475,6 +675,9 @@ public class RegistrarPaciente extends AppCompatActivity {
                 parametros.put("Estado",Estado);
                 parametros.put("Fecha", Fecha);
                 parametros.put("imagen",imagen);
+                parametros.put("Latitud", Latitud);
+                parametros.put("Longitud", Longitud);
+                parametros.put("Altitud", Altitud);
 
                 return parametros;
             }
@@ -484,10 +687,10 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     private String convertirImgString(Bitmap bitmap) {
 
-        ByteArrayOutputStream array=new ByteArrayOutputStream();
+        array=new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
-        byte[] imagenByte=array.toByteArray();
-        String imagenString= Base64.encodeToString(imagenByte,Base64.DEFAULT);
+        imagenByte=array.toByteArray();
+        imagenString= Base64.encodeToString(imagenByte,Base64.DEFAULT);
 
         return imagenString;
     }
@@ -515,6 +718,7 @@ public class RegistrarPaciente extends AppCompatActivity {
     }
 
     private void PreguntaGuardar() {
+        cargarLocalizacion();
         AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistrarPaciente.this);
         dialogo.setTitle("¿Deseas guardar la información?");
         dialogo.setMessage("Los datos se guardarán");
@@ -524,7 +728,14 @@ public class RegistrarPaciente extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                cargarWebService();
+                latitude = latitud;
+                longitude = longitud;
+                if(latitude != 0 && longitude != 0) {
+                    locat = getCurrentLocationViaJSON(latitude, longitude);
+                    cargarWebService();
+                }else {
+                    alerta("No se han podido obtener las coordenas, vuelve a intentar");
+                }
             }
         });
         dialogo.setNegativeButton(Html.fromHtml("<font color='#696B6A'>Cancelar</font>"), new DialogInterface.OnClickListener(){
@@ -567,4 +778,125 @@ public class RegistrarPaciente extends AppCompatActivity {
         }
     }
 
+    public void alerta(String cadena) {
+        //se prepara la alerta creando nueva instancia
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        //seleccionamos la cadena a mostrar
+        dialogBuilder.setMessage(cadena);
+        //elegimo un titulo y configuramos para que se pueda quitar
+        dialogBuilder.setCancelable(true).setTitle("Error");
+        //mostramos el dialogBuilder
+        dialogBuilder.create().show();
+    }
+
+    public static JSONObject getLocationInfo(Double lat, Double lng) {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+
+            HttpGet httpGet = new HttpGet(
+                    "https://maps.googleapis.com/maps/api/geocode/json?latlng="
+                            + lat + "," + lng + "&region=mx&key=AIzaSyAr-EnqwpqJwx5nJbc1m3kDUE_5TJxQhqI");
+            HttpClient client = new DefaultHttpClient();
+            HttpResponse response;
+            StringBuilder stringBuilder = new StringBuilder();
+
+            try {
+                response = client.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                InputStream stream = entity.getContent();
+                int b;
+                while ((b = stream.read()) != -1) {
+                    stringBuilder.append((char) b);
+                }
+            } catch (ClientProtocolException e) {
+
+            } catch (IOException e) {
+
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject = new JSONObject(stringBuilder.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return jsonObject;
+        }
+        return null;
+    }
+
+    public static String getCurrentLocationViaJSON(Double lat, Double lng) {
+
+        JSONObject jsonObj = getLocationInfo(lat, lng);
+        Log.i("JSON string =>", jsonObj.toString());
+
+        String Address1 = "";
+        String Address2 = "";
+        String Colonia = "";
+        String City = "";
+        String State = "";
+        String Country = "";
+        String County = "";
+        String PIN = "";
+
+        String currentLocation = "";
+
+        try {
+            String status = jsonObj.getString("status").toString();
+            Log.i("status", status);
+
+            if (status.equalsIgnoreCase("OK")) {
+                JSONArray Results = jsonObj.getJSONArray("results");
+                JSONObject zero = Results.getJSONObject(0);
+                JSONArray address_components = zero
+                        .getJSONArray("address_components");
+
+                for (int i = 0; i < address_components.length(); i++) {
+                    JSONObject zero2 = address_components.getJSONObject(i);
+                    String long_name = new String(zero2.getString("long_name").getBytes("ISO-8859-1"), "UTF-8");
+                    String short_name = new String(zero2.getString("short_name").getBytes("ISO-8859-1"), "UTF-8");//zero2.getString("long_name");
+                    JSONArray mtypes = zero2.getJSONArray("types");
+                    String Type = mtypes.getString(0);
+
+                    if (Type.equalsIgnoreCase("street_number")) {
+                        Address1 = long_name;
+                    } else if (Type.equalsIgnoreCase("route")) {
+                        Address1 = short_name +  " " + Address1;
+                    }else if (Type.equalsIgnoreCase("neighborhood")) {
+                            Colonia =  ", " + long_name;
+                    } /*else if (Type.equalsIgnoreCase("political")) {
+                        Address2 = long_name;
+                    }*/ else if (Type.equalsIgnoreCase("locality")) {
+                        // Address2 = Address2 + long_name + ", ";
+                        City = ", " + long_name;
+                    } else if (Type
+                            .equalsIgnoreCase("administrative_area_level_2")) {
+                        County = long_name;
+                    } else if (Type
+                            .equalsIgnoreCase("administrative_area_level_1")) {
+                        State = long_name;
+                    } else if (Type.equalsIgnoreCase("country")) {
+                        Country = long_name;
+                    } else if (Type.equalsIgnoreCase("postal_code")) {
+                        PIN = long_name;
+                    }
+
+                }
+
+                currentLocation = Address1 + Colonia + City;
+
+            }
+        } catch (Exception e) {
+
+        }
+        return currentLocation;
+
+    }
+
 }
+

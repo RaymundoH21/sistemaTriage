@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/herido_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:background="#ffffff"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp">
 
         <!--<ImageView
             android:layout_width="70dp"
@@ -22,23 +27,21 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imagen"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/circle" />
+            android:background="@drawable/circle"/>
 
         <LinearLayout
-            android:layout_width="280dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginStart="-5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_margin="10dp"
             android:background="@android:color/transparent"
             android:orientation="vertical">
 
@@ -61,58 +64,79 @@
 
             <LinearLayout
                 android:layout_width="200dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txttitleUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:textColor="#127BCB"
+                    android:textSize="15sp"
+                    android:background="@drawable/recuadro_placeholder"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="22dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txtUbicacion"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
+                    android:layout_height="16dp"
                     android:layout_gravity="center"
-                    android:layout_weight=".8"
-                    android:textColor="#000000"
+                    android:textColor="#094886"
                     android:textSize="15sp"
-                    android:background="#dddddd" />
-
+                    android:background="@drawable/recuadro_placeholder"/>
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="20dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtColor"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight=".8"
+                    android:text="Color: "
                     android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:background="#dddddd"/>
+                    android:textSize="15dp" />
             </LinearLayout>
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivColor"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="#dddddd"
-            android:scaleType="centerCrop" />
+            <ImageView
+                android:id="@+id/ivColor"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/fondo_mitad_redondeado"
+                android:backgroundTint="#dddddd"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                />
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+
+</LinearLayout>

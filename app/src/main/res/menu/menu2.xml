@@ -7,7 +7,7 @@
     <item android:title="Mas"
         android:id="@+id/btnMore"
         app:showAsAction="always"
-        android:icon="@drawable/ic_baseline_person_24">
+        android:icon="@drawable/ic_icono_perfil">
     <menu>
         <item
             android:title="Cerrar Sesion"
@@ -16,7 +16,6 @@
             android:icon="@drawable/ic_baseline_cancel_24" />
 
     </menu>
-
 
         </item>
 

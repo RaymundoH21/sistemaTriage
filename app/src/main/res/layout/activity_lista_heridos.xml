@@ -1,33 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListaHeridos">
-
+    tools:context=".ListaHeridos"
+    android:orientation="vertical"
+    android:background="#E9F1F5">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/fondo_rectangular">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvEspera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="En espera"
+                android:textAlignment="center"
+                android:textColor="#127BCB"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:onClick="RefrescarLista"
+                app:srcCompat="@drawable/btn_refresh" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <TextView
+                            android:id="@+id/tvTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T: 0"
+                            android:textSize="18sp"
+                            android:textColor="#094886"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <TextView
+                            android:id="@+id/tvTRojos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="R: 0"
+                            android:textSize="18sp"
+                            android:textColor="#094886"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <TextView
+                            android:id="@+id/tvTAmarillos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="A: 0"
+                            android:textSize="18sp"
+                            android:textColor="#094886"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <TextView
+                            android:id="@+id/tvTVerdes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="V: 0"
+                            android:textSize="18sp"
+                            android:textColor="#094886"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvTNegros"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N: 0"
+                            android:textSize="18sp"
+                            android:textColor="#094886"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <ImageView
+                            android:id="@+id/ivTotal"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/sin_filtro"
+                            android:onClick="SinFiltro" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/filtro_rojo"
+                            android:onClick="FiltrarRojo" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/filtro_amarillo"
+                            android:onClick="FiltrarAmarillo" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/filtro_verde"
+                            android:onClick="FiltrarVerde" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/filtro_negro"
+                            android:onClick="FiltrarNegro" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
     <RelativeLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="212dp"
-        tools:context=".ListaHeridos">
+        android:orientation="vertical">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/shimmer_view_container"
-            >
+            android:id="@+id/shimmer_view_container">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,31 +270,45 @@
                     layout="@layout/placeholder_lista_heridos"/>
                 <include
                     layout="@layout/placeholder_lista_heridos"/>
+                <include
+                    layout="@layout/placeholder_lista_heridos"/>
+                <include
+                    layout="@layout/placeholder_lista_heridos"/>
+
 
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reciclador"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="72dp"
-            android:padding="10dp" />
+            tools:context=".ListaHeridos"
+            android:clipToPadding="true"
+            android:layout_marginBottom="61dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reciclador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="0dp" />
+
+        </RelativeLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
-            style="@style/BottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:elevation="8dp"
-            app:labelVisibilityMode="selected"
+            android:background="#ffffff"
+            android:elevation="0dp"
+            app:itemIconSize="26dp"
+            app:labelVisibilityMode="unlabeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -88,133 +316,5 @@
 
     </RelativeLayout>
 
-    <ImageView
-    android:id="@+id/imageView"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginStart="32dp"
-    android:layout_marginTop="12dp"
-    android:background="#A51717"
-    android:onClick="FiltrarRojo"
-    app:layout_constraintStart_toEndOf="@+id/ivTotal"
-    app:layout_constraintTop_toBottomOf="@+id/tvTRojos" />
-
-    <ImageView
-        android:id="@+id/ivTotal"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="12dp"
-        android:background="#B0D0D5"
-        android:onClick="SinFiltro"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTotal" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:background="#FFEB3B"
-        android:onClick="FiltrarAmarillo"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/tvTAmarillos" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:background="#287A2C"
-        android:onClick="FiltrarVerde"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/tvTVerdes" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/black"
-        android:onClick="FiltrarNegro"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/tvTNegros" />
-
-
-    <TextView
-        android:id="@+id/tvTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="108dp"
-        android:text="T: 0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTRojos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="108dp"
-        android:text="R: 0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvTotal"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTAmarillos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="108dp"
-        android:text="A: 0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvTRojos"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTVerdes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="108dp"
-        android:text="V: 0"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/tvTAmarillos"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTNegros"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="108dp"
-        android:text="N: 0"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tvTVerdes"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvEspera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:gravity="center_horizontal"
-        android:text="En espera"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 

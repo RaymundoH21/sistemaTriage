@@ -57,6 +57,7 @@ public class DialogoModificacionesFragment extends DialogFragment {
 
     Context context;
     String NoPaciente;
+    String url;
 
 
     public DialogoModificacionesFragment(Context contexto, String Paciente) {
@@ -102,9 +103,30 @@ public class DialogoModificacionesFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        jsonObjectRequest.cancel();
+        btnSalir = null;
+        barraSuperior = null;
+        adapter = null;
+        request = null;
+        jsonObjectRequest = null;
+        recyclerModificaciones = null;
+        listaModificaciones = null;
+        IManager = null;
+        context = null;
+        NoPaciente = null;
+        url = null;
+        Runtime.getRuntime().gc();
+
+    }
+
     private void webService() {
 
-        String url = "http://192.168.0.106/sistematriage/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
+        //String url = "http://192.168.1.12/sistematriage/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
+        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

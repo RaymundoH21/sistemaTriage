@@ -15,6 +15,10 @@ public class herido {
     private Bitmap imagen;
     private String rutaImagen;
     private String fecha;
+    private Double latitud;
+    private Double longitud;
+    private String destino;
+    private Double altitud;
 
 
     public Bitmap getImagen() {
@@ -76,6 +80,26 @@ public class herido {
         return fecha;
     }
     public void setFecha(String fecha) { this.fecha = fecha; }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+    public void setLatitud(Double latitud) { this.latitud = latitud; }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+    public void setLongitud(Double longitud) { this.longitud = longitud; }
+
+    public String getDestino() {
+        return destino;
+    }
+    public void setDestino(String destino) { this.destino = destino; }
+
+    public Double getAltitud() {
+        return altitud;
+    }
+    public void setAltitud(Double altitud) { this.altitud = altitud; }
 
 }
 

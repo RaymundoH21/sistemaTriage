@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/bottom_sheet1"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:clipToPadding="false"
+    android:background="@drawable/fondo_redondeado"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/ivequis"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:onClick="CerrarBottomSheet"
+                android:src="@drawable/bs_equis" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/ivBSImagen"
+                android:layout_width="32dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="18dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_icono_marker_azul"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginEnd="30dp"
+                android:background="@android:color/transparent"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txtNoPaciente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="NoPaciente "
+                        android:textColor="#000000"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/tvUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".8"
+                        android:text="Ubicación: "
+                        android:textColor="#127BCB"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txtUbicacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".8"
+                        android:text="Blvd. 3 de Octubre #32 "
+                        android:textColor="#094886"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/tvTiempo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".8"
+                        android:text=""
+                        android:textColor="#127BCB"
+                        android:textSize="14dp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tvKm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".8"
+                        android:text=""
+                        android:textColor="#127BCB"
+                        android:textSize="14dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right">
+
+                <ImageView
+                    android:id="@+id/ivNavegar"
+                    android:layout_width="130dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="8dp"
+                    android:onClick="Navegar"
+                    android:src="@drawable/btn_google_maps"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/ivNavegarMapbox"
+                    android:layout_width="104dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:onClick="NavegarMapbox"
+                    android:src="@drawable/btn_navegar"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/ivDetalles"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:onClick="AHeridoSeleccionado"
+                    android:src="@drawable/btn_detalles"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/ivRuta"
+                    android:layout_width="125dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:onClick="trazarRuta"
+                    android:src="@drawable/btn_ruta"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -74,7 +74,6 @@ public class ModificacionAdapter extends RecyclerView.Adapter<ModificacionAdapte
 
 
 
-
     }
 
     @Override

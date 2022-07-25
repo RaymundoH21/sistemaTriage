@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -38,7 +41,7 @@ public class HistorialRegistros extends AppCompatActivity {
     Toolbar toolbar;
 
     ArrayList<String> filtros;
-    boolean filtroColor;
+    Boolean filtroColor;
     String cadenaFiltros;
 
     JsonObjectRequest jsonObjectRequest;
@@ -62,12 +65,26 @@ public class HistorialRegistros extends AppCompatActivity {
     HistorialAdapter adapter;
     RequestQueue request1;
 
-    public int t = 0, r = 0, a = 0, v = 0, n = 0;
+    String nombre;
+
+    public Integer t = 0, r = 0, a = 0, v = 0, n = 0;
+
+    private ShimmerFrameLayout shimmerFrameLayout;
+
+    herido herido;
+    JSONArray json;
+    String url;
+    ArrayList<herido> FiltrarLista;
+    JSONObject jsonObject;
+    Intent Paciente;
+    String lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_registros);
+
+        shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
         tvTotal = (TextView) findViewById(R.id.tvTotal);
         tvRojo = (TextView) findViewById(R.id.tvTRojos);
@@ -82,14 +99,16 @@ public class HistorialRegistros extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.historial);
+        bottomNavigationView.setItemIconTintList(null);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         usuario = (TextView) findViewById(R.id.NombresUsuario);
 
         Intent intent = getIntent();
-        String nombre = intent.getStringExtra("nombre");
+        nombre = intent.getStringExtra("nombre");
 
         usuario.setText(nombre);
 
@@ -116,6 +135,7 @@ public class HistorialRegistros extends AppCompatActivity {
                         intent.putExtra("nombre",nombre);
                         startActivity(intent);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                     case R.id.registrarpaciente:
@@ -124,14 +144,16 @@ public class HistorialRegistros extends AppCompatActivity {
                         intent2.putExtra("nombre",nombre);
                         startActivity(intent2);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                     case R.id.mapa:
                         //startActivity(new Intent(getApplicationContext(),Mapa.class));
-                        Intent intent3 = new Intent(HistorialRegistros.this,Mapa.class);
+                        Intent intent3 = new Intent(HistorialRegistros.this,MapaPrincipal.class);
                         intent3.putExtra("nombre",nombre);
                         startActivity(intent3);
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
 
                     case R.id.historial:
@@ -141,7 +163,64 @@ public class HistorialRegistros extends AppCompatActivity {
                 return false;
             }
         });
+
+        recyclerHistorial.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL) {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                // Do not draw the divider
+            }
+        });
+
         webService();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //finish();
+        jsonObjectRequest.cancel();
+        recyclerHistorial.setLayoutManager(null);
+        historial = null;
+        listaHeridosBackups = null;
+        filtros = null;
+        recyclerHistorial = null;
+        jsonObjectRequest = null;
+        request1 = null;
+        adapter = null;
+        usuario = null;
+        toolbar = null;
+        NoPaciente = null;
+        stringNoPaciente = null;
+        bottomNavigationView = null;
+        cadenaFiltros = null;
+        tvTotal = null;
+        tvRojo = null;
+        tvAmarillo = null;
+        tvVerde = null;
+        tvNegro = null;
+        IManager = null;
+        total = null;
+        rojo = null;
+        amarillo = null;
+        verde = null;
+        negro = null;
+        shimmerFrameLayout = null;
+        filtroColor = null;
+        t = null;
+        r = null;
+        a = null;
+        v = null;
+        n = null;
+        herido = null;
+        json = null;
+        url = null;
+        jsonObject=null;
+        Paciente = null;
+        lista = null;
+        ArrayList<herido> FiltrarLista = null;
+        Runtime.getRuntime().gc();
+        //placePicutreimgView.setImageDrawable(null);
+
     }
 
     @Override
@@ -173,6 +252,7 @@ public class HistorialRegistros extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void webService() {
@@ -180,21 +260,22 @@ public class HistorialRegistros extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        String url = "http://192.168.0.17/bd/ConsultarListas2.php";
+        //String url = "http://192.168.1.12/sistematriage/ConsultarListas2.php";
+        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarListas2.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //showToast("Consulta Exitosa");
-                herido herido=null;
+                herido=null;
 
-                JSONArray json=response.optJSONArray("paciente2");
+                json=response.optJSONArray("paciente");
 
                 try {
 
                     for (int i=0;i<json.length();i++){
                         herido = new herido();
-                        JSONObject jsonObject=null;
+                        jsonObject=null;
                         jsonObject=json.getJSONObject(i);
 
                         herido.setNoPaciente(jsonObject.optInt("NoPaciente"));
@@ -203,6 +284,7 @@ public class HistorialRegistros extends AppCompatActivity {
                         herido.setEstado(jsonObject.optString("Estado"));
                         herido.setUsuario(jsonObject.optString("Usuario"));
                         herido.setDato(jsonObject.optString("Foto"));
+                        herido.setDestino(jsonObject.optString("Destino"));
                         historial.add(herido);
                         listaHeridosBackups.add(herido);
 
@@ -225,6 +307,8 @@ public class HistorialRegistros extends AppCompatActivity {
 
                     }
 
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                     total = "T: " + t;
                     rojo = "R: " + r;
                     amarillo = "A: " + a;
@@ -255,14 +339,18 @@ public class HistorialRegistros extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(HistorialRegistros.this, "No se ha podido establecer conexión con el servidor" +" "+response, Toast.LENGTH_LONG).show();
                     //progress.hide();
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HistorialRegistros.this, "No se ha podido conectar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HistorialRegistros.this, "No se encontraron registros", Toast.LENGTH_SHORT).show();
                 //progress.hide();
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             }
         });
 
@@ -271,8 +359,11 @@ public class HistorialRegistros extends AppCompatActivity {
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
     }
     public void APacienteSeleccionado(View view){
-        Intent Paciente = new Intent(this,PerfilHerido.class);
+        lista = "Historial";
+        Paciente = new Intent(this,PerfilHerido.class);
         Paciente.putExtra("NoPaciente",stringNoPaciente);
+        Paciente.putExtra("nombre", nombre);
+        Paciente.putExtra("lista", lista);
         startActivity(Paciente);
         finish();
     }
@@ -284,7 +375,7 @@ public class HistorialRegistros extends AppCompatActivity {
     }
 
     public void Filtrar(String texto){
-        ArrayList<herido> FiltrarLista = new ArrayList<>();
+        FiltrarLista = new ArrayList<>();
 
         for(herido Herido : historial) {
             if(Herido.getColor().toLowerCase().contains(texto.toLowerCase())){
@@ -321,6 +412,17 @@ public class HistorialRegistros extends AppCompatActivity {
     public void SinFiltro(View view)
     {
         QuitarFiltro();
+    }
+
+    public void RefrescarListaHistorial(View view){
+        Paciente = new Intent(this, HistorialRegistros.class);
+        Paciente.putExtra("NoPaciente",stringNoPaciente);
+        Paciente.putExtra("nombre", nombre);
+        startActivity(Paciente
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        overridePendingTransition(0,0);
+        startActivity(Paciente);
+        finish();
     }
 
 }

@@ -6,67 +6,142 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#E9F1F5">
 
 
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp">
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:layout_marginBottom="3dp">
+
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_baseline_account_circle_24"
-            />
+            android:id="@+id/ivBtnRegresar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/flecha_atras"
+            android:onClick="APantallaPrincipal" />
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/logo_principal"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="600dp"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ffffff"
+        android:gravity="center">
 
-        <EditText
-            android:id="@+id/NumEmpleado"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#B47BA2A8"
-            android:hint="Numero de Empleado"
-            android:inputType="number" />
-        <EditText
-            android:id="@+id/Contrasena"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#B47BA2A8"
-            android:hint="Contraseña"
-            android:inputType="text" />
-        <Spinner
-            android:id="@+id/idSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/tvSeleccion"
-            android:layout_marginTop="0dp"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint=" "
-            android:textSize="2sp"
-             />
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <Button
-            android:id="@+id/Inicio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:onClick="mostrar"
-            android:text="Login Now"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="151dp"
-            tools:layout_editor_absoluteY="208dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicio de sesión"
+                android:textColor="#127BCB"
+                android:textSize="22dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servidor:"
+                android:textColor="#094886"
+                android:textSize="16dp"
+                android:layout_marginTop="10dp"/>
+
+            <Spinner
+                android:id="@+id/idSpinner"
+                android:layout_width="238dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="6dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/spinner_fondo"
+                android:popupBackground="@drawable/fondo_redondeado"
+                android:textColor="#127BCB"
+                android:foregroundTint="#127BCB" />
+
+            <TextView
+                android:id="@+id/tvSeleccion"
+                android:layout_marginTop="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#127BCB"
+                android:hint=" "
+                android:textSize="2sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No. Empleado:"
+                android:textColor="#094886"
+                android:textSize="16dp"
+                android:layout_marginTop="10dp"
+                />
+
+            <EditText
+                android:id="@+id/NumEmpleado"
+                android:layout_width="238dp"
+                android:layout_height="44dp"
+                android:textColorHint="#B47BA2A8"
+                android:inputType="number"
+                android:background="@drawable/fondo_redondeado_edittext"
+                android:drawableLeft="@drawable/ic_icono_doctor"
+                android:drawablePadding="10dp"
+                android:textSize="16dp"
+                android:layout_marginTop="6dp"
+                android:textColor="#127BCB"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña:"
+                android:textColor="#094886"
+                android:textSize="16dp"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:id="@+id/Contrasena"
+                android:layout_width="238dp"
+                android:layout_height="44dp"
+                android:textColorHint="#B47BA2A8"
+                android:inputType="textPassword"
+                android:background="@drawable/fondo_redondeado_edittext"
+                android:drawableLeft="@drawable/ic_icono_contra"
+                android:drawablePadding="10dp"
+                android:textSize="16dp"
+                android:layout_marginTop="6dp"
+                android:textColor="#127BCB"/>
+
+            <Button
+                android:id="@+id/Inicio"
+                android:layout_width="238dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:onClick="mostrar"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="151dp"
+                tools:layout_editor_absoluteY="208dp"
+                android:background="@drawable/btn_iniciar"
+                android:layout_marginTop="23dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

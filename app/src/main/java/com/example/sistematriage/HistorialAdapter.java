@@ -1,5 +1,6 @@
 package com.example.sistematriage;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -52,29 +54,34 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
         }
         holder.txtNoPaciente.setText(listaHeridos.get(position).getNoPaciente().toString());
-        holder.txtUbicacion.setText(String.valueOf(listaHeridos.get(position).getUbicacion().toString()));
+        holder.txtDestino.setText(String.valueOf(listaHeridos.get(position).getDestino().toString()));
 
         holder.txtColor.setText("Color: " + String.valueOf(listaHeridos.get(position).getColor().toString()));
 
         switch (listaHeridos.get(position).getColor()){
             case "Rojo":
-                holder.color.setBackgroundColor(Color.parseColor("#A51717"));
+                //holder.color.setBackgroundColor(Color.parseColor("#A51717"));
+                holder.color.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#A51717")));
                 r++;
                 break;
             case "Amarillo":
-                holder.color.setBackgroundColor(Color.parseColor("#FFEB3B"));
+                //holder.color.setBackgroundColor(Color.parseColor("#FFEB3B"));
+                holder.color.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFEB3B")));
                 a++;
                 break;
             case "Verde":
-                holder.color.setBackgroundColor(Color.parseColor("#287A2C"));
+                //holder.color.setBackgroundColor(Color.parseColor("#287A2C"));
+                holder.color.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#287A2C")));
                 v++;
                 break;
             case "Negro":
-                holder.color.setBackgroundColor(Color.parseColor("#000000"));
+                //holder.color.setBackgroundColor(Color.parseColor("#000000"));
+                holder.color.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
                 n++;
                 break;
             default:
-                holder.color.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                //holder.color.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                holder.color.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
                 break;
         }
 
@@ -107,17 +114,17 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     public class HistorialViewHolder extends RecyclerView.ViewHolder{
 
-        CardView personCardView;
-        TextView txtNoPaciente, txtUbicacion, txtColor;
+        LinearLayout personCardView;
+        TextView txtNoPaciente, txtDestino, txtColor;
         ImageView imagen, color;
 
         public HistorialViewHolder(View itemView) {
             super(itemView);
-            personCardView = (CardView) itemView.findViewById(R.id.historial_card);
-            imagen= (ImageView)itemView.findViewById(R.id.imagen);
-            txtNoPaciente= (TextView) itemView.findViewById(R.id.txtNoPaciente);
-            txtUbicacion= (TextView) itemView.findViewById(R.id.txtUbicacion);
-            txtColor= (TextView) itemView.findViewById(R.id.txtColor);
+            personCardView = (LinearLayout) itemView.findViewById(R.id.historial_card);
+            imagen = (ImageView)itemView.findViewById(R.id.imagen);
+            txtNoPaciente = (TextView) itemView.findViewById(R.id.txtNoPaciente);
+            txtDestino = (TextView) itemView.findViewById(R.id.txtDestino);
+            txtColor = (TextView) itemView.findViewById(R.id.txtColor);
             color = (ImageView)itemView.findViewById(R.id.ivColor);
 
 
