@@ -8,14 +8,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,10 +83,25 @@ public class HistorialRegistros extends AppCompatActivity {
     Intent Paciente;
     String lista;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_registros);
+
+        preferences = getSharedPreferences("sesiones", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        }
 
         shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
@@ -121,7 +140,7 @@ public class HistorialRegistros extends AppCompatActivity {
         listaHeridosBackups = new ArrayList<>();
 
         request1= Volley.newRequestQueue(this);
-        adapter=new HistorialAdapter(historial);
+        adapter=new HistorialAdapter(historial, this);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -249,7 +268,9 @@ public class HistorialRegistros extends AppCompatActivity {
         this.finish();
         this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
          */
-        Intent intent = new Intent(this, MainActivity.class);
+        editor.putBoolean("sesion", false);
+        editor.apply();
+        Intent intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -260,8 +281,8 @@ public class HistorialRegistros extends AppCompatActivity {
         //progress.setMessage("Cargando...");
         //progress.show();
 
-        //String url = "http://192.168.1.12/sistematriage/ConsultarListas2.php";
-        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarListas2.php";
+        //url = "http://192.168.1.12/sistematriage/ConsultarListas2.php";
+        url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarListas2.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

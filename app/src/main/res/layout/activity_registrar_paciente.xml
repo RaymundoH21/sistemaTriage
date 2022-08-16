@@ -42,7 +42,7 @@
             android:id="@+id/foto"
             android:layout_width="180dp"
             android:layout_height="180dp"
-            app:srcCompat="@drawable/foto_default"
+            app:srcCompat="@drawable/ic_icono_fondo_foto"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:scaleType="centerCrop"/>
@@ -102,7 +102,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/rb_image_negro" />
+                        android:background="@drawable/ic_icono_rb_negro" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/rb_image_rojo" />
+                        android:background="@drawable/ic_icono_rb_rojo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/rb_image_amarillo" />
+                        android:background="@drawable/ic_icono_rb_amarillo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -217,7 +217,7 @@
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/rb_image_verde" />
+                        android:background="@drawable/ic_icono_rb_verde" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -259,7 +259,7 @@
                     android:layout_width="250dp"
                     android:layout_height="44dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/btn_guardar"
+                    android:background="@drawable/ic_icono_guardar"
                     android:onClick="Guardar" />
 
             </LinearLayout>

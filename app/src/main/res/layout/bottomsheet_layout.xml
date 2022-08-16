@@ -28,7 +28,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
                 android:onClick="CerrarBottomSheet"
-                android:src="@drawable/bs_equis" />
+                android:src="@drawable/ic_icono_salir" />
 
         </LinearLayout>
 
@@ -167,7 +167,7 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="8dp"
                     android:onClick="Navegar"
-                    android:src="@drawable/btn_google_maps"
+                    android:src="@drawable/ic_icono_google_maps"
                     android:visibility="gone"/>
 
                 <ImageView
@@ -177,7 +177,7 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="20dp"
                     android:onClick="NavegarMapbox"
-                    android:src="@drawable/btn_navegar"
+                    android:src="@drawable/ic_icono_mapbox"
                     android:visibility="gone"/>
 
                 <ImageView
@@ -187,7 +187,7 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
                     android:onClick="AHeridoSeleccionado"
-                    android:src="@drawable/btn_detalles"
+                    android:src="@drawable/ic_icono_detalles"
                     android:visibility="visible" />
 
                 <ImageView
@@ -197,7 +197,7 @@
                     android:layout_gravity="right"
                     android:layout_marginRight="20dp"
                     android:onClick="trazarRuta"
-                    android:src="@drawable/btn_ruta"
+                    android:src="@drawable/ic_icono_trazar_ruta"
                     android:visibility="visible"/>
 
             </LinearLayout>

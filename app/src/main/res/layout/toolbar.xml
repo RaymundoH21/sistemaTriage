@@ -9,7 +9,7 @@
     app:subtitle=""
     tools:ignore="NamespaceTypo">
     <ImageView
-        android:src="@drawable/logo_navbar"
+        android:src="@drawable/logo_toolbar"
         android:layout_width="90dp"
         android:layout_height="60dp"/>
     <TextView

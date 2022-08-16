@@ -26,11 +26,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -154,10 +156,25 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     String NoPaciente;
     String lista;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        }
 
         binding = ActivityMapaPrincipalBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -391,7 +408,9 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         this.finish();
         this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
          */
-        intent = new Intent(this, MainActivity.class);
+        editor.putBoolean("sesion", false);
+        editor.apply();
+        intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -570,7 +589,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                         ivBSImagen.setImageDrawable(getResources().getDrawable(R.drawable.ic_icono_marker_negro));
                         break;
                 }
-                bottomSheet.setTranslationY(-208);
+                bottomSheet.setTranslationY(-230);
                 mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
                 ultNoPaciente = info.getNoPaciente();
 
@@ -593,8 +612,8 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
     private void webServiceMarcadores(){
 
-        //String url = "http://192.168.1.12/sistematriage/ConsultarUbicaciones.php";
-        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarUbicaciones.php";
+        //url = "http://192.168.1.12/sistematriage/ConsultarUbicaciones.php";
+        url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarUbicaciones.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

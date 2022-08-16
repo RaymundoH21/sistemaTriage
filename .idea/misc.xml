@@ -48,23 +48,25 @@
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/selector.xml" value="0.13148148148148148" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/drawable/spinner_fondo.xml" value="0.24027777777777778" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/actividad_navegacion.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_historial_registros.xml" value="0.264" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_lista_heridos.xml" value="0.264" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_historial_registros.xml" value="0.152" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_lista_heridos.xml" value="0.176" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_mapa.xml" value="0.10400000000000001" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_mapa_principal.xml" value="0.128" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_mapa_principal.xml" value="0.152" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_menu_principal.xml" value="0.144" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_navigation.xml" value="0.2" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_perfil_herido.xml" value="0.136" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_perfil_herido.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_principal.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registrar_paciente.xml" value="0.128" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registrar_paciente.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_registroparamedico.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_splash.xml" value="0.2" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/bottomsheet_layout.xml" value="0.536" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/bottomsheet_layout.xml" value="0.152" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/colores_mapa.xml" value="0.2" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/fragment_datos_personales.xml" value="0.4" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/fragment_dialogo_modificaciones.xml" value="0.128" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/fragment_triage.xml" value="0.4" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/herido_card.xml" value="0.264" />
-        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/historial_card.xml" value="0.264" />
+        <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/historial_card.xml" value="0.7340153452685422" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/modificacion_card.xml" value="0.4" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/placeholder_lista_heridos.xml" value="0.264" />
         <entry key="..\:/Users/Ezequiel/AndroidStudioProjects/sistemaTriage/app/src/main/res/layout/popupmarker.xml" value="0.6" />

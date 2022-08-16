@@ -32,6 +32,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Icon;
 import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
@@ -40,6 +41,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +66,6 @@ public class ListaHeridos extends AppCompatActivity {
 
     String NombreUsuario;
 
-    private SharedPreferences prefs;
     TextView usuario;
     Toolbar toolbar;
 
@@ -114,13 +115,27 @@ public class ListaHeridos extends AppCompatActivity {
     Boolean webserviceTerminado = false;
     Intent Paciente;
     String lista;
+    ArrayList<herido> FiltrarLista;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
 
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        }
 
         getLocalizacion();
 
@@ -157,9 +172,7 @@ public class ListaHeridos extends AppCompatActivity {
         recyclerHeridos.setHasFixedSize(true);
 
         request1= Volley.newRequestQueue(this);
-        adapter=new HeridoAdapter(listaHeridos);
-
-        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        adapter=new HeridoAdapter(listaHeridos, this);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.listaheridos);
@@ -257,7 +270,6 @@ public class ListaHeridos extends AppCompatActivity {
         negro = null;
         shimmerFrameLayout = null;
         nombre = null;
-        prefs = null;
         filtroColor = null;
         t = null;
         r = null;
@@ -272,6 +284,7 @@ public class ListaHeridos extends AppCompatActivity {
         listaHeridosBackup = null;
         Paciente = null;
         lista = null;
+        FiltrarLista = null;
         Runtime.getRuntime().gc();
         //placePicutreimgView.setImageDrawable(null);
 
@@ -342,7 +355,9 @@ public class ListaHeridos extends AppCompatActivity {
         this.finish();
         this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
          */
-        Intent intent = new Intent(this, MainActivity.class);
+        editor.putBoolean("sesion", false);
+        editor.apply();
+        Intent intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -350,8 +365,8 @@ public class ListaHeridos extends AppCompatActivity {
 
     private void webService() {
 
-        //String url = "http://192.168.1.12/sistematriage/ConsultarLista.php";
-        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarLista.php";
+        //url = "http://192.168.1.12/sistematriage/ConsultarLista.php";
+        url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarLista.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -374,9 +389,11 @@ public class ListaHeridos extends AppCompatActivity {
                             herido.setEstado(jsonObject.optString("Estado"));
                             herido.setUsuario(jsonObject.optString("Usuario"));
                             herido.setDato(jsonObject.optString("Foto"));
+                            herido.setRutaImagen(jsonObject.optString("RutaFoto"));
                             herido.setLatitud(jsonObject.optDouble("Latitud"));
                             herido.setLongitud(jsonObject.optDouble("Longitud"));
                             herido.setAltitud(jsonObject.optDouble("Altitud"));
+                            herido.setAmbulancia(jsonObject.optString("Ambulancia"));
                             listaHeridos.add(herido);
                             listaHeridosBackup.add(herido);
 
@@ -473,50 +490,6 @@ public class ListaHeridos extends AppCompatActivity {
         finish();
     }
 
-    public void ANuevoPaciente(View view){
-        Paciente = new Intent(this,RegistrarPaciente.class);
-        startActivity(Paciente);
-        finish();
-    }
-
-    public static Bitmap loadBitmapFrmView(View v, int width, int height) {
-        Bitmap bmpImg = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpImg);
-        v.draw(c);
-        return bmpImg;
-    }
-
-    public static Bitmap getCircleBitmap(Bitmap bm) {
-
-        int sice = Math.min((bm.getWidth()), (bm.getHeight()));
-
-        Bitmap bitmap = ThumbnailUtils.extractThumbnail(bm, sice, sice);
-
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xffff0000;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setFilterBitmap(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth((float) 4);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
-
     public void QuitarFiltro(){
         adapter.Filtrar(listaHeridosBackup);
         filtros.clear();
@@ -525,7 +498,7 @@ public class ListaHeridos extends AppCompatActivity {
     }
 
     public void Filtrar(String texto){
-        ArrayList<herido> FiltrarLista = new ArrayList<>();
+        FiltrarLista = new ArrayList<>();
 
         for(herido Herido : listaHeridos) {
             if(Herido.getColor().toLowerCase().contains(texto.toLowerCase())){

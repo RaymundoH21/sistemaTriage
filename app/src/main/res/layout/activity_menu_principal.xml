@@ -13,14 +13,14 @@
         android:layout_height="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/bs_equis"
+        android:background="@drawable/ic_icono_salir"
         android:onClick="SalirApp" />
 
     
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@drawable/logo_principal"
+        android:background="@drawable/logo_principal_1"
         android:layout_marginTop="80dp"
         android:layout_gravity="center_horizontal"/>
 
@@ -35,7 +35,7 @@
             android:layout_height="46dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="112dp"
-            android:background="@drawable/btn_iniciar_sesion"
+            android:background="@drawable/ic_icono_sesion"
             android:onClick="AInicioDeSesion" />
 
     </LinearLayout>

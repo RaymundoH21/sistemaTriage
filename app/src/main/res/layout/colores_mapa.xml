@@ -4,7 +4,7 @@
     android:layout_height="36dp"
     android:orientation="horizontal"
     android:background="@drawable/fondotransparente"
-    android:translationY="72dp"
+    android:translationY="66dp"
     android:layout_marginLeft="12dp">
 
     <LinearLayout

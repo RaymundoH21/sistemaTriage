@@ -7,17 +7,23 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,19 +48,41 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button Inicio;
+    ImageView Inicio;
     EditText enumero, Contrasena;
     TextView estado;
     Spinner spinner1;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        preferences = this.getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        if (revisarSesion()) {
+            Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
+            intent.putExtra("nombre", this.preferences.getString("usuario", ""));
+            startActivity(intent);
+            finish();
+        }
+
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        }
+
         getLocalizacion();
 
-        Inicio = (Button) findViewById(R.id.Inicio);
+        Inicio = (ImageView) findViewById(R.id.Inicio);
 
         enumero = findViewById(R.id.NumEmpleado);
         Contrasena = findViewById(R.id.Contrasena);
@@ -116,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (ok == true) {
                             String nombre = jsonObject.getString("nombre");
+                            guardarSesion(nombre);
                             Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
                             intent.putExtra("nombre",nombre);
                             startActivity(intent);
@@ -165,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (ok == true) {
                             String nombre = jsonObject.getString("nombre");
+                            guardarSesion(nombre);
                             Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
                             intent.putExtra("nombre",nombre);
                             startActivity(intent);
@@ -248,6 +278,18 @@ public class MainActivity extends AppCompatActivity {
         Intent regresar = new Intent(this, MenuPrincipal.class);
         startActivity(regresar);
         finish();
+    }
+
+    private Boolean revisarSesion(){
+        return this.preferences.getBoolean("sesion", false);
+    }
+
+    private void guardarSesion(String nombre) {
+        editor.putBoolean("sesion", true);
+        editor.putString("usuario", nombre);
+        editor.putString("numero", enumero.getText().toString());
+        editor.putString("contraseña", Contrasena.getText().toString());
+        editor.apply();
     }
 
 }

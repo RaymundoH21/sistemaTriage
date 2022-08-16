@@ -22,13 +22,14 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:theme="@style/Theme.SistemaTriage"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MenuPrincipal"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
+            android:theme="@style/Theme.SistemaTriageSplash"
             android:name=".Splash"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -82,6 +83,7 @@
         </activity>
         <activity
             android:name=".RegistrarPaciente"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data

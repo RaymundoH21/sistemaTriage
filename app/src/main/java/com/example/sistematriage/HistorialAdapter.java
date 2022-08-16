@@ -1,5 +1,6 @@
 package com.example.sistematriage;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,25 +18,32 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder> implements View.OnClickListener{
     private View.OnClickListener listener;
     List<herido> listaHeridos;
+    private Activity activity;
 
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
-    public HistorialAdapter(List<herido> listaPersonas) {
+    public HistorialAdapter(List<herido> listaPersonas, Activity activity) {
+        this.activity = activity;
         this.listaHeridos = listaPersonas;
+
     }
 
     @Override
     public HistorialAdapter.HistorialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.historial_card,parent,false);
-        RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        vista.setLayoutParams(layoutParams);
+        //RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                //ViewGroup.LayoutParams.WRAP_CONTENT);
+        //vista.setLayoutParams(layoutParams);
         vista.setOnClickListener(this);
         return new HistorialAdapter.HistorialViewHolder(vista);
     }
@@ -44,11 +52,25 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
     public void onBindViewHolder(HistorialAdapter.HistorialViewHolder holder, final int position) {
         //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
         if(listaHeridos.get(position).getImagen()!=null) {
-
+/*
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), listaHeridos.get(position).getImagen());
             roundedBitmapDrawable.setCircular(true);
             holder.imagen.setImageDrawable(roundedBitmapDrawable);
-            //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
+            //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());*/
+
+            //String ip = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/imagenes/Rojo.jpg";
+
+            /*Glide.with(activity).load(listaHeridos.get(position).getImagen())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imagen);*/
+
+            //Picasso.get().load(ip).resize(150, 150).into(holder.imagen);
+            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), listaHeridos.get(position).getImagen());
+            roundedBitmapDrawable.setCircular(true);
+            holder.imagen.setImageDrawable(roundedBitmapDrawable);
+
+            //holder.imagen.setImageBitmap(getResizedBitmap(listaHeridos.get(position).getImagen(),250,250));
+            //holder.imagen.setImageBitmap(listaHeridos.get(position).getImagen());
         }
         else{
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
@@ -57,6 +79,12 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
         holder.txtDestino.setText(String.valueOf(listaHeridos.get(position).getDestino().toString()));
 
         holder.txtColor.setText("Color: " + String.valueOf(listaHeridos.get(position).getColor().toString()));
+
+        if (listaHeridos.get(position).getEstado().equals("Recibido")){
+            holder.linearRecibido.setVisibility(View.VISIBLE);
+        } else {
+            holder.linearRecibido.setVisibility(View.GONE);
+        }
 
         switch (listaHeridos.get(position).getColor()){
             case "Rojo":
@@ -114,7 +142,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     public class HistorialViewHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout personCardView;
+        LinearLayout personCardView, linearRecibido;
         TextView txtNoPaciente, txtDestino, txtColor;
         ImageView imagen, color;
 
@@ -126,7 +154,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
             txtDestino = (TextView) itemView.findViewById(R.id.txtDestino);
             txtColor = (TextView) itemView.findViewById(R.id.txtColor);
             color = (ImageView)itemView.findViewById(R.id.ivColor);
-
+            linearRecibido = (LinearLayout) itemView.findViewById(R.id.LinearPalomita);
 
         }
 

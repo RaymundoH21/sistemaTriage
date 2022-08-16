@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -85,7 +86,6 @@ import java.util.Map;
 
 public class RegistrarPaciente extends AppCompatActivity {
 
-    private SharedPreferences prefs;
     TextView usuario2;
     Toolbar toolbar;
 
@@ -132,11 +132,26 @@ public class RegistrarPaciente extends AppCompatActivity {
     byte[] imagenByte;
     String imagenString;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_paciente);
+
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+        }
 
         lat = "";
         lon = "";
@@ -241,7 +256,6 @@ public class RegistrarPaciente extends AppCompatActivity {
         super.onDestroy();
 
         //stringRequest.cancel();
-        prefs = null;
         usuario2 = null;
         toolbar = null;
         ubi = null;
@@ -405,7 +419,9 @@ public class RegistrarPaciente extends AppCompatActivity {
         this.finish();
         this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
          */
-        Intent intent = new Intent(this, MainActivity.class);
+        editor.putBoolean("sesion", false);
+        editor.apply();
+        Intent intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
@@ -621,8 +637,8 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     private void cargarWebService(){
 
-        //String url="http://192.168.1.12/sistematriage/RegistrarPaciente.php";
-        url="http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/RegistrarPaciente.php";
+        //url="http://192.168.1.12/sistematriage/RegistrarPaciente.php";
+        url="http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/RegistrarPaciente.php";
 
         stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -719,7 +735,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     private void PreguntaGuardar() {
         cargarLocalizacion();
-        AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistrarPaciente.this);
+        /*AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistrarPaciente.this);
         dialogo.setTitle("¿Deseas guardar la información?");
         dialogo.setMessage("Los datos se guardarán");
 
@@ -727,7 +743,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         dialogo.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {*/
                 latitude = latitud;
                 longitude = longitud;
                 if(latitude != 0 && longitude != 0) {
@@ -736,7 +752,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                 }else {
                     alerta("No se han podido obtener las coordenas, vuelve a intentar");
                 }
-            }
+            /*}
         });
         dialogo.setNegativeButton(Html.fromHtml("<font color='#696B6A'>Cancelar</font>"), new DialogInterface.OnClickListener(){
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -745,7 +761,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                 dialogInterface.dismiss();
             }
         });
-        dialogo.show();
+        dialogo.show();*/
 
     }
 
@@ -799,7 +815,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
             HttpGet httpGet = new HttpGet(
                     "https://maps.googleapis.com/maps/api/geocode/json?latlng="
-                            + lat + "," + lng + "&region=mx&key=AIzaSyAr-EnqwpqJwx5nJbc1m3kDUE_5TJxQhqI");
+                            + lat + "," + lng + "&sensor=true&key=AIzaSyAr-EnqwpqJwx5nJbc1m3kDUE_5TJxQhqI");
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
             StringBuilder stringBuilder = new StringBuilder();
@@ -835,15 +851,6 @@ public class RegistrarPaciente extends AppCompatActivity {
         JSONObject jsonObj = getLocationInfo(lat, lng);
         Log.i("JSON string =>", jsonObj.toString());
 
-        String Address1 = "";
-        String Address2 = "";
-        String Colonia = "";
-        String City = "";
-        String State = "";
-        String Country = "";
-        String County = "";
-        String PIN = "";
-
         String currentLocation = "";
 
         try {
@@ -853,42 +860,12 @@ public class RegistrarPaciente extends AppCompatActivity {
             if (status.equalsIgnoreCase("OK")) {
                 JSONArray Results = jsonObj.getJSONArray("results");
                 JSONObject zero = Results.getJSONObject(0);
-                JSONArray address_components = zero
-                        .getJSONArray("address_components");
+                //JSONArray res = zero
+                       // .getJSONArray("formatted_address");
+                String dir = new String(zero.getString("formatted_address").getBytes("ISO-8859-1"), "UTF-8");
+                //String dir = zero.getString("formatted_address");
 
-                for (int i = 0; i < address_components.length(); i++) {
-                    JSONObject zero2 = address_components.getJSONObject(i);
-                    String long_name = new String(zero2.getString("long_name").getBytes("ISO-8859-1"), "UTF-8");
-                    String short_name = new String(zero2.getString("short_name").getBytes("ISO-8859-1"), "UTF-8");//zero2.getString("long_name");
-                    JSONArray mtypes = zero2.getJSONArray("types");
-                    String Type = mtypes.getString(0);
-
-                    if (Type.equalsIgnoreCase("street_number")) {
-                        Address1 = long_name;
-                    } else if (Type.equalsIgnoreCase("route")) {
-                        Address1 = short_name +  " " + Address1;
-                    }else if (Type.equalsIgnoreCase("neighborhood")) {
-                            Colonia =  ", " + long_name;
-                    } /*else if (Type.equalsIgnoreCase("political")) {
-                        Address2 = long_name;
-                    }*/ else if (Type.equalsIgnoreCase("locality")) {
-                        // Address2 = Address2 + long_name + ", ";
-                        City = ", " + long_name;
-                    } else if (Type
-                            .equalsIgnoreCase("administrative_area_level_2")) {
-                        County = long_name;
-                    } else if (Type
-                            .equalsIgnoreCase("administrative_area_level_1")) {
-                        State = long_name;
-                    } else if (Type.equalsIgnoreCase("country")) {
-                        Country = long_name;
-                    } else if (Type.equalsIgnoreCase("postal_code")) {
-                        PIN = long_name;
-                    }
-
-                }
-
-                currentLocation = Address1 + Colonia + City;
+                currentLocation = dir;
 
             }
         } catch (Exception e) {

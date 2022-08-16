@@ -125,8 +125,8 @@ public class DialogoModificacionesFragment extends DialogFragment {
 
     private void webService() {
 
-        //String url = "http://192.168.1.12/sistematriage/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
-        url = "http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
+        //url = "http://192.168.1.12/sistematriage/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
+        url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarModificaciones.php?NoPaciente="+NoPaciente;
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

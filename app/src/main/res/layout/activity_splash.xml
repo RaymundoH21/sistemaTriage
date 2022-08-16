@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:background="@drawable/splash_logo"
+        android:background="@drawable/logo_principal_blanco"
         android:layout_gravity="center"/>
 
 </LinearLayout>

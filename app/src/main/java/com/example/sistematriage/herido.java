@@ -19,6 +19,12 @@ public class herido {
     private Double longitud;
     private String destino;
     private Double altitud;
+    private String ambulancia;
+    private String cama;
+    private String nombre;
+    private String sexo;
+    private String edad;
+    private String lesiones;
 
 
     public Bitmap getImagen() {
@@ -100,6 +106,36 @@ public class herido {
         return altitud;
     }
     public void setAltitud(Double altitud) { this.altitud = altitud; }
+
+    public String getAmbulancia() {
+        return ambulancia;
+    }
+    public void setAmbulancia(String ambulancia) { this.ambulancia = ambulancia; }
+
+    public String getCama() {
+        return cama;
+    }
+    public void setCama(String cama) { this.cama = cama; }
+
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getSexo() {
+        return sexo;
+    }
+    public void setSexo(String sexo) { this.sexo = sexo; }
+
+    public String getEdad() {
+        return edad;
+    }
+    public void setEdad(String edad) { this.edad = edad; }
+
+    public String getLesiones() {
+        return lesiones;
+    }
+    public void setLesiones(String lesiones) { this.lesiones = lesiones; }
 
 }
 

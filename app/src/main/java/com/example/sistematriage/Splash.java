@@ -8,6 +8,8 @@ import android.os.Handler;
 
 public class Splash extends AppCompatActivity {
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,7 +18,7 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Splash.this, MenuPrincipal.class);
+                intent = new Intent(Splash.this, MenuPrincipal.class);
                 startActivity(intent);
                 finish();
 
@@ -29,6 +31,7 @@ public class Splash extends AppCompatActivity {
     public void onDestroy()
     {
         super.onDestroy();
+        intent = null;
         Runtime.getRuntime().gc();
     }
 }

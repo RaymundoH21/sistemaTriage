@@ -56,7 +56,7 @@ public class registroparamedico<onActivityResult> extends AppCompatActivity {
     Bitmap bitmap;
 
     //String UPLOAD_URL ="http://192.168.1.12/sistematriage/registro.php";
-    String UPLOAD_URL ="http://ec2-54-219-50-144.us-west-1.compute.amazonaws.com/registro.php";
+    String UPLOAD_URL ="http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/registro.php";
 
     BottomNavigationView bottomNavigationView;
 

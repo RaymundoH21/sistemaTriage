@@ -48,7 +48,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:onClick="RefrescarListaHistorial"
-                app:srcCompat="@drawable/btn_refresh" />
+                app:srcCompat="@drawable/ic_icono_btn_actualizar" />
 
         </RelativeLayout>
 
@@ -163,7 +163,7 @@
                             android:id="@+id/ivTotal"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/sin_filtro"
+                            android:background="@drawable/ic_icono_sin_filtro"
                             android:onClick="SinFiltro" />
 
                     </LinearLayout>
@@ -177,7 +177,7 @@
                             android:id="@+id/imageView"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/filtro_rojo"
+                            android:background="@drawable/ic_icono_filtro_rojo"
                             android:onClick="FiltrarRojo" />
 
                     </LinearLayout>
@@ -191,7 +191,7 @@
                             android:id="@+id/imageView2"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/filtro_amarillo"
+                            android:background="@drawable/ic_icono_filtro_amarillo"
                             android:onClick="FiltrarAmarillo" />
 
                     </LinearLayout>
@@ -205,7 +205,7 @@
                             android:id="@+id/imageView3"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/filtro_verde"
+                            android:background="@drawable/ic_icono_filtro_verde"
                             android:onClick="FiltrarVerde" />
 
                     </LinearLayout>
@@ -218,7 +218,7 @@
                             android:id="@+id/imageView4"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:background="@drawable/filtro_negro"
+                            android:background="@drawable/ic_icono_filtro_negro"
                             android:onClick="FiltrarNegro" />
 
                     </LinearLayout>

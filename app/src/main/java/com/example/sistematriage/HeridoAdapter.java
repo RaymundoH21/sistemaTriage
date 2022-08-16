@@ -1,5 +1,6 @@
 package com.example.sistematriage;
 
+import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -17,6 +18,10 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -24,10 +29,12 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
 
     private View.OnClickListener listener;
     List<herido> listaHeridos;
+    Activity activity;
 
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
-    public HeridoAdapter(List<herido> listaPersonas) {
+    public HeridoAdapter(List<herido> listaPersonas, Activity activity) {
+        this.activity = activity;
         this.listaHeridos = listaPersonas;
     }
 
@@ -46,10 +53,20 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
         if(listaHeridos.get(position).getImagen()!=null) {
 
+            //String ip = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/imagenes/Rojo.jpg";
+
+            //Picasso.get().load(ip).resize(150, 150).into(holder.imagen);
+
+            /*Glide.with(activity).load(listaHeridos.get(position).getImagen())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imagen);*/
+
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), listaHeridos.get(position).getImagen());
             roundedBitmapDrawable.setCircular(true);
             holder.imagen.setImageDrawable(roundedBitmapDrawable);
-            //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
+
+            //holder.imagen.setImageBitmap(getResizedBitmap(listaHeridos.get(position).getImagen(),200,200));
+            //holder.imagen.setImageBitmap(listaHeridos.get(position).getImagen());
         }
         else{
             holder.imagen.setImageResource(R.drawable.ic_launcher_foreground);
@@ -61,6 +78,23 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         holder.txtLat.setText("Latitud: " +String.valueOf(listaHeridos.get(position).getLatitud().toString()));
         holder.txtLng.setText("Longitud: " +String.valueOf(listaHeridos.get(position).getLongitud().toString()));
         holder.txtAlt.setText("Altitud: "+String.valueOf(listaHeridos.get(position).getAltitud().toString()));
+        if (listaHeridos.get(position).getAmbulancia().equals("null") || listaHeridos.get(position).getAmbulancia().equals("")){
+            holder.LinearAmbulancia.setVisibility(View.GONE);
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-159 (supervisor)")){
+            holder.txtAmbulancia.setText("BC-159");
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-169 (supervisor)")){
+            holder.txtAmbulancia.setText("BC-169");
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-187 (supervisor)")){
+            holder.txtAmbulancia.setText("BC-187");
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-190 (rescate)")){
+            holder.txtAmbulancia.setText("BC-190");
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-195 (rescate)")){
+            holder.txtAmbulancia.setText("BC-195");
+        } else if(listaHeridos.get(position).getAmbulancia().equals("BC-196 (upr)")){
+            holder.txtAmbulancia.setText("BC-196");
+        } else {
+            holder.txtAmbulancia.setText(listaHeridos.get(position).getAmbulancia());
+        }
 
         switch (listaHeridos.get(position).getColor()){
             case "Rojo":
@@ -118,8 +152,8 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
 
     public class HeridoViewHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout personCardView;
-        TextView txtNoPaciente, txtUbicacion, txtColor, txtLat, txtLng, txtAlt;
+        LinearLayout personCardView, LinearAmbulancia;
+        TextView txtNoPaciente, txtUbicacion, txtColor, txtLat, txtLng, txtAlt, txtAmbulancia;
         ImageView imagen, color;
 
         public HeridoViewHolder(View itemView) {
@@ -133,6 +167,8 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
             txtLat = (TextView) itemView.findViewById(R.id.txtLat);
             txtLng = (TextView) itemView.findViewById(R.id.txtLng);
             txtAlt = (TextView) itemView.findViewById(R.id.txtAlt);
+            txtAmbulancia = (TextView) itemView.findViewById(R.id.tvAmbulancia);
+            LinearAmbulancia = (LinearLayout) itemView.findViewById(R.id.LinearAmbu);
 
 
         }
