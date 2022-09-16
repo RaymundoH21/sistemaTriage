@@ -46,13 +46,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/* Esta clase pertenece a la pantalla de inicio de sesión */
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView Inicio;
     EditText enumero, Contrasena;
     TextView estado;
     Spinner spinner1;
-    SharedPreferences preferences;
+    SharedPreferences preferences; // Se utiliza para guardar los datos de inicio de sesión
     SharedPreferences.Editor editor;
 
     @Override
@@ -60,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        preferences = this.getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences("sesiones",Context.MODE_PRIVATE); // Obtiene los datos de inicio de sesión guardados
         editor = preferences.edit();
 
+        // Si existen datos de inicio de sesión guardados, se brinca esta pantalla y se dirige directamente a la lista de heridos
         if (revisarSesion()) {
             Intent intent = new Intent(MainActivity.this, ListaHeridos.class);
             intent.putExtra("nombre", this.preferences.getString("usuario", ""));
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        // Establece la barra de estado de color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -80,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        getLocalizacion();
+        getLocalizacion(); // llamada la método que solicita los permisos para utilizar la ubicación
 
+        // Referencia a los elementos
         Inicio = (ImageView) findViewById(R.id.Inicio);
 
         enumero = findViewById(R.id.NumEmpleado);
@@ -90,13 +95,14 @@ public class MainActivity extends AppCompatActivity {
         estado = findViewById(R.id.tvSeleccion);
         spinner1 = (Spinner) findViewById(R.id.idSpinner);
 
-        String [] opciones = {"Paramédico","Bombero"};
+        String [] opciones = {"Paramédico","Bombero"}; // opciones del spinner
 
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, R.layout.spinner_textview,opciones);
         spinner1.setAdapter(adapter);
 
     }
 
+    // Destructor de la clase
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -109,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Determina a que base de datos se tratará de acceder
     public void mostrar(View view){
         String seleccion = spinner1.getSelectedItem().toString();
         if(seleccion.equals("Paramédico")){
@@ -117,10 +124,13 @@ public class MainActivity extends AppCompatActivity {
             confirmarLogeo2();
         }
     }
+
     private void limpiarCampo() {
         enumero.setText("");
         Contrasena.setText("");
     }
+
+    // Genera la consulta a la base de datos de los paramédicos
     public void cargarInicio() {
         final String numero = enumero.getText().toString();
         final String contra = Contrasena.getText().toString();
@@ -170,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Genera la consulta a la base de datos de los bomberos
     public void cargarInicio2() {
         final String num = enumero.getText().toString();
         final String contrasena = Contrasena.getText().toString();
@@ -221,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Muestra mensaje de confirmación
     private void confirmarLogeo(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage("¿Desea Iniciar Sesion?");
@@ -242,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    // Muestra mensaje de confirmación
     private void confirmarLogeo2(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage("¿Desea Iniciar Sesion?");
@@ -264,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // Solicita los permisos para utlizar la ubicación
     private void getLocalizacion() {
         int permiso = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if(permiso == PackageManager.PERMISSION_DENIED){
@@ -274,16 +289,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Método para regresar a la pantalla anterior
     public void APantallaPrincipal(View view){
         Intent regresar = new Intent(this, MenuPrincipal.class);
         startActivity(regresar);
         finish();
     }
 
+    // Verifica que existan datos de inicio de sesión guardados
     private Boolean revisarSesion(){
         return this.preferences.getBoolean("sesion", false);
     }
 
+    // Guarda los datos de inicio de sesión que serán consultados la proxima vez que se abra la aplicación
     private void guardarSesion(String nombre) {
         editor.putBoolean("sesion", true);
         editor.putString("usuario", nombre);

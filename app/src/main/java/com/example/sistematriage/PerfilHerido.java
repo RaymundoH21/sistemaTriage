@@ -60,6 +60,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/* Esta clase pertenece al perfil del paciente, donde se muestra y se puede editar
+   su información y sus estados */
+
 public class PerfilHerido extends AppCompatActivity {
 
     public static String NoPaciente;
@@ -73,6 +76,7 @@ public class PerfilHerido extends AppCompatActivity {
     final int COD_SELECCIONA=10;
     final int COD_FOTO=20;
 
+    // Ruta donde se guardarán las fotos tomadas
     private String CARPETA_RAIZ="misImagenesPrueba/";
     private String RUTA_IMAGEN=CARPETA_RAIZ+"misFotos";
 
@@ -101,6 +105,7 @@ public class PerfilHerido extends AppCompatActivity {
     ViewPager2 viewPager2;
     MyViewPagerAdapter myViewPagerAdapter;
 
+    // variables públicas para que puedan ser accedidas en cualquiera de los dos fragments añadidos a esta activity
     public static String nombreHerido, edad, sexo, lesiones;
     public static Boolean modoEditar;
     public static Fragment fragment;
@@ -111,6 +116,7 @@ public class PerfilHerido extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_herido);
 
+        // Establece el color de la barra de estado en color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -120,8 +126,8 @@ public class PerfilHerido extends AppCompatActivity {
 
         }
 
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager2 = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout); // Menú para cambiar entre los dos fragments
+        viewPager2 = findViewById(R.id.view_pager); // Elemento donde se colocan los fragments y permite intercambiar entre ellos
         myViewPagerAdapter = new MyViewPagerAdapter(this);
         viewPager2.setAdapter(myViewPagerAdapter);
         cambio = false;
@@ -129,6 +135,7 @@ public class PerfilHerido extends AppCompatActivity {
         modoEditar = false;
         cancel = false;
 
+        // Listeners para el menú de los fragments
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -155,6 +162,7 @@ public class PerfilHerido extends AppCompatActivity {
             }
         });
 
+        // Establece una imagen por default
         imagen = (ImageView) findViewById(R.id.ImgVFoto);
         ivEFoto = (ImageView) findViewById(R.id.ivEFoto);
 
@@ -167,6 +175,7 @@ public class PerfilHerido extends AppCompatActivity {
         RecibirDatos();
     }
 
+    // Destructor de la clase
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -201,41 +210,12 @@ public class PerfilHerido extends AppCompatActivity {
     }
 
 
+    /* Para tomar la fotografía se declara un Intent con el cual se manda llamar la
+       aplicación de fotografía del dispositivo, una vez que se toma la fotografía, se crea el
+       archivo, se almacena en el dispositivo y se devuelve la fotografía a la aplicación
+       Sistema Triage */
+
     public void tomarFotografia(View view) {
-/*
-        File fileImagen=new File(Environment.getExternalStorageDirectory(),RUTA_IMAGEN);
-        boolean isCreada=fileImagen.exists();
-        String nombreImagen="";
-        if(isCreada==false){
-            isCreada=fileImagen.mkdirs();
-        }
-
-        if(isCreada==true){
-            nombreImagen=(System.currentTimeMillis()/1000)+".jpg";
-        }
-
-
-        path=Environment.getExternalStorageDirectory()+
-                File.separator+RUTA_IMAGEN+File.separator+nombreImagen;
-
-
-        File imagen=new File(path);
-        Intent intent=null;
-        intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ////
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-        {
-            String authorities=getApplicationContext().getPackageName()+".provider";
-            Uri imageUri= FileProvider.getUriForFile(this,authorities,imagen);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        }else
-        {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-        }
-        startActivityForResult(intent,COD_FOTO);
-
-        ////*/
-
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -305,7 +285,7 @@ public class PerfilHerido extends AppCompatActivity {
             Matrix matrix = new Matrix(); if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
 
 
-
+            // Se define el tamaño de la fotografía y se redondea para despues mostrarla in un imageView
             Bitmap adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
             bitmap = adjustedBitmap;
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -320,6 +300,7 @@ public class PerfilHerido extends AppCompatActivity {
 
     }
 
+    // Obtiene los datos provenientes del intent de la activity anterior
     private void RecibirDatos()
     {
         Bundle extras = getIntent().getExtras();
@@ -353,6 +334,7 @@ public class PerfilHerido extends AppCompatActivity {
 
     }
 
+    // Envía a la pantalla de la lista de la cual se proviene
     public void Volver (View view){
         lista2 = "Historial";
         if (lista.equals(lista2)){
@@ -365,6 +347,7 @@ public class PerfilHerido extends AppCompatActivity {
         finish();
     }
 
+    // Abre el fragment fragment_dialogo_modificciones.xml que muestra el recyclerView con todas las modificaciones de ese paciente
     public void MostrarModificaciones(View view){
         DialogoModificacionesFragment dialogoModificaciones = new DialogoModificacionesFragment(this, NoPaciente);
         dialogoModificaciones.show(getSupportFragmentManager(),"DialogoModificaciones");

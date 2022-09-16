@@ -25,13 +25,18 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Esta clase permite ingresar y mostrar la información obtenida de la base de datos en
+   cada uno de los elementos del recyclerView de la activity HistorialRegistros */
+
 public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder> implements View.OnClickListener{
     private View.OnClickListener listener;
     List<herido> listaHeridos;
     private Activity activity;
 
+    // contadores para la cantidad de personas de cada color
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
+    // Constructor de la clase
     public HistorialAdapter(List<herido> listaPersonas, Activity activity) {
         this.activity = activity;
         this.listaHeridos = listaPersonas;
@@ -48,6 +53,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
         return new HistorialAdapter.HistorialViewHolder(vista);
     }
 
+    // Obtiene cada uno de los valores de la lista que se recibe en el constructor de la clase y los va asignando a los elementos del archivo historial_card.xml
     @Override
     public void onBindViewHolder(HistorialAdapter.HistorialViewHolder holder, final int position) {
         //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
@@ -65,6 +71,8 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
                     .into(holder.imagen);*/
 
             //Picasso.get().load(ip).resize(150, 150).into(holder.imagen);
+
+            // Se redondea la imagen y se asigna al elemento ImageView
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), listaHeridos.get(position).getImagen());
             roundedBitmapDrawable.setCircular(true);
             holder.imagen.setImageDrawable(roundedBitmapDrawable);
@@ -139,7 +147,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
     }
 
 
-
+    // Se hacen las referencias a los elementos del archivo historial_card.xml
     public class HistorialViewHolder extends RecyclerView.ViewHolder{
 
         LinearLayout personCardView, linearRecibido;

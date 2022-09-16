@@ -77,8 +77,8 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
     LinearLayout LinearHospital, LinearAmbulancia, LinearCama;
     herido miUsuario;
     JSONArray json;
-    String tempColor, tempEstado;
-    String destino;
+    String tempColor, tempEstado; // almacenan los valores de color y estado antes de que se guarden en la BD.
+    String destino; // Almacena el nombre del hospital o si el paciente fue llevado a SEMEFO o fue alta médica
     String ambulancia;
     String cama;
     RoundedBitmapDrawable roundedBitmapDrawable;
@@ -98,7 +98,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
     public FloatingActionButton fabEliminar;
     String url;
     String lista2;
-    ImageView ivENombre, ivESexo, ivEEdad, ivELesiones;
+    ImageView ivENombre, ivESexo, ivEEdad, ivELesiones; // Botones para editar nombre, sexo, edad y lesiones
     TextView txtNombre, txtSexo, txtEdad, txtLesiones;
 
     @Override
@@ -106,12 +106,14 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         super.onCreate(savedInstanceState);
     }
 
+    // Este método se manda llamar al cambiar entre cada dialog
     @Override
     public void onResume() {
         super.onResume();
         PerfilHerido.fragment = new TriageFragment();
     }
 
+    // Este método se manda llamar al entrar al activity
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,6 +121,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         PerfilHerido.fragment = new TriageFragment();
         triage =  inflater.inflate(R.layout.fragment_triage, container, false);
 
+        // Se hace referencia a los elementos del archivo fragment_triage.xml
         ivEColor = (ImageView) triage.findViewById(R.id.ivEColor);
         ivEEstado = (ImageView) triage.findViewById(R.id.ivEEstado);
         ivEFoto = (ImageView) getActivity().findViewById(R.id.ivEFoto);
@@ -140,14 +143,17 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         ambulancia = "";
         cama = "";
 
+        // Determina la imagen predeterminada en caso de que no se haga la consulta a la base de datos
         bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_photo_camera_24);
         roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap2);
         roundedBitmapDrawable.setCircular(true);
         imagen.setImageDrawable(roundedBitmapDrawable);
 
         request = Volley.newRequestQueue(getActivity());
+        // Se manda llamar el método que hace la consulta a la BD para que se carguen los datos al entrar al activity
         webService();
 
+        // Listeners para establecer eventos al presionar los botones
         ivEColor.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
@@ -162,11 +168,13 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
             }
         });
 
+        //referencias a los botones flotantes
         fabEdit = getActivity().findViewById(R.id.fabEditar);
         fabSave = getActivity().findViewById(R.id.fabGuardar);
         fabExit = getActivity().findViewById(R.id.fabSalEditar);
         fabEliminar = getActivity().findViewById(R.id.fabEliminar);
 
+        //Listeners para los botones flotantes
         fabEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -265,9 +273,13 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         return triage;
     }
 
+    // Destructor de la clase
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        /* Se cancela la petición al servidor, se hacen null los objetos y variables para
+        que el recolector de basura pueda liberar memoria al cambiar de actividad */
 
         jsonObjectRequest.cancel();
         imagen.setImageDrawable(null);
@@ -310,9 +322,12 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         tvHospitalInfo = null;
         tvEstadoInfoTitle = null;
         tvEstadoInfo = null;
+
+        // Llamada al recolector de basura
         Runtime.getRuntime().gc();
 
     }
+
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -320,13 +335,17 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
     }
     private void showToast(String s) { Toast.makeText(getContext(),s, Toast.LENGTH_SHORT).show();}
 
+    // Se manda llamar en caso de que la consulta a la BD sea exitosa
     @Override
     public void onResponse(JSONObject response) {
         //showToast("Consulta Exitosa");
+        // se crea un objeto de la clase herido
         miUsuario = new herido();
+        // se convierte el JSONObject en JSONArray
         json = response.optJSONArray("paciente");
         JSONObject jsonObject= null;
         try {
+            // Todos los recibidos de la consulta son asignados a cada una de los atributos del objeto miUsuario
             jsonObject=json.getJSONObject(0);
             miUsuario.setColor(jsonObject.optString("Color"));
             miUsuario.setUbicacion(jsonObject.optString("Ubicacion"));
@@ -345,12 +364,12 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
             e.printStackTrace();
         }
 
+        // Los valores obtenidos de la BD son mostrados en los textviews
         tvColor.setText(miUsuario.getColor());
         tvUbicacion.setText(miUsuario.getUbicacion());
         tvEstado.setText(miUsuario.getEstado());
         tvUsuario.setText(miUsuario.getUsuario());
         tvFecha.setText(miUsuario.getFecha());
-
         tempColor = tvColor.getText().toString();
         tempEstado = tvEstado.getText().toString();
         destino = miUsuario.getDestino();
@@ -361,8 +380,8 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         PerfilHerido.edad = miUsuario.getEdad();
         PerfilHerido.lesiones = miUsuario.getLesiones();
 
+        // si el valor de tempEstado es trasladando se muestra el textview del número de ambulancia
         if (tempEstado.equals("Trasladando")) {
-
 
             tvEstadoInfo.setText(miUsuario.getAmbulancia());
             //tvEstadoInfo.setVisibility(View.VISIBLE);
@@ -372,6 +391,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
             LinearHospital.setVisibility(View.GONE);
             LinearCama.setVisibility(View.GONE);
 
+            // si el valor de tempEstado es Hospital se muestra el textview del nombre del hospital
         } else if (tempEstado.equals("Hospital")){
 
             tvEstadoInfo.setText(miUsuario.getAmbulancia());
@@ -385,6 +405,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
         }
 
+        // Si el valor de tempEstado es Recibido se muestra el textview del número de cama
         else if (tempEstado.equals("Recibido")){
 
             tvEstadoInfo.setText(miUsuario.getAmbulancia());
@@ -399,15 +420,18 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
         }
 
+        // Se redondea la imagen y se asigna al imageView
         if(miUsuario.getImagen()!=null) {
             roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), miUsuario.getImagen());
             roundedBitmapDrawable.setCircular(true);
             imagen.setImageDrawable(roundedBitmapDrawable);
         }
         else{
+            // Imagen por default, en caso de que no se reciba nada de la base de datos
             imagen.setImageResource(R.drawable.ic_baseline_photo_camera_24);
         }
 
+        // Se pregunta la clasificación por color del paciente y se establece el color del imageView dependiendo del color
         switch (miUsuario.getColor()){
             case "Rojo":
                 colorPerfil.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#A51717")));
@@ -428,8 +452,10 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    // Método para realizar la petición a la base de datos
     private void webService(){
 
+        // Se especifica la url del archivo php correspondiente en el servidor, una corresponde al servidor local y el otro a un servidor web
         //url = "http://192.168.1.12/sistematriage/ConsultarPaciente.php?NoPaciente="+PerfilHerido.NoPaciente;
         url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarPaciente.php?NoPaciente="+PerfilHerido.NoPaciente;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url,null,this,this);
@@ -437,6 +463,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    // Método para crear un alertDialog y editar el color seleccionandolo de una lista
     public void editarColor() {
 
         final CharSequence[] opciones={"Negro","Rojo","Amarillo","Verde"};
@@ -477,6 +504,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    // Método para crear un alertDialog y editar el estado de atención seleccionandolo de una lista
     public void editarEstado() {
 
         final CharSequence[] opciones={"En espera","Trasladando","Hospital","Recibido","SEMEFO","Alta médica"};
@@ -491,6 +519,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                // Si se selecciona En espera, se ponen vacíos los valores de ambulancia, destino y cama, ya que En espera es el primer Estado de atención
                 if (opciones[i].equals("En espera")){
                     tvEstado.setText("En espera");
                     PerfilHerido.cambio = true;
@@ -501,6 +530,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     destino = "";
                     cama = "";
                 }
+                // Si se selecciona Trasladando se crea otro alertDialog para seleccionar el número de ambulancia
                 else if (opciones[i].equals("Trasladando")) {
 
                     final CharSequence[] opciones={"BC-027","BC-150","BC-153","BC-156","BC-157","BC-158","BC-159 (supervisor)","BC-164","BC-165","BC-166","BC-169 (supervisor)","BC-171","BC-175","BC-176","BC-180","BC-182","BC-186","BC-187 (supervisor)","BC-190 (rescate)","BC-191","BC-195 (rescate)","BC-196 (upr)","Otro"};
@@ -822,7 +852,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                                 LinearAmbulancia.setVisibility(View.VISIBLE);
                                 LinearHospital.setVisibility(View.GONE);
                                 LinearCama.setVisibility(View.GONE);
-                            }
+                            } // En caso de que se seleccione Otro, se manda llamar el método AmbulanciaDialog, definido más abajo
                             else if (opciones[i].equals("Otro")) {
                                 AmbulanciaDialog();
                             }
@@ -834,6 +864,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     tvEstado.setText("Trasladando");
                     cambio = true;*/
                 }
+                // Si se selecciona Hospital se crea otro alertDialog para seleccionar el nombre del hospital
                 else if (opciones[i].equals("Hospital")){
 
                     final CharSequence[] opciones={"Cruz Roja Mexicana Delegación Tijuana","Cruz Roja Mexicana Estatal B.C.","Hospital Angeles Tijuana","Hospital General Ensenada","Hospital General Mexicali","Hospital General Rosarito","Hospital General Tecate","Hospital General Tijuana","IMSS 6 Tecate","ISSSTE Hospital Gral. Fray Junipero Serra","Otro"};
@@ -967,7 +998,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                                 LinearHospital.setVisibility(View.VISIBLE);
                                 LinearAmbulancia.setVisibility(View.VISIBLE);
                                 LinearCama.setVisibility(View.GONE);
-                            }
+                            } // En caso de que se seleccione Otro, se manda llamar el método OtroDestinoDialog, definido más abajo
                             else if (opciones[i].equals("Otro")) {
                                 OtroDestinoDialog();
                             }
@@ -975,10 +1006,10 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     });
                     alertOpciones.show();
 
-                }
+                } // En caso de seleccionar Recibido se manda llamar el método seleccionarCamaDialog, definido más abajo
                 else if (opciones[i].equals("Recibido")) {
                     SeleccionarCamaDialog();
-                }
+                } // En caso de seleccionar SEMEFO, solo se asigna SEMEFO a la variable destino y se dejan de mostrar los LinearLayout de hospital y Cama
                 else if (opciones[i].equals("SEMEFO")) {
                     tvEstado.setText("SEMEFO");
                     PerfilHerido.cambio = true;
@@ -986,7 +1017,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     LinearHospital.setVisibility(View.GONE);
                     LinearAmbulancia.setVisibility(View.VISIBLE);
                     LinearCama.setVisibility(View.GONE);
-                }
+                } // En caso de seleccionar Alta Médica, solo se asigna Alta Médica a la variable destino y se dejan de mostrar los LinearLayout de hospital, Cama y Ambulancia
                 else if (opciones[i].equals("Alta médica")) {
                     tvEstado.setText("Alta médica");
                     PerfilHerido.cambio = true;
@@ -1001,6 +1032,8 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    // Se llama este método en caso de cancelar la edición de los datos, se vuelven a asignar los valores de la BD a los textviews
+    // Las variables de cambio y cambioFoto se vuelven a dejar en false
     private void restablecerValores()
     {
         tvColor.setText(miUsuario.getColor());
@@ -1052,12 +1085,13 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         }
     }
 
+    // Crea un alertDialog para preguntar si se desea salir del modo edición, con la opción de sí y cancelar
     private void PreguntaSalirMod() {
         AlertDialog.Builder dialogo=new AlertDialog.Builder(getActivity());
         dialogo.setTitle("¿Deseas dejar de editar?");
         dialogo.setMessage("Los cambios no se guardarán");
 
-
+        // En caso de seleccionar Sí, todos los botones son ocultados
         dialogo.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -1115,12 +1149,14 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         dialogo.show();
     }
 
+    // Método para crear una petición al servidor hacia el archivo php de EliminarHerido
     private void webServiceEliminar() {
 
         //url="http://192.168.1.12/sistematriage/EliminarHerido.php?NoPaciente="+PerfilHerido.NoPaciente;
         url="http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/EliminarHerido.php?NoPaciente="+PerfilHerido.NoPaciente;
 
         stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            // Cuando se elimina al paciente se regresa a la lista de heridos
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getActivity(),"Se ha Eliminado con exito",Toast.LENGTH_SHORT).show();
@@ -1131,16 +1167,18 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                 //finish();
             }
         }, new Response.ErrorListener() {
-            @Override
+            @Override // Mensaje de error
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity(),"No se ha podido conectar",Toast.LENGTH_SHORT).show();
 
             }
         });
         //request.add(stringRequest);
+        // Se manda la petición
         VolleySingleton.getIntanciaVolley(getActivity()).addToRequestQueue(stringRequest);
     }
 
+    // Se crea un alertDialog para confirmar que se desea eliminar
     public void PreguntaEliminar(){
         AlertDialog.Builder dialogo=new AlertDialog.Builder(getActivity());
         dialogo.setTitle("¿Desea eliminar este registro?");
@@ -1164,6 +1202,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         dialogo.show();
     }
 
+    // Se crea un alertDialog para confirmar que se desea guardar
     private void PreguntaGuardar() {
         AlertDialog.Builder dialogo=new AlertDialog.Builder(getActivity());
         dialogo.setTitle("¿Deseas guardar los cambios?");
@@ -1174,8 +1213,8 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                webServiceAddModificacion();
-                webServiceActualizar();
+                webServiceAddModificacion(); // Método para guardar los datos que se van a sobreescribir
+                webServiceActualizar(); // Método para guardar los datos en la base de datos
             }
         });
         dialogo.setNegativeButton(Html.fromHtml("<font color='#696B6A'>Cancelar</font>"), new DialogInterface.OnClickListener(){
@@ -1189,14 +1228,18 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
 
     }
 
+    // Método para guardar los datos en la base de datos
     private void webServiceActualizar() {
 
+        // Si se modificó la foto, se ejecuta el código de este condicional
+        // Los fotos son muy pesadas, así que en caso de que no se modifiquen no es necisario volverlas a envíar
         if (PerfilHerido.cambioFoto) {
 
             //url = "http://192.168.1.12/sistematriage/ActualizarHerido.php?";
             url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ActualizarHerido.php?";
 
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // En caso de que se actualice con éxito, se vuelve a cargar la pantalla con los valores actualizados
                 @Override
                 public void onResponse(String response) {
 
@@ -1213,7 +1256,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getActivity(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
                 }
-            }) {
+            }) { // se crea un HashMap y se añaden los valores con el método put, con la forma ("Clave", valor);
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     String Pac = PerfilHerido.NoPaciente;
@@ -1248,14 +1291,16 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                 }
             };
             //request.add(stringRequest);
+            // se manda la petición
             VolleySingleton.getIntanciaVolley(getActivity()).addToRequestQueue(stringRequest);
 
-        }else
+        }else // si no se modificó la foto, solo se modifican los valores de los textViews
         {
             //url = "http://192.168.1.12/sistemaTriage/ActualizarHeridoSinFoto.php?";
             url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ActualizarHeridoSinFoto.php?";
 
             stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // En caso de que se actualice con éxito, se vuelve a cargar la pantalla con los valores actualizados
                 @Override
                 public void onResponse(String response) {
 
@@ -1274,6 +1319,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     Toast.makeText(getActivity(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
                 }
             }) {
+                // se crea un HashMap y se añaden los valores con el método put, con la forma ("Clave", valor);
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     String Pac = PerfilHerido.NoPaciente;
@@ -1306,11 +1352,13 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                 }
             };
             //request.add(stringRequest);
+            // se manda la petición
             VolleySingleton.getIntanciaVolley(getActivity()).addToRequestQueue(stringRequest);
         }
 
     }
 
+    // Se guardan los valores que van a ser sobreescritos, para mostrarlos en el historial de modificaciones
     private void webServiceAddModificacion() {
 
             //url = "http://192.168.1.12/sistematriage/HistorialModificacionConFoto.php?";
@@ -1333,6 +1381,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                     Toast.makeText(getActivity(), "No se ha podido conectar", Toast.LENGTH_SHORT).show();
                 }
             }) {
+                // se crea un HashMap y se añaden los valores con el método put, con la forma ("Clave", valor);
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     String Pac = PerfilHerido.NoPaciente;
@@ -1367,10 +1416,12 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
                 }
             };
             //request.add(stringRequest);
+            // Se manda la petición
             VolleySingleton.getIntanciaVolley(getActivity()).addToRequestQueue(stringRequest);
 
     }
 
+    // Crea un alertDialog con un editText para introducir el nombre del hospital manualmente
     private void OtroDestinoDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Hospital de destino");
@@ -1403,6 +1454,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         builder.create().show();
     }
 
+    // Crea un alertDialog con un editText para introducir el número de la cama manualmente
     private void SeleccionarCamaDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Número de cama");
@@ -1439,6 +1491,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         builder.create().show();
     }
 
+    // Crea un alertDialog con un editText para introducir el número de la ambulancia manualmente
     private void AmbulanciaDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Ambulancia");
@@ -1471,6 +1524,7 @@ public class TriageFragment extends Fragment implements Response.Listener<JSONOb
         builder.create().show();
     }
 
+    // Convierte la imagen a String para poder enviarla en el url de la petición y guardarla en la base de datos como longblob
     private String convertirImgString(Bitmap bitmap) {
 
         ByteArrayOutputStream array = new ByteArrayOutputStream();

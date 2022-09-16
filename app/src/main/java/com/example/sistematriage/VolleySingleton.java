@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/* Esta clase es la que permite realizar las consultas al servidor */
 
 public class VolleySingleton {
 

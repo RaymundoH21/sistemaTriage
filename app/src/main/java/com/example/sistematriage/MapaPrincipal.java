@@ -73,16 +73,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Esta clase define la funcionalidad del mapa */
+
 public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap mMap;
+    private GoogleMap mMap; // objeto para referenciar al mapa
     private ActivityMapaPrincipalBinding binding;
 
-    private LocationManager locationManager;
-    private Location currentLocation;
+    private LocationManager locationManager; // se utiliza para hacer uso del gps y obtener coordenadas
+    private Location currentLocation; // se utiliza para almacenar coordenadas
 
-    JsonObjectRequest jsonObjectRequest;
+    JsonObjectRequest jsonObjectRequest; // petición al servidor
 
+    // Almacenan marcadores que se mostrarán en el mapa
     private ArrayList<Marker> temporalRealTimeMarkers = new ArrayList<>();
     private ArrayList<Marker> realTimeMarkers = new ArrayList<>();
 
@@ -90,7 +93,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     private static final float camera_zoom = 15;
 
 
-    private BottomSheetBehavior mBottomSheetBehavior1;
+    private BottomSheetBehavior mBottomSheetBehavior1; // widget que se muestra al presionar sobre cada marcador
     LinearLayout tapactionlayout;
     View white_forground_view;
     View bottomSheet;
@@ -99,16 +102,16 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     ImageView btnNavegar, btnNavGoogle, btnDetalles, btnTrazarRuta;
 
 
-    Double latori, lngori, latdes, lngdes;
+    Double latori, lngori, latdes, lngdes; // variables para almacenar las coordenadas de origen y destino
     Polyline line;
     Boolean rutaTrazada;
     String tiempo, distancia;
     Integer ultNoPaciente;
 
     private SharedPreferences prefs;
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView; // navbar de la parte inferior
     TextView usuario;
-    Toolbar toolbar;
+    Toolbar toolbar; // barra de la parte superior
 
     TextView txtNumTotal, txtNumRojo, txtNumAmarillo, txtNumVerde, txtNumNegro;
     Integer cTotal, cRojo, cAmarillo, cVerde, cNegro;
@@ -120,11 +123,11 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     ImageView imagenMarker;
 
     herido herido;
-    MarkerOptions markerOptions;
+    MarkerOptions markerOptions; // permite modificar los marcadores
     Marker marcador_;
     JSONObject jsonObject;
-    Integer clickCount;
-    herido info;
+    Integer clickCount; // se utiliza para saber si se está presionando varias veces sobre el mismo marcador
+    herido info; // para almacenar la información recibida de la base de datos
     LocationListener locationListener;
     String url;
 
@@ -139,6 +142,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     Canvas canvas;
     RequestQueue requestQueue;
     String status;
+    // Objetos para definir los segmentos de la ruta recibida por la API de Google Maps
     JSONArray routes;
     ArrayList<LatLng> points;
     PolylineOptions polylineOptions;
@@ -156,7 +160,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     String NoPaciente;
     String lista;
 
-    SharedPreferences preferences;
+    SharedPreferences preferences; // Almacena los datos de inicio de sesión
     SharedPreferences.Editor editor;
 
 
@@ -164,9 +168,10 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE); // Obtiene los datos de inicio de sesión
         editor = preferences.edit();
 
+        // Establece el color de la barra de estado en color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -427,6 +432,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    // Método que se ejecuta al iniciar la activity y genera el mapa
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -440,6 +446,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                 return null;
             }
 
+            // Éste método personaliza el popup que se muestra arriba del marcador al ser presionado
             @Nullable
             @Override
             public View getInfoWindow(@NonNull Marker marker) {
@@ -450,13 +457,14 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                 } catch (Exception ex) {
 
                     info = new herido();
-                    info = (herido) marker.getTag();
+                    info = (herido) marker.getTag(); // obtiene la información correspondiente de ese paciente
 
-
+                    // hace la referencia al archivo popupmarker.xml donde se define la vista
                     if (popup == null){
                         popup=getLayoutInflater().inflate(R.layout.popupmarker, null);
                     }
 
+                    // se referencian los elementos y se asignan los valores y la imagen
                     tvLat = (TextView) popup.findViewById(R.id.tvLat);
                     tvLng = (TextView) popup.findViewById(R.id.tvLng);
                     tvAlt = (TextView) popup.findViewById(R.id.tvAlt);
@@ -478,12 +486,14 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+        // se establece un límite para que la cámara del mapa no se pueda recorrer más allá de esas coordenadas,
+        // en este caso la cámara se mantiene en los límites del estado de Baja California
         LatLngBounds adelaideBounds = new LatLngBounds(
                 new LatLng(28.051344, -117.368531),
                 new LatLng(32.787179, -113.063591)
         );
-        mMap.setMinZoomPreference(7.0f);
-        mMap.setMaxZoomPreference(26.0f);
+        mMap.setMinZoomPreference(7.0f); // Zoom Mínimo
+        mMap.setMaxZoomPreference(26.0f); // Zoom Máximo
         mMap.setLatLngBoundsForCameraTarget(adelaideBounds);
         miUbicacion();
         mMap.setOnMarkerClickListener(this);
@@ -491,6 +501,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    // Método para obtener la ubicación del dispositivo
     private void miUbicacion(){
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -503,14 +514,17 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        // se habilita la ubicación del dispositivo
         mMap.setMyLocationEnabled(true);
 
+        // se deshabilitan los botones predeterminados del mapa de Google
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
         locationManager = (LocationManager) MapaPrincipal.this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
 
+            // obtiene costantemente las coordenadas del gps del dispositivo
             @Override
             public void onLocationChanged(Location location) {
                 if (markerUbicacion != null){
@@ -545,6 +559,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
     }
 
 
+    // Establece los eventos a realizar al presionar sobre un marcador
     @Override
     public boolean onMarkerClick(Marker marker) {
 
@@ -564,6 +579,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
             if (ultNoPaciente != info.getNoPaciente()){
 
+                // sy ya hay una ruta trazada, la borra
                 if (rutaTrazada == true)
                 {
                     borrarRuta();
@@ -575,6 +591,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                 latdes = info.getLatitud();
                 lngdes = info.getLongitud();
 
+                // Determina el color de la imagen que se mostrará en el widget
                 switch (info.getColor()){
                     case "Rojo":
                         ivBSImagen.setImageDrawable(getResources().getDrawable(R.drawable.ic_icono_marker_rojo));
@@ -589,7 +606,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                         ivBSImagen.setImageDrawable(getResources().getDrawable(R.drawable.ic_icono_marker_negro));
                         break;
                 }
-                bottomSheet.setTranslationY(-230);
+                bottomSheet.setTranslationY(-230); // mueve el widget hacia la parte superior
                 mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
                 ultNoPaciente = info.getNoPaciente();
 
@@ -601,6 +618,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         return false;
     }
 
+    // Esconde el widget con la información de la ruta y dirección
     public void CerrarBottomSheet(View view){
         bottomSheet.setTranslationY(0);
         mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -610,10 +628,11 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    // Genera la petición a la base de datos para saber las ubicaciones de los pacientes en espera
     private void webServiceMarcadores(){
 
-        //url = "http://192.168.1.12/sistematriage/ConsultarUbicaciones.php";
-        url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarUbicaciones.php";
+        url = "http://192.168.1.12/sistematriage/ConsultarUbicaciones.php";
+        //url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarUbicaciones.php";
 
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -625,6 +644,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
                 try {
 
+                    // se recorren cada uno de los registros devueltos por la respuesta de la BD y se van creando los marcadores
                     if (json != null){
                         for (int i=0;i<json.length();i++){
                             herido = new herido();
@@ -639,8 +659,8 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                             herido.setAltitud(jsonObject.optDouble("Altitud"));
                             herido.setDato(jsonObject.optString("Foto"));
 
-                            markerOptions = new MarkerOptions();
-                            marcador_ = null;
+                            markerOptions = new MarkerOptions(); // Crea el marcador
+                            marcador_ = null; // Almacena la información para recuperla al momento de hacer clic en el marcador
 
                             switch (herido.getColor()){
 
@@ -689,6 +709,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                             marcador_.setTag(herido);
                             temporalRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
+                            // Posiciona la cámara en el primer marcador
                             if (i == 0){
                                 LatLng ultmarcador = new LatLng(herido.getLatitud(), herido.getLongitud());
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(ultmarcador));
@@ -739,6 +760,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    // Método predeterminado para definir el trazo de la ruta en el mapa
     private List<LatLng> decodePoly(String encoded) {
 
         poly = new ArrayList<LatLng>();
@@ -773,6 +795,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         return poly;
     }
 
+    // Convierte un vector en bitmap
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -782,44 +805,46 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    // Genera la petición a la API directions para obtener la ruta
     private void direction(){
 
         requestQueue = Volley.newRequestQueue(this);
         url = Uri.parse("https://maps.googleapis.com/maps/api/directions/json")
                 .buildUpon()
-                .appendQueryParameter("destination", latdes + ", " + lngdes)
-                .appendQueryParameter("origin", latori + ", " + lngori)
-                .appendQueryParameter("mode", "driving")
-                .appendQueryParameter("departure_time", "now")
-                .appendQueryParameter("traffic_model", "best_guess")
-                .appendQueryParameter("units", "metric")
-                .appendQueryParameter("key", "AIzaSyCRzX9PLLtbXtHvvCCOoL-MW_hC_hMM7os")
+                .appendQueryParameter("destination", latdes + ", " + lngdes) // coordenadas de destino
+                .appendQueryParameter("origin", latori + ", " + lngori) // coordenadas de origen
+                .appendQueryParameter("mode", "driving") // modo manejando
+                .appendQueryParameter("departure_time", "now") // establece el tiempo a partir de el momento de la consulta
+                .appendQueryParameter("traffic_model", "best_guess") // la mejor predicción del tráfico
+                .appendQueryParameter("units", "metric") // sistema métrico, kilometros
+                .appendQueryParameter("key", "AIzaSyCRzX9PLLtbXtHvvCCOoL-MW_hC_hMM7os") // Clave de acceso a la API
                 .toString();
 
+        // Petición a la API
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     status = response.getString("status");
-                    if (status.equals("OK")) {
-                        routes = response.getJSONArray("routes");
+                    if (status.equals("OK")) { // En caso de no haya ningún error en la consulta
+                        routes = response.getJSONArray("routes"); // Se define la ruta
 
                         polylineOptions = null;
 
                         for (int i=0; i<routes.length(); i++){
                             points = new ArrayList<>();
                             polylineOptions = new PolylineOptions();
-                            legs = routes.getJSONObject(i).getJSONArray("legs");
-                            tiempo = legs.getJSONObject(i).getJSONObject("duration_in_traffic").getString("text");
-                            distancia = legs.getJSONObject(i).getJSONObject("distance").getString("text");
+                            legs = routes.getJSONObject(i).getJSONArray("legs"); // la ruta se divide en legs
+                            tiempo = legs.getJSONObject(i).getJSONObject("duration_in_traffic").getString("text"); // se obtiene el tiempo estimado
+                            distancia = legs.getJSONObject(i).getJSONObject("distance").getString("text"); // se obtiene la distancia el km estimada
 
 
                             for (int j=0; j<legs.length(); j++){
-                                steps = legs.getJSONObject(j).getJSONArray("steps");
+                                steps = legs.getJSONObject(j).getJSONArray("steps"); // se dividen las legs en steps
 
                                 for(int k=0; k<steps.length(); k++){
-                                    polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
-                                    list = decodePoly(polyline);
+                                    polyline = steps.getJSONObject(k).getJSONObject("polyline").getString("points"); // los steps se dividen en points
+                                    list = decodePoly(polyline); // se genera la lista de puntos
 
                                     for (int l=0; l<list.size(); l++){
                                         position = new LatLng((list.get(l)).latitude, (list.get(l)).longitude);
@@ -827,16 +852,17 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
                                     }
                                 }
                             }
-                            polylineOptions.addAll(points);
-                            polylineOptions.width(10);
-                            polylineOptions.color(ContextCompat.getColor(MapaPrincipal.this, R.color.azul));
+                            polylineOptions.addAll(points); // se añaden todos los puntos obtenidos
+                            polylineOptions.width(10); // se define el ancho de la línea de la ruta
+                            polylineOptions.color(ContextCompat.getColor(MapaPrincipal.this, R.color.azul)); // color de la línea
                             polylineOptions.geodesic(true);
                         }
 
-                        line = mMap.addPolyline(polylineOptions);
-                        tvTiempo.setText(tiempo);
-                        tvDistancia.setText(distancia);
+                        line = mMap.addPolyline(polylineOptions); // añade la línea al mapa
+                        tvTiempo.setText(tiempo); // muestra el tiempo en el widget
+                        tvDistancia.setText(distancia); // muestra la distancia en el widget
 
+                        // Establece límites de la cámara a partir de las coordenadas de la ruta trazada
                         bounds = new LatLngBounds.Builder()
                                 .include(new LatLng(latori, lngori))
                                 .include(new LatLng(latdes, lngdes)).build();
@@ -860,14 +886,16 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         requestQueue.add(jsonObjectRequest);
     }
 
+
     public void trazarRuta(View view){
 
         try {
+            // Determina si ya hay una ruta trazada
             if (rutaTrazada == true)
             {
                 borrarRuta();
             }
-            direction();
+            direction(); // método para obtener la dirección de la API directions
             rutaTrazada = true;
             HabilitarBotonesNav();
         }catch(Exception e){
@@ -883,6 +911,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         DeshabilitarBotonesNav();
     }
 
+    // Regresa la vista de la cámara a la ubicación actual del dispositivo
     private void aMiUbicacion(){
         ubicacion = new LatLng(latori, lngori);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ubicacion));
@@ -895,14 +924,17 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+    // Método para el botón de reducir zoom
     public void ZoomOut(View view){
         mMap.animateCamera(CameraUpdateFactory.zoomOut());
     }
 
+    // Método para el botón de aumentar zoom
     public void ZoomIn(View view){
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 
+    // Método para abrir la aplicación de google maps con la ruta de navegación ya especificada
     public void Navegar(View view){
         gmmIntentUri = Uri.parse("google.navigation:q="+latdes+","+lngdes);
         intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -910,6 +942,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         startActivity(intent);
     }
 
+    // Método para dirigirnos a la activity que genera la ruta de navegación con la API de Mapbox a partir de las coordenadas que se le envían
     public void NavegarMapbox(View view){
         Intent intent = new Intent(MapaPrincipal.this,ActividadNavegacion.class);
         intent.putExtra("originLat", latori);
@@ -920,6 +953,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         finish();
     }
 
+    // Mostrar botones para generar la ruta de navegación
     public void HabilitarBotonesNav(){
         btnTrazarRuta.setVisibility(View.GONE);
         btnDetalles.setVisibility(View.GONE);
@@ -929,6 +963,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         btnNavGoogle.setVisibility(View.VISIBLE);
     }
 
+    // Dejar de mostrar los botones para generar la ruta de navegación
     public void DeshabilitarBotonesNav(){
         tvTiempo.setVisibility(View.GONE);
         tvDistancia.setVisibility(View.GONE);
@@ -942,6 +977,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
         aMiUbicacion();
     }
 
+    // Vuelve a generar otra petición al servidor para obtener los registros más actuales
     public void actualizarMarcadores(View view){
 
         cTotal = 0;
@@ -953,6 +989,7 @@ public class MapaPrincipal extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    // Dirige a la pantalla de PerfilHerido, donde está toda la información del paciente.
     public void AHeridoSeleccionado(View view){
         intent = new Intent(this,PerfilHerido.class);
         intent.putExtra("NoPaciente", NoPaciente);

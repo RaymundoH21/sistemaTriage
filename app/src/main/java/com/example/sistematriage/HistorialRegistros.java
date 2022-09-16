@@ -38,17 +38,21 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/* Esta clase pertenece a la actividad del historial, donde se muestra un recyclerView con todos los
+   pacientes que han sido registrados y que ya fueron entregados ya sea al hospital,
+   SEMEFO o fueon dados de alta en el lugar de los hechos */
+
 public class HistorialRegistros extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
-    TextView usuario;
-    Toolbar toolbar;
+    BottomNavigationView bottomNavigationView; // Navbar inferior
+    TextView usuario; // Nombre del usuario mostrado en la parte superior
+    Toolbar toolbar; // navbar superior
 
     ArrayList<String> filtros;
     Boolean filtroColor;
     String cadenaFiltros;
 
-    JsonObjectRequest jsonObjectRequest;
+    JsonObjectRequest jsonObjectRequest; // petición al servidor
 
     TextView NoPaciente;
     String stringNoPaciente;
@@ -66,7 +70,7 @@ public class HistorialRegistros extends AppCompatActivity {
     ArrayList<herido> historial;
     ArrayList<herido> listaHeridosBackups;
 
-    HistorialAdapter adapter;
+    HistorialAdapter adapter; // objeto de la clase que definimos en el archivo HistorialAdapter
     RequestQueue request1;
 
     String nombre;
@@ -83,7 +87,7 @@ public class HistorialRegistros extends AppCompatActivity {
     Intent Paciente;
     String lista;
 
-    SharedPreferences preferences;
+    SharedPreferences preferences; // Se utiliza para guardar los datos de inicio de sesión
     SharedPreferences.Editor editor;
 
     @Override
@@ -91,9 +95,10 @@ public class HistorialRegistros extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_registros);
 
-        preferences = getSharedPreferences("sesiones", Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("sesiones", Context.MODE_PRIVATE); // Obtiene los datos de inicio de sesión guardados
         editor = preferences.edit();
 
+        // Establece el color de la barra de estado en color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -103,8 +108,10 @@ public class HistorialRegistros extends AppCompatActivity {
 
         }
 
+        // Referencia al elemento shimmerLayout que se muestra mientras se carga la información de la BD
         shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
+        // Referencia a los demás elementos del archivo activity_historial_registros.xml
         tvTotal = (TextView) findViewById(R.id.tvTotal);
         tvRojo = (TextView) findViewById(R.id.tvTRojos);
         tvAmarillo = (TextView) findViewById(R.id.tvTAmarillos);
@@ -142,7 +149,7 @@ public class HistorialRegistros extends AppCompatActivity {
         request1= Volley.newRequestQueue(this);
         adapter=new HistorialAdapter(historial, this);
 
-
+        // Listener para el navbar de la parte superior, cambia de activity entre las 4 activities principales (ListaHerido, RegistrarPaciente, MapaPrincipal, HistorialRegistros)
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -183,6 +190,7 @@ public class HistorialRegistros extends AppCompatActivity {
             }
         });
 
+        // Establece la división entre los elementos del recyclerView
         recyclerHistorial.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL) {
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -190,14 +198,16 @@ public class HistorialRegistros extends AppCompatActivity {
             }
         });
 
-        webService();
+        webService(); // Llamada el método que hace la consulta a la base de datos
     }
 
+    // Destructor de la clase
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //finish();
-        jsonObjectRequest.cancel();
+        jsonObjectRequest.cancel(); // Se cancela la petición para evitar que se cierre la aplicación
+        // Todos los elementos son puestos en null para que el recolector de basura los pueda eliminar y liberar memoria
         recyclerHistorial.setLayoutManager(null);
         historial = null;
         listaHeridosBackups = null;
@@ -237,17 +247,19 @@ public class HistorialRegistros extends AppCompatActivity {
         Paciente = null;
         lista = null;
         ArrayList<herido> FiltrarLista = null;
-        Runtime.getRuntime().gc();
+        Runtime.getRuntime().gc(); // Llamada al recolector de basura para liberar memoria
         //placePicutreimgView.setImageDrawable(null);
 
     }
 
+    // Se hace referencia al menú declarado en el archivo menu2.xml utilizado para el toolbar de la parte superior
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu2,menu);
         return true;
     }
 
+    // Se definen las opciones de los elementos del menú del toolbar de la parte superior
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -260,6 +272,7 @@ public class HistorialRegistros extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método para cerrar sesión y regresar al activity de inicio de sesión
     private void logout() {
         /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
@@ -268,7 +281,7 @@ public class HistorialRegistros extends AppCompatActivity {
         this.finish();
         this.overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
          */
-        editor.putBoolean("sesion", false);
+        editor.putBoolean("sesion", false); // Elimina los datos de acceso, para que al volver a abrir la aplicación se vuelvan a pedir
         editor.apply();
         Intent intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -276,11 +289,13 @@ public class HistorialRegistros extends AppCompatActivity {
         finish();
     }
 
+    // Método que hace la petición al servidor
     private void webService() {
         //progress = new ProgressDialog(this);
         //progress.setMessage("Cargando...");
         //progress.show();
 
+        // un url indica la dirección hacia el archivo ubicado en el servidor local y otro al servidor web
         //url = "http://192.168.1.12/sistematriage/ConsultarListas2.php";
         url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarListas2.php";
 
@@ -294,6 +309,7 @@ public class HistorialRegistros extends AppCompatActivity {
 
                 try {
 
+                    // con este for se reciben todos los registros devueltos por la respuesta del servidor, almacenando la información en una lista de objetos de tipo herido
                     for (int i=0;i<json.length();i++){
                         herido = new herido();
                         jsonObject=null;
@@ -306,9 +322,10 @@ public class HistorialRegistros extends AppCompatActivity {
                         herido.setUsuario(jsonObject.optString("Usuario"));
                         herido.setDato(jsonObject.optString("Foto"));
                         herido.setDestino(jsonObject.optString("Destino"));
-                        historial.add(herido);
-                        listaHeridosBackups.add(herido);
+                        historial.add(herido); // Cada objeto se añade a la lista historial
+                        listaHeridosBackups.add(herido); // Se utiliza para mostrar otra vez todos los elementos al quitar los filtros
 
+                        // Se van contando el total de personas de cada color
                         switch (herido.getColor()){
                             case "Rojo":
                                 r++;
@@ -328,35 +345,38 @@ public class HistorialRegistros extends AppCompatActivity {
 
                     }
 
+                    // Se detiene el efecto de carga
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
+                    // Los totales de personas de cada color son concatenados en cadenas
                     total = "T: " + t;
                     rojo = "R: " + r;
                     amarillo = "A: " + a;
                     verde = "V: " + v;
                     negro = "N: " + n;
 
+                    // Se asignan las cadenas de los totales a los textviews
                     tvTotal.setText(total);
                     tvRojo.setText(rojo);
                     tvAmarillo.setText(amarillo);
                     tvVerde.setText(verde);
                     tvNegro.setText(negro);
 
-
+                    // Listener para definir un evento al presionar sobre un elemento de la lista (recyclerView)
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            NoPaciente = view.findViewById(R.id.txtNoPaciente);
-                            stringNoPaciente = NoPaciente.getText().toString();
+                            NoPaciente = view.findViewById(R.id.txtNoPaciente); // se hace referencia al textview donde se encuentra el NoPaciente seleccionado
+                            stringNoPaciente = NoPaciente.getText().toString(); // se toma el valor del textview del elemento del recyclerView donde se encuentra el Número del paciente seleccionado
 
-                            APacienteSeleccionado(recyclerHistorial);
+                            APacienteSeleccionado(recyclerHistorial); // Se manda llamar el método que redirige al activity PerfilHerido
                         }
                     });
 
-                    recyclerHistorial.setAdapter(adapter);
+                    recyclerHistorial.setAdapter(adapter); // Actualiza los datos del recyclerView
 
 
-                } catch (JSONException e) {
+                } catch (JSONException e) { // En caso de error se muestra mensaje y se detiene el efecto de carga (shimmerLayout)
                     e.printStackTrace();
                     Toast.makeText(HistorialRegistros.this, "No se ha podido establecer conexión con el servidor" +" "+response, Toast.LENGTH_LONG).show();
                     //progress.hide();
@@ -365,7 +385,7 @@ public class HistorialRegistros extends AppCompatActivity {
                 }
 
             }
-        }, new Response.ErrorListener() {
+        }, new Response.ErrorListener() { // En caso de error en la petición, se muestra mensaje y se detiene el efecto de carga (shimmerLayout)
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(HistorialRegistros.this, "No se encontraron registros", Toast.LENGTH_SHORT).show();
@@ -377,24 +397,28 @@ public class HistorialRegistros extends AppCompatActivity {
 
 
         //request.add(stringRequest);
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest); // Se manda la petición
     }
+
     public void APacienteSeleccionado(View view){
         lista = "Historial";
         Paciente = new Intent(this,PerfilHerido.class);
-        Paciente.putExtra("NoPaciente",stringNoPaciente);
-        Paciente.putExtra("nombre", nombre);
-        Paciente.putExtra("lista", lista);
+        Paciente.putExtra("NoPaciente",stringNoPaciente); // Nombre del paciente del que se va a hacer la consultar al iniciar la actividad PerfilHerido
+        Paciente.putExtra("nombre", nombre); // nombre del usuario
+        Paciente.putExtra("lista", lista); // la lista desde la cual presionamos el elemento de la lista
         startActivity(Paciente);
         finish();
     }
+
+    // Muestra todos los registros obtenidos de la base de datos
     public void QuitarFiltro(){
-        adapter.Filtrar(listaHeridosBackups);
+        adapter.Filtrar(listaHeridosBackups); // se manda la lista con todos los registros obtenidos de la base de datos al método filtrar del HistorialAdapter
         filtros.clear();
         filtroColor = false;
         cadenaFiltros = "";
     }
 
+    // Método para filtrar los registros dependiendo la cadena que se le envíe como parámetro
     public void Filtrar(String texto){
         FiltrarLista = new ArrayList<>();
 
@@ -406,6 +430,7 @@ public class HistorialRegistros extends AppCompatActivity {
         adapter.Filtrar(FiltrarLista);
     }
 
+    // Métodos para filtrar por color, primero quitan el filtro anterior y mandan llamar el método Filtrar con la cadena correspondiente
     public void FiltrarRojo(View view)
     {
         QuitarFiltro();
@@ -433,8 +458,9 @@ public class HistorialRegistros extends AppCompatActivity {
     public void SinFiltro(View view)
     {
         QuitarFiltro();
-    }
+    } // Elimina los filtros
 
+    // Actualiza la activity, haciendo que se vuelva a ejecutar el método onCreate para cargar nuevos elementos de la base de datos en caso de que se hayan registrado
     public void RefrescarListaHistorial(View view){
         Paciente = new Intent(this, HistorialRegistros.class);
         Paciente.putExtra("NoPaciente",stringNoPaciente);

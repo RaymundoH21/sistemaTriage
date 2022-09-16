@@ -62,28 +62,33 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/* Esta clase pertenece a la actividad del historial, donde se muestra un recyclerView con todos los
+   pacientes que acaban de ser registrados y están en espera de que llegue la ambulancia por ellos o
+   que ya están siendo trasladados */
+
 public class ListaHeridos extends AppCompatActivity {
 
-    String NombreUsuario;
+    String NombreUsuario; // El nombre que se muestra en el toolbar
 
     TextView usuario;
-    Toolbar toolbar;
+    Toolbar toolbar; // barra de la parte superior
 
-    BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView; // Navbar de la parte superior
 
-    HeridoAdapter adapter;
+    HeridoAdapter adapter; // Objeto que permite mandar los datos a cada elemento del recyclerView
 
-    ProgressDialog progress;
-    StringRequest request;
-    JsonObjectRequest jsonObjectRequest;
+    ProgressDialog progress; // Barra de progreso
+    StringRequest request; // Petición al servidor
+    JsonObjectRequest jsonObjectRequest; // Petición al servidor
 
     RequestQueue request1;
     JsonObjectRequest jsonObjectRequest1;
 
     RecyclerView recyclerHeridos;
-    ArrayList<herido> listaHeridos;
-    ArrayList<herido> listaHeridosBackup;
+    ArrayList<herido> listaHeridos; // Lista que se manda al adapter
+    ArrayList<herido> listaHeridosBackup; // Lista para guardar los valores recibidos de la BD y poder restablecerlos
 
+    // Se utilzan para consultar la información de la BD del paciente al presionar sobre un elemento del recyclerView
     TextView NoPaciente;
     String stringNoPaciente;
 
@@ -93,7 +98,7 @@ public class ListaHeridos extends AppCompatActivity {
 
     TextView tvTotal, tvRojo, tvAmarillo, tvVerde, tvNegro;
 
-    public Integer t = 0, r = 0, a = 0, v = 0, n = 0;
+    public Integer t = 0, r = 0, a = 0, v = 0, n = 0; // contadores
 
     String total;
     String rojo;
@@ -117,6 +122,7 @@ public class ListaHeridos extends AppCompatActivity {
     String lista;
     ArrayList<herido> FiltrarLista;
 
+    // Se utiliza para guardar los datos de inicio de sesión
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
@@ -125,9 +131,10 @@ public class ListaHeridos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_heridos);
 
-        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE); // Obtiene los datos de inicio de sesión guardados
         editor = preferences.edit();
 
+        // Establece el color de la barra de estado en color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -139,9 +146,11 @@ public class ListaHeridos extends AppCompatActivity {
 
         getLocalizacion();
 
-        lista = "Espera";
+        lista = "Espera"; // Esta variable se utiliza para saber en que lista estamos, para que cuando nos regresemos de la pantalla de perfilHerido, regresemos a esta pantalla.
+        // Referencia al elemento shimmerLayout que se muestra mientras se carga la información de la BD
         shimmerFrameLayout = findViewById(R.id.shimmer_view_container);
 
+        // Referencias a los elementos del archivo activity_lista_heridos.xml
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -179,52 +188,41 @@ public class ListaHeridos extends AppCompatActivity {
         bottomNavigationView.setItemIconTintList(null);
         //bottomNavigationView.setItemIconTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
 
+        // Listener para el navbar de la parte superior, cambia de activity entre las 4 activities principales (ListaHerido, RegistrarPaciente, MapaPrincipal, HistorialRegistros)
             bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
                     switch (item.getItemId())
                     {
                         case R.id.listaheridos:
                             return true;
-
                         case R.id.registrarpaciente:
-                            //startActivity(new Intent(getApplicationContext(),RegistrarPaciente.class));
                             Intent intent = new Intent(ListaHeridos.this,RegistrarPaciente.class);
                             intent.putExtra("nombre",nombre);
                             startActivity(intent);
-                            /*startActivity(intent
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));*/
                             overridePendingTransition(0,0);
                             finish();
-                            //finish();
                             return true;
-
                         case R.id.mapa:
-                            //startActivity(new Intent(getApplicationContext(),Mapa.class));
                             Intent intent2 = new Intent(ListaHeridos.this,MapaPrincipal.class);
                             intent2.putExtra("nombre",nombre);
                             startActivity(intent2);
                             overridePendingTransition(0,0);
                             finish();
                             return true;
-
                         case R.id.historial:
-                            //startActivity(new Intent(getApplicationContext(),HistorialRegistros.class));
                             Intent intent3 = new Intent(ListaHeridos.this,HistorialRegistros.class);
                             intent3.putExtra("nombre",nombre);
                             startActivity(intent3);
                             overridePendingTransition(0,0);
                             finish();
                             return true;
-
                     }
                     return false;
                 }
             });
 
+        // Establece la división entre los elementos del recyclerView
         recyclerHeridos.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL) {
             @Override
             public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -232,15 +230,17 @@ public class ListaHeridos extends AppCompatActivity {
             }
         });
 
-        webService();
+        webService(); // Llamada el método que hace la consulta a la base de datos
 
     }
 
+    // Destructor de la clase
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //finish();
-        jsonObjectRequest.cancel();
+        jsonObjectRequest.cancel(); // Se cancela la petición para evitar que se cierre la aplicación
+        // Todos los elementos son puestos en null para que el recolector de basura los pueda eliminar y liberar memoria
         json = null;
         request = null;
         jsonObjectRequest = null;
@@ -285,12 +285,12 @@ public class ListaHeridos extends AppCompatActivity {
         Paciente = null;
         lista = null;
         FiltrarLista = null;
-        Runtime.getRuntime().gc();
+        Runtime.getRuntime().gc(); // Llamada al recolector de basura para liberar memoria
         //placePicutreimgView.setImageDrawable(null);
 
     }
 
-
+    // Métodos para controlar los estados de la aplicación
     @Override
     protected void onResume() {
         super.onResume();
@@ -303,7 +303,7 @@ public class ListaHeridos extends AppCompatActivity {
         shimmerFrameLayout.stopShimmer();
     }
 
-    //Controlar la pulsacion del boton Atras
+    // Controlar la pulsacion del boton Atras
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==event.KEYCODE_BACK){
@@ -329,12 +329,14 @@ public class ListaHeridos extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    // Se hace referencia al menú declarado en el archivo menu2.xml utilizado para el toolbar de la parte superior
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu2,menu);
         return true;
     }
 
+    // Se definen las opciones de los elementos del menú del toolbar de la parte superior
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -347,6 +349,7 @@ public class ListaHeridos extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método para cerrar sesión y regresar al activity de inicio de sesión
     private void logout() {
         /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
@@ -363,8 +366,10 @@ public class ListaHeridos extends AppCompatActivity {
         finish();
     }
 
+    // Método que hace la petición al servidor
     private void webService() {
 
+        // un url indica la dirección hacia el archivo ubicado en el servidor local y otro al servidor web
         //url = "http://192.168.1.12/sistematriage/ConsultarLista.php";
         url = "http://ec2-54-183-143-71.us-west-1.compute.amazonaws.com/ConsultarLista.php";
 
@@ -378,6 +383,7 @@ public class ListaHeridos extends AppCompatActivity {
 
                 try {
 
+                    // con este for se reciben todos los registros devueltos por la respuesta del servidor, almacenando la información en una lista de objetos de tipo herido
                         for (int i=0;i<json.length();i++){
                             herido = new herido();
                             jsonObject=null;
@@ -394,9 +400,10 @@ public class ListaHeridos extends AppCompatActivity {
                             herido.setLongitud(jsonObject.optDouble("Longitud"));
                             herido.setAltitud(jsonObject.optDouble("Altitud"));
                             herido.setAmbulancia(jsonObject.optString("Ambulancia"));
-                            listaHeridos.add(herido);
-                            listaHeridosBackup.add(herido);
+                            listaHeridos.add(herido); // Cada objeto se añade a la listaHeridos
+                            listaHeridosBackup.add(herido); // Se utiliza para mostrar otra vez todos los elementos al quitar los filtros
 
+                            // Se van contando el total de personas de cada color
                             switch (herido.getColor()){
                                 case "Rojo":
                                     r++;
@@ -416,35 +423,38 @@ public class ListaHeridos extends AppCompatActivity {
 
                         }
 
+                        // Se detiene el efecto de carga
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
+                        // Los totales de personas de cada color son concatenados en cadenas
                         total = "T: " + t;
                         rojo = "R: " + r;
                         amarillo = "A: " + a;
                         verde = "V: " + v;
                         negro = "N: " + n;
 
+                        // Se asignan las cadenas de los totales a los textviews
                         tvTotal.setText(total);
                         tvRojo.setText(rojo);
                         tvAmarillo.setText(amarillo);
                         tvVerde.setText(verde);
                         tvNegro.setText(negro);
 
-
+                        // Listener para definir un evento al presionar sobre un elemento de la lista (recyclerView)
                         adapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                NoPaciente = view.findViewById(R.id.txtNoPaciente);
-                                stringNoPaciente = NoPaciente.getText().toString();
+                                NoPaciente = view.findViewById(R.id.txtNoPaciente); // se hace referencia al textview donde se encuentra el NoPaciente seleccionado
+                                stringNoPaciente = NoPaciente.getText().toString(); // se toma el valor del textview del elemento del recyclerView donde se encuentra el Número del paciente seleccionado
 
-                                APacienteSeleccionado(recyclerHeridos);
+                                APacienteSeleccionado(recyclerHeridos); // Se manda llamar el método que redirige al activity PerfilHerido
                             }
                         });
 
-                        recyclerHeridos.setAdapter(adapter);
+                        recyclerHeridos.setAdapter(adapter); // Actualiza los datos del recyclerView
                         webserviceTerminado = true;
 
-                } catch (JSONException e) {
+                } catch (JSONException e) { // En caso de error se muestra mensaje y se detiene el efecto de carga (shimmerLayout)
                     e.printStackTrace();
                     Toast.makeText(ListaHeridos.this, "No se ha podido establecer conexión con el servidor" +" "+response, Toast.LENGTH_LONG).show();
                     shimmerFrameLayout.stopShimmer();
@@ -454,7 +464,7 @@ public class ListaHeridos extends AppCompatActivity {
                 }
 
             }
-        }, new Response.ErrorListener() {
+        }, new Response.ErrorListener() { // En caso de error en la petición, se muestra mensaje y se detiene el efecto de carga (shimmerLayout)
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(ListaHeridos.this, "No se encontraron registros", Toast.LENGTH_SHORT).show();
@@ -467,18 +477,19 @@ public class ListaHeridos extends AppCompatActivity {
 
 
         //request.add(stringRequest);
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
+        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest); // Se manda la petición
     }
 
     public void APacienteSeleccionado(View view){
         Paciente = new Intent(this,PerfilHerido.class);
-        Paciente.putExtra("NoPaciente",stringNoPaciente);
-        Paciente.putExtra("nombre", nombre);
-        Paciente.putExtra("lista", lista);
+        Paciente.putExtra("NoPaciente",stringNoPaciente); // Nombre del paciente del que se va a hacer la consultar al iniciar la actividad PerfilHerido
+        Paciente.putExtra("nombre", nombre); // nombre del usuario
+        Paciente.putExtra("lista", lista); // la lista desde la cual presionamos el elemento de la lista
         startActivity(Paciente);
         finish();
     }
 
+    // Actualiza la activity, haciendo que se vuelva a ejecutar el método onCreate para cargar nuevos elementos de la base de datos en caso de que se hayan registrado
     public void RefrescarLista(View view){
         Paciente = new Intent(this, ListaHeridos.class);
         Paciente.putExtra("NoPaciente",stringNoPaciente);
@@ -490,6 +501,7 @@ public class ListaHeridos extends AppCompatActivity {
         finish();
     }
 
+    // Muestra todos los registros obtenidos de la base de datos
     public void QuitarFiltro(){
         adapter.Filtrar(listaHeridosBackup);
         filtros.clear();
@@ -497,6 +509,7 @@ public class ListaHeridos extends AppCompatActivity {
         cadenaFiltros = "";
     }
 
+    // Método para filtrar los registros dependiendo la cadena que se le envíe como parámetro
     public void Filtrar(String texto){
         FiltrarLista = new ArrayList<>();
 
@@ -508,6 +521,7 @@ public class ListaHeridos extends AppCompatActivity {
         adapter.Filtrar(FiltrarLista);
     }
 
+    // Métodos para filtrar por color, primero quitan el filtro anterior y mandan llamar el método Filtrar con la cadena correspondiente
     public void FiltrarRojo(View view)
     {
         QuitarFiltro();
@@ -537,6 +551,7 @@ public class ListaHeridos extends AppCompatActivity {
         QuitarFiltro();
     }
 
+    // Pide permisos para obtener utilizar la ubicación
     private void getLocalizacion() {
         int permiso = ContextCompat.checkSelfPermission(ListaHeridos.this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if(permiso == PackageManager.PERMISSION_DENIED){

@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
+/* Esta clase pertenece a la primer pantalla, donde aparece el logo y la opción de ir a la pantalla de inicio de sesión*/
+
 public class MenuPrincipal extends AppCompatActivity {
 
     Intent Inicio;
@@ -25,9 +27,10 @@ public class MenuPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
-        preferences = this.getSharedPreferences("sesiones", Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences("sesiones", Context.MODE_PRIVATE); // se obtienen los datos de inicio de sesión
         editor = preferences.edit();
 
+        // Se verifica que existan datos de inicio de sesión guardadados, si los hay, redirige a la activity de la lista de heridos
         if (revisarSesion()) {
             Intent intent = new Intent(MenuPrincipal.this, ListaHeridos.class);
             intent.putExtra("nombre", this.preferences.getString("usuario", ""));
@@ -35,6 +38,7 @@ public class MenuPrincipal extends AppCompatActivity {
             finish();
         }
 
+        // cambia el color de la barra de estado a color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -45,6 +49,7 @@ public class MenuPrincipal extends AppCompatActivity {
         }
     }
 
+    // destructor de la clase
     @Override
     public void onDestroy()
     {
@@ -54,12 +59,14 @@ public class MenuPrincipal extends AppCompatActivity {
         Runtime.getRuntime().gc();
     }
 
+    // Método para ir a inicio de sesión
     public void AInicioDeSesion(View view){
         Inicio = new Intent(this, MainActivity.class);
         startActivity(Inicio);
         finish();
     }
 
+    // Método para cerrar la aplicación
     public void SalirApp(View view){
         builder = new AlertDialog.Builder(this);
         builder.setMessage("¿Desea salir de sistema triage?")
@@ -78,6 +85,7 @@ public class MenuPrincipal extends AppCompatActivity {
         builder.show();
     }
 
+    // Método que revisa que haya datos de inicio de sesión guardados
     private Boolean revisarSesion(){
         return this.preferences.getBoolean("sesion", false);
     }

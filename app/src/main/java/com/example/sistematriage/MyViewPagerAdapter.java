@@ -8,6 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.sistematriage.fragments.DatosPersonalesFragment;
 import com.example.sistematriage.fragments.TriageFragment;
 
+/* Esta clase se utiliza para manejar la transición entre los dos
+   fragments de la activity perfilHerido */
+
 public class MyViewPagerAdapter extends FragmentStateAdapter{
 
     public MyViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {

@@ -84,6 +84,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/* En esta clase se definen los métodos para la captura de la fotografía, la
+   clasificación por color, la obtención de coordenadas y la obtención de la
+   dirección para el registro de cada paciente */
+
 public class RegistrarPaciente extends AppCompatActivity {
 
     TextView usuario2;
@@ -92,16 +96,17 @@ public class RegistrarPaciente extends AppCompatActivity {
     EditText ubi, color, usuario, estado;
     ImageView btnGuardar;
 
+    // Ruta donde se guardarán las fotos tomadas
     private final String CARPETA_RAIZ="misImagenesPrueba/";
     private final String RUTA_IMAGEN=CARPETA_RAIZ+"misFotos";
 
     final int COD_SELECCIONA=10;
     final int COD_FOTO=20;
 
-    ImageView IV;
-    String path;
-    Bitmap bitmap;
-    Uri file;
+    ImageView IV; // ImageView que muestra la fotografía que se toma
+    String path; // ruta de la imagen
+    Bitmap bitmap; // fotografía
+    Uri file; // se utiliza para obtener un archivo del almacenamiento del dispositivo
 
     RequestQueue request;
     StringRequest stringRequest;
@@ -114,6 +119,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     String nombre;
 
+    // Variables para guardar la latitud, longitud, ubicación y altitud
     String lat, lon, locat, alt;
 
     Double latitud, longitud, altitud;
@@ -132,6 +138,7 @@ public class RegistrarPaciente extends AppCompatActivity {
     byte[] imagenByte;
     String imagenString;
 
+    // Contiene los datos de inicio de sesión
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
@@ -141,9 +148,10 @@ public class RegistrarPaciente extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_paciente);
 
-        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("sesiones",Context.MODE_PRIVATE); // Obtiene los datos de inicio de sesión
         editor = preferences.edit();
 
+        // Establece el color de la barra de estado en color blanco
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -165,9 +173,9 @@ public class RegistrarPaciente extends AppCompatActivity {
         altitude = 0.0;
         file = null;
 
-        getLocalizacion();
+        getLocalizacion(); // Llamada al método que obtiene la ubicación del gps
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar); // barra superior
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -178,12 +186,13 @@ public class RegistrarPaciente extends AppCompatActivity {
 
         usuario2.setText(nombre);
 
-        request = Volley.newRequestQueue(this);
+        request = Volley.newRequestQueue(this); // petición al servidor
 
         IV = (ImageView) findViewById(R.id.foto);
 
         btnGuardar = ((ImageView)findViewById(R.id.btnGuardar));
 
+        // Listener para utilizar el imageView IV como botón para tomar la fotografía
         IV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +203,7 @@ public class RegistrarPaciente extends AppCompatActivity {
             }
         });
 
+        // navbar de la parte inferior
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.registrarpaciente);
         bottomNavigationView.setItemIconTintList(null);
@@ -244,18 +254,20 @@ public class RegistrarPaciente extends AppCompatActivity {
         rbVerde = (RadioButton) findViewById(R.id.rbVerde);
 
 
-        if(validaPermisos()){
+        if(validaPermisos()){ // Este método solicita los permisos para acceder al almacenamiento y a la cámara
             IV.setEnabled(true);
         }else{
             IV.setEnabled(false);
         }
     }
 
+    // Destructor de la clase
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         //stringRequest.cancel();
+        // se ponen todos los objetos en null para que el recolector de basura los pueda eliminar y así pueda liberar memoria
         usuario2 = null;
         toolbar = null;
         ubi = null;
@@ -295,6 +307,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     }
 
+    // Funcionamiento de los RadioButton
     public void onRadioButtonClicked(View view) {
         boolean marcado = ((RadioButton) view).isChecked();
 
@@ -333,6 +346,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         }
     }
 
+    // Obtiene la ubicación del gps del dispositivo
     private void cargarLocalizacion() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -352,6 +366,7 @@ public class RegistrarPaciente extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location) {
 
+                // se obtienen las coordenadas constantemente
                 latitud = location.getLatitude();
                 longitud = location.getLongitude();
                 altitud = location.getAltitude();
@@ -383,6 +398,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         //Toast.makeText(RegistrarPaciente.this, "Ubicación generada con éxito", Toast.LENGTH_LONG).show();
     }
 
+    // Solicita permisos para acceder a la ubicación del dispositivo
     private void getLocalizacion() {
         int permiso = ContextCompat.checkSelfPermission(RegistrarPaciente.this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if(permiso == PackageManager.PERMISSION_DENIED){
@@ -393,12 +409,14 @@ public class RegistrarPaciente extends AppCompatActivity {
         }
     }
 
+    // Se hace referencia al menú declarado en el archivo menu2.xml utilizado para el toolbar de la parte superior
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu2,menu);
         return true;
     }
 
+    // Se definen las opciones de los elementos del menú del toolbar de la parte superior
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -411,6 +429,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método para cerrar sesión y regresar al activity de inicio de sesión
     private void logout() {
         /*SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
@@ -427,6 +446,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         finish();
     }
 
+    // Verifica se hayan dado permisos para acceder a la cámara
     private boolean validaPermisos() {
 
         if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
@@ -462,6 +482,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     }
 
+    // Abre un alertDialog para habilitar los permisos de la cámara
     private void solicitarPermisosManual() {
         final CharSequence[] opciones={"si","no"};
         final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(RegistrarPaciente.this);
@@ -484,6 +505,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         alertOpciones.show();
     }
 
+    // Dialogo en caso de rechazar los permisos
     private void cargarDialogoRecomendacion() {
         AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistrarPaciente.this);
         dialogo.setTitle("Permisos Desactivados");
@@ -507,41 +529,12 @@ public class RegistrarPaciente extends AppCompatActivity {
         tomarFotografia();
     }
 
+    /* Para tomar la fotografía se declara un Intent con el cual se manda llamar la
+       aplicación de fotografía del dispositivo, una vez que se toma la fotografía, se crea el
+       archivo, se almacena en el dispositivo y se devuelve la fotografía a la aplicación
+       Sistema Triage */
+
     private void tomarFotografia() {
-/*
-        File fileImagen=new File(Environment.getExternalStorageDirectory(),RUTA_IMAGEN);
-        boolean isCreada=fileImagen.exists();
-        String nombreImagen="";
-        if(isCreada==false){
-            isCreada=fileImagen.mkdirs();
-        }
-
-        if(isCreada==true){
-            nombreImagen=(System.currentTimeMillis()/1000)+".jpg";
-        }
-
-
-        path=Environment.getExternalStorageDirectory()+
-                File.separator+RUTA_IMAGEN+File.separator+nombreImagen;
-
-
-        File imagen=new File(path);
-        Intent intent=null;
-        intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        ////
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-        {
-            String authorities=getApplicationContext().getPackageName()+".provider";
-            Uri imageUri= FileProvider.getUriForFile(this,authorities,imagen);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        }else
-        {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-        }
-        startActivityForResult(intent,COD_FOTO);
-
-        ////*/
-
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -589,6 +582,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+
                     int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
                     int rotationInDegrees = exifToDegrees(rotation);
@@ -596,7 +590,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                     Matrix matrix = new Matrix(); if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
 
 
-
+                    // Se define el tamaño de la fotografía y se redondea para despues mostrarla in un imageView
                     adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                     bitmap = adjustedBitmap;
                     RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -635,6 +629,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         PreguntaGuardar();
     }
 
+    // Se hace la petición al servidor para guardar los datos capturados en la base de datos
     private void cargarWebService(){
 
         //url="http://192.168.1.12/sistematriage/RegistrarPaciente.php";
@@ -669,6 +664,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         }
         )
         {
+            // Se asignan los valores a las variables que serán enviadas en la petición
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
@@ -701,6 +697,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         request.add(stringRequest);
     }
 
+    // Convierte el bitmap de la foto en string para que pueda ser enviada en la petición al servidor
     private String convertirImgString(Bitmap bitmap) {
 
         array=new ByteArrayOutputStream();
@@ -712,7 +709,7 @@ public class RegistrarPaciente extends AppCompatActivity {
     }
 
 
-
+    // ajusta el tamaño de la imagen
     private Bitmap redimensionarImagen(Bitmap bitmap, float anchoNuevo, float altoNuevo) {
 
         int ancho = bitmap.getWidth();
@@ -733,6 +730,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
     }
 
+    // Obtiene la ubicación
     private void PreguntaGuardar() {
         cargarLocalizacion();
         /*AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistrarPaciente.this);
@@ -747,7 +745,7 @@ public class RegistrarPaciente extends AppCompatActivity {
                 latitude = latitud;
                 longitude = longitud;
                 if(latitude != 0 && longitude != 0) {
-                    locat = getCurrentLocationViaJSON(latitude, longitude);
+                    locat = getCurrentLocationViaJSON(latitude, longitude); // se manda llamar al método que obtiene la dirección
                     cargarWebService();
                 }else {
                     alerta("No se han podido obtener las coordenas, vuelve a intentar");
@@ -771,6 +769,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         finish();
     }
 
+    // Devuelve el color del radio button presionado
     public String obtenerColor() {
 
         if (rbNegro.isChecked()==true){
@@ -799,12 +798,13 @@ public class RegistrarPaciente extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         //seleccionamos la cadena a mostrar
         dialogBuilder.setMessage(cadena);
-        //elegimo un titulo y configuramos para que se pueda quitar
+        //elegimos un titulo y configuramos para que se pueda quitar
         dialogBuilder.setCancelable(true).setTitle("Error");
         //mostramos el dialogBuilder
         dialogBuilder.create().show();
     }
 
+    // Este método genera la petición a la API geocode para obtener el nombre de la dirección de las coordenadas
     public static JSONObject getLocationInfo(Double lat, Double lng) {
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -815,7 +815,7 @@ public class RegistrarPaciente extends AppCompatActivity {
 
             HttpGet httpGet = new HttpGet(
                     "https://maps.googleapis.com/maps/api/geocode/json?latlng="
-                            + lat + "," + lng + "&sensor=true&key=AIzaSyAr-EnqwpqJwx5nJbc1m3kDUE_5TJxQhqI");
+                            + lat + "," + lng + "&sensor=true&key=AIzaSyAr-EnqwpqJwx5nJbc1m3kDUE_5TJxQhqI"); // clave de acceso a la API
             HttpClient client = new DefaultHttpClient();
             HttpResponse response;
             StringBuilder stringBuilder = new StringBuilder();
@@ -846,6 +846,7 @@ public class RegistrarPaciente extends AppCompatActivity {
         return null;
     }
 
+    // Aquí se recibe el resultado de la petición a la API y se le da formato a la dirección recibida
     public static String getCurrentLocationViaJSON(Double lat, Double lng) {
 
         JSONObject jsonObj = getLocationInfo(lat, lng);

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/* Esta clase no se utiliza */
+
 public class Principal extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;

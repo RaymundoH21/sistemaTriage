@@ -51,6 +51,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/* Esta clase pertenece a la funcionalidad de generar una ruta de navegación
+   con la API de Mapbox, se inicia cuando se presiona el botón navegar*/
+
 public class ActividadNavegacion extends AppCompatActivity implements OnMapReadyCallback,
         MapboxMap.OnMapClickListener, PermissionsListener {
 
@@ -66,6 +69,7 @@ public class ActividadNavegacion extends AppCompatActivity implements OnMapReady
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Cambia el color de la barra de status
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -75,8 +79,9 @@ public class ActividadNavegacion extends AppCompatActivity implements OnMapReady
 
         }
 
-        RecibirCoordenadas();
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
+        RecibirCoordenadas(); // Método que recibe las coordenadas de la activity MapaPrincipal
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token)); // Toma la clave de acceso a la API definida en el archivo strings.xml
+        // Se define la vista del mapa
         setContentView(R.layout.actividad_navegacion);
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -86,8 +91,8 @@ public class ActividadNavegacion extends AppCompatActivity implements OnMapReady
 
 public void startNavigation(){
 
-
-        boolean simulateRoute = false;
+        //boolean simulateRoute = false;
+        // Genera la ruta de navegación a partir de las coordenadas contenidas en currentRoute
         NavigationLauncherOptions options = NavigationLauncherOptions.builder()
                 .directionsRoute(currentRoute)
                 .build();
@@ -126,9 +131,10 @@ public void startNavigation(){
         return true;
     }
 
+    // Genera la ruta a partir de los puntos de origen y destino generados en el método onMapReady
     private void getRoute(Point originPoint, Point destinationPoint) {
         NavigationRoute.builder(this)
-                .accessToken(Mapbox.getAccessToken())
+                .accessToken(Mapbox.getAccessToken()) // Método que obtiene la clave de acceso a la API de Mapbox, definida en el archivo gradle.properties
                 .origin(originPoint)
                 .destination(destinationPoint)
                 .build()
@@ -158,13 +164,14 @@ public void startNavigation(){
 
     }
 
+    // Este método carga el mapa al iniciar la activity
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
 
         this.mapboxMap = mapboxMap;
 
-        this.mapboxMap.setMinZoomPreference(16);
-        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() {
+        this.mapboxMap.setMinZoomPreference(16); // Define el Zoom mínimo predeterminado
+        mapboxMap.setStyle(getString(R.string.navigation_guidance_day), new Style.OnStyleLoaded() { // defineel estilo del mapa, la url está definida en el archivo strings.xml
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 enableLocationComponent(style);
@@ -174,12 +181,13 @@ public void startNavigation(){
             }
         });
 
-        Point destinationPoint = Point.fromLngLat(lngdes, latdes);
-        Point originPoint = Point.fromLngLat(lngori, latori);
-        getRoute(originPoint,destinationPoint);
+        Point destinationPoint = Point.fromLngLat(lngdes, latdes); // Genera el punto de destino a partir de las coordenadas de destino
+        Point originPoint = Point.fromLngLat(lngori, latori); // Genera el punto de origen a partir de de las coordenadas de origen
+        getRoute(originPoint,destinationPoint); // Genera la ruta
 
     }
 
+    // Método que establece que al presionar la tecla de atrás se regresa al Mapa principal
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==event.KEYCODE_BACK){
@@ -192,6 +200,7 @@ public void startNavigation(){
         return super.onKeyDown(keyCode, event);
     }
 
+    // Define el marcador de destino
     private void addDestinationIconLayer(Style style) {
         style.addImage("destination-icon-id",
                 BitmapFactory.decodeResource(this.getResources(), R.drawable.mapbox_marker_icon_default));
@@ -207,6 +216,7 @@ public void startNavigation(){
 
     }
 
+    // Solicita los permisos, obtiene la ubicación del dispositivo y pone la camara en modo ruta
     private void enableLocationComponent(@NotNull Style loadedMapStyle) {
 
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
@@ -282,6 +292,7 @@ public void startNavigation(){
         mapView.onLowMemory();
     }
 
+    // Recibe las coordenadas enviadas desde la activity MapaPrincipal
     public void RecibirCoordenadas(){
         Bundle extras = getIntent().getExtras();
         latori = extras.getDouble("originLat");

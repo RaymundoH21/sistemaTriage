@@ -25,14 +25,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.ArrayList;
 
+/* Esta clase permite ingresar y mostrar la información obtenida de la base de datos en
+   cada uno de los elementos del recyclerView de la activity ListaHeridos */
+
 public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoViewHolder> implements View.OnClickListener{
 
     private View.OnClickListener listener;
     List<herido> listaHeridos;
     Activity activity;
 
+    // contadores para la cantidad de personas de cada color
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
+    // Constructor de la clase
     public HeridoAdapter(List<herido> listaPersonas, Activity activity) {
         this.activity = activity;
         this.listaHeridos = listaPersonas;
@@ -40,7 +45,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
 
     @Override
     public HeridoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.herido_card,parent,false);
+        View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.herido_card,parent,false); // Se hace referencia al archivo herido_card.xml, el cual es la vista de cada elemento del recyclerView
         RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         vista.setLayoutParams(layoutParams);
@@ -48,6 +53,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         return new HeridoViewHolder(vista);
     }
 
+    // Obtiene cada uno de los valores de la lista que se recibe en el constructor de la clase y los va asignando a los elementos del archivo herdio_card.xml
     @Override
     public void onBindViewHolder(HeridoViewHolder holder, final int position) {
         //holder.imagen.setImageBitmap(listaPersonas.get(position).getImagen());
@@ -61,6 +67,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imagen);*/
 
+            // Se redondea la imagen y se asigna al elemento ImageView
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), listaHeridos.get(position).getImagen());
             roundedBitmapDrawable.setCircular(true);
             holder.imagen.setImageDrawable(roundedBitmapDrawable);
@@ -78,6 +85,8 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         holder.txtLat.setText("Latitud: " +String.valueOf(listaHeridos.get(position).getLatitud().toString()));
         holder.txtLng.setText("Longitud: " +String.valueOf(listaHeridos.get(position).getLongitud().toString()));
         holder.txtAlt.setText("Altitud: "+String.valueOf(listaHeridos.get(position).getAltitud().toString()));
+
+        // Esta parte hace que cuando se presenten estos casos, se omita escribir el texto que va después del número
         if (listaHeridos.get(position).getAmbulancia().equals("null") || listaHeridos.get(position).getAmbulancia().equals("")){
             holder.LinearAmbulancia.setVisibility(View.GONE);
         } else if(listaHeridos.get(position).getAmbulancia().equals("BC-159 (supervisor)")){
@@ -148,8 +157,7 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
         }
     }
 
-
-
+    // Se hacen las referencias a los elementos del archivo herido_card.xml
     public class HeridoViewHolder extends RecyclerView.ViewHolder{
 
         LinearLayout personCardView, LinearAmbulancia;
@@ -169,7 +177,6 @@ public class HeridoAdapter extends RecyclerView.Adapter<HeridoAdapter.HeridoView
             txtAlt = (TextView) itemView.findViewById(R.id.txtAlt);
             txtAmbulancia = (TextView) itemView.findViewById(R.id.tvAmbulancia);
             LinearAmbulancia = (LinearLayout) itemView.findViewById(R.id.LinearAmbu);
-
 
         }
 

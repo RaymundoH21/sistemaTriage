@@ -28,6 +28,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.ArrayList;
 
+/* Esta clase no se utiliza en ninguna parte, se usó para probar una forma diferente de cargar los elementos del recyclerView*/
+
 public class HistorialDataAdapter extends RecyclerView.Adapter<HistorialDataAdapter.HistorialViewHolder> implements View.OnClickListener {
     private View.OnClickListener listener;
     private final int VIEW_ITEM = 1;
@@ -37,8 +39,6 @@ public class HistorialDataAdapter extends RecyclerView.Adapter<HistorialDataAdap
 
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
-    // The minimum amount of items to have below your current scroll position
-    // before loading more.
     private int visibleThreshold = 5;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;

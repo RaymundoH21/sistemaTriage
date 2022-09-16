@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+/* Clase la cual contiene todos los atributos del paciente, se utiliza para recibir los datos de la BD*/
+
 public class herido {
 
     private Integer noPaciente;
@@ -26,6 +28,7 @@ public class herido {
     private String edad;
     private String lesiones;
 
+    // Métodos para acceder y modificar los valores de las propiedades de esta clase
 
     public Bitmap getImagen() {
         return imagen;

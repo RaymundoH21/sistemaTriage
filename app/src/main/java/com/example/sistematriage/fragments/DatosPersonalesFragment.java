@@ -20,6 +20,10 @@ import android.widget.Toast;
 import com.example.sistematriage.PerfilHerido;
 import com.example.sistematriage.R;
 
+/* Esta clase pertenece a uno de los fragments de la activity PerfilHerido,
+   en donde se introducen los datos personales del paciente
+ */
+
 public class DatosPersonalesFragment extends Fragment {
 
     ImageView ivENombre, ivESexo, ivEEdad, ivELesiones;
@@ -30,17 +34,27 @@ public class DatosPersonalesFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    // Este método se manda llamar al cambiar entre cada dialog
     @Override
     public void onResume() {
         super.onResume();
+        /* Se pregunta por el estado de la variable cancel, la cual
+           nos dice si los cambios a la información se cancelaron */
         if (PerfilHerido.cancel == true){
+            /* Si se canceló, a los textviews se les asignan
+               los valores que se recibieron de la consulta a la BD */
             tvNombre.setText(PerfilHerido.nombreHerido);
             tvSexo.setText(PerfilHerido.sexo);
             tvEdad.setText(PerfilHerido.edad);
             tvLesiones.setText(PerfilHerido.lesiones);
             PerfilHerido.cancel = false;
         }
+        /* Se inicializa el objeto fragment de la clase PerfilHerido
+           con el constructor de este fragment, para saber cual es el
+           fragment que se encuentra visible en ese momento */
         PerfilHerido.fragment = new DatosPersonalesFragment();
+        /* Si el botón Editar fue presionado, al entrar a este
+           fragment se hacen visibles los botones de editar*/
         if(PerfilHerido.modoEditar == true){
             ivENombre.setVisibility(View.VISIBLE);
             ivESexo.setVisibility(View.VISIBLE);
@@ -63,6 +77,7 @@ public class DatosPersonalesFragment extends Fragment {
         PerfilHerido.fragment = new DatosPersonalesFragment();
         View view =  inflater.inflate(R.layout.fragment_datos_personales, container, false);
 
+        // Se hace referencia a los elementos del archivo fragment_datos_personales.xml
         ivENombre = (ImageView) view.findViewById(R.id.ivENombre);
         ivESexo = (ImageView) view.findViewById(R.id.ivESexo);
         ivEEdad = (ImageView) view.findViewById(R.id.ivEEdad);
@@ -77,6 +92,8 @@ public class DatosPersonalesFragment extends Fragment {
         tvEdad.setText(PerfilHerido.edad);
         tvLesiones.setText(PerfilHerido.lesiones);
 
+        /* Si el botón Editar fue presionado, al entrar a este
+           fragment se hacen visibles los botones de editar*/
         if(PerfilHerido.modoEditar == true){
             ivENombre.setVisibility(View.VISIBLE);
             ivESexo.setVisibility(View.VISIBLE);
@@ -90,6 +107,7 @@ public class DatosPersonalesFragment extends Fragment {
             ivELesiones.setVisibility(View.GONE);
         }
 
+        // Listeners para cada uno de los botones de editar
         ivENombre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
@@ -121,6 +139,8 @@ public class DatosPersonalesFragment extends Fragment {
         return view;
     }
 
+    /* Método para crear un alertDialog en el cual se incluye
+       un editText para introducir el nombre del paciente */
     public void editarNombre(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Nombre del paciente");
@@ -146,10 +166,12 @@ public class DatosPersonalesFragment extends Fragment {
         builder.create().show();
     }
 
+    /* Método para crear un alertDialog en el cual se incluye
+       una lista con los valores de Hombre y Mujer */
     public void editarSexo(){
         final CharSequence[] opciones={"Hombre","Mujer"};
         final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(getActivity());
-        alertOpciones.setTitle("Selecciona el color");
+        alertOpciones.setTitle("Selecciona el sexo");
         alertOpciones.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -180,10 +202,13 @@ public class DatosPersonalesFragment extends Fragment {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setLayoutParams(layoutParams);
     }
 
+    /* Método para crear un alertDialog en el cual se incluye
+       una lista con todas las edades posibles */
     public void editarEdad(){
         final CharSequence[] opciones = new CharSequence[102];
         opciones[0] = "Menos de 1 año";
         opciones[1] = "1 año";
+        // ciclo para añadir edades a la lista
         for(Integer i = 2; i <= 100; i++){
             opciones[i] = "" + i + " años";
         }
@@ -207,6 +232,8 @@ public class DatosPersonalesFragment extends Fragment {
         alertOpciones.show();
     }
 
+    /* Método para crear un alertDialog en el cual se incluye
+       un editText para introducir las lesiones del paciente */
     public void editarLesiones(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Lesiones Principales");

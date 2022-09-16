@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.ArrayList;
 
+/* Esta clase se utiliza para mostrar la información del historial de cambios en el recyclerView
+   que aparece al presionar el botón de la parte superior derecha en la pantalla de perfil herido*/
+
 public class ModificacionAdapter extends RecyclerView.Adapter<ModificacionAdapter.ModificacionViewHolder> implements View.OnClickListener{
 
     private View.OnClickListener listener;
@@ -25,10 +28,12 @@ public class ModificacionAdapter extends RecyclerView.Adapter<ModificacionAdapte
 
     int t = 0, r = 0, a = 0, v = 0, n = 0;
 
+    // Constructor de la clase que recibe la lista de tipo herido con la información obtenida de la BD
     public ModificacionAdapter(List<herido> listaPersonas) {
         this.listaHeridos = listaPersonas;
     }
 
+    // se hace la referencia al archivo modificacion_card.xml en el cual se define la vista de cada elemento del recyclerView
     @Override
     public ModificacionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.modificacion_card,parent,false);
@@ -39,6 +44,7 @@ public class ModificacionAdapter extends RecyclerView.Adapter<ModificacionAdapte
         return new ModificacionViewHolder(vista);
     }
 
+    // Obtiene cada uno de los valores de la lista que se recibe en el constructor de la clase y los va asignando a los elementos del archivo modificacion_card.xml
     @Override
     public void onBindViewHolder(ModificacionViewHolder holder, final int position) {
 
@@ -95,7 +101,7 @@ public class ModificacionAdapter extends RecyclerView.Adapter<ModificacionAdapte
     }
 
 
-
+    // Se declaran los objetos y se hacen las referencias a cada uno de los elementos del archivo modificacion_card.xml
     public class ModificacionViewHolder extends RecyclerView.ViewHolder{
 
         CardView personCardView;

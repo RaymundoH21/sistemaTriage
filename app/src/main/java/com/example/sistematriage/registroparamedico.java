@@ -46,6 +46,8 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
+/* Esta clase no se utiliza */
+
 public class registroparamedico<onActivityResult> extends AppCompatActivity {
 
     ImageView picture;

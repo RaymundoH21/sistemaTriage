@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/* Esta clase no se utiliza */
+
 public class Mapa extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;

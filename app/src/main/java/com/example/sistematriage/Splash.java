@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+/* Esta clase pertenece a la primer pantalla que se muestra por unos segundos, en donde
+   aparece el logotipo de la aplicación */
+
 public class Splash extends AppCompatActivity {
 
     Intent intent;
@@ -18,12 +21,12 @@ public class Splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                intent = new Intent(Splash.this, MenuPrincipal.class);
+                intent = new Intent(Splash.this, MenuPrincipal.class); // Redirige al menú principal
                 startActivity(intent);
                 finish();
 
             }
-        },2000);
+        },2000); // Tiempo que tarda en pasar a la siguiente activity
 
     }
 
